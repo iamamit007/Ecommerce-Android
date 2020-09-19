@@ -68,10 +68,7 @@ public class MainActivity extends AppCompatActivity
          viewPager = (ViewPager) findViewById(R.id.viewpager);
          tabLayout = (TabLayout) findViewById(R.id.tabs);
 
-        if (viewPager != null) {
-            setupViewPager(viewPager);
-           tabLayout.setupWithViewPager(viewPager);
-        }
+
 
 
       /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -102,12 +99,20 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
+        List<String> titles= new ArrayList<>();
+    List<Catagories> responseData = new ArrayList<>();
 
     private NetworkCallBack callBack = new NetworkCallBack<List<Catagories>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
-            Log.d("ZINGAKART",response.toString());
+            responseData = (List<Catagories>) response.getData();
+            for (Catagories i:responseData) {
+                titles.add(i.getName());
+                if (viewPager != null) {
+                    setupViewPager(viewPager);
+                    tabLayout.setupWithViewPager(viewPager);
+                }
+            }
 
         }
 
@@ -174,38 +179,56 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        Adapter adapter = new Adapter(getSupportFragmentManager());
-        ImageListFragment fragment = new ImageListFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("type", 1);
-        fragment.setArguments(bundle);
-        adapter.addFragment(fragment, getString(R.string.item_1));
-        fragment = new ImageListFragment();
-        bundle = new Bundle();
-        bundle.putInt("type", 2);
-        fragment.setArguments(bundle);
-        adapter.addFragment(fragment, getString(R.string.item_2));
-        fragment = new ImageListFragment();
-        bundle = new Bundle();
-        bundle.putInt("type", 3);
-        fragment.setArguments(bundle);
-        adapter.addFragment(fragment, getString(R.string.item_3));
-        fragment = new ImageListFragment();
-        bundle = new Bundle();
-        bundle.putInt("type", 4);
-        fragment.setArguments(bundle);
-        adapter.addFragment(fragment, getString(R.string.item_4));
-        fragment = new ImageListFragment();
-        bundle = new Bundle();
-        bundle.putInt("type", 5);
-        fragment.setArguments(bundle);
-        adapter.addFragment(fragment, getString(R.string.item_5));
-        fragment = new ImageListFragment();
-        bundle = new Bundle();
-        bundle.putInt("type", 6);
-        fragment.setArguments(bundle);
-        adapter.addFragment(fragment, getString(R.string.item_6));
+        Adapter adapter = new Adapter(getSupportFragmentManager(),titles);
+        for (Catagories i:responseData
+             ) {
+            ImageListFragment fragment = new ImageListFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("type", i.getId());
+            fragment.setArguments(bundle);
+            adapter.addFragment(fragment,i.getName());
+        }
+
         viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            public void onPageSelected(int position) {
+                // Check if this is the page you want.
+            }
+        });
+
+//        ImageListFragment fragment = new ImageListFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putInt("type", 1);
+//        fragment.setArguments(bundle);
+//        adapter.addFragment(fragment, getString(R.string.item_1));
+//        fragment = new ImageListFragment();
+//        bundle = new Bundle();
+//        bundle.putInt("type", 2);
+//        fragment.setArguments(bundle);
+//        adapter.addFragment(fragment, getString(R.string.item_2));
+//        fragment = new ImageListFragment();
+//        bundle = new Bundle();
+//        bundle.putInt("type", 3);
+//        fragment.setArguments(bundle);
+//        adapter.addFragment(fragment, getString(R.string.item_3));
+//        fragment = new ImageListFragment();
+//        bundle = new Bundle();
+//        bundle.putInt("type", 4);
+//        fragment.setArguments(bundle);
+//        adapter.addFragment(fragment, getString(R.string.item_4));
+//        fragment = new ImageListFragment();
+//        bundle = new Bundle();
+//        bundle.putInt("type", 5);
+//        fragment.setArguments(bundle);
+//        adapter.addFragment(fragment, getString(R.string.item_5));
+//        fragment = new ImageListFragment();
+//        bundle = new Bundle();
+//        bundle.putInt("type", 6);
+//        fragment.setArguments(bundle);
+//        adapter.addFragment(fragment, getString(R.string.item_6));
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -241,10 +264,11 @@ public class MainActivity extends AppCompatActivity
 
     static class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();
-        private final List<String> mFragmentTitles = new ArrayList<>();
+         List<String> mFragmentTitles = new ArrayList<>();
 
-        public Adapter(FragmentManager fm) {
+        public Adapter(FragmentManager fm ,List<String> mFragmentTitles) {
             super(fm);
+            this.mFragmentTitles = mFragmentTitles;
         }
 
         public void addFragment(Fragment fragment, String title) {

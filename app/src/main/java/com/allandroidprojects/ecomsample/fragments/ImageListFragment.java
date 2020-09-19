@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +35,23 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.allandroidprojects.ecomsample.R;
 import com.allandroidprojects.ecomsample.product.ItemDetailsActivity;
 import com.allandroidprojects.ecomsample.startup.MainActivity;
+import com.allandroidprojects.ecomsample.utility.ApiClient;
+import com.allandroidprojects.ecomsample.utility.ApiInterface;
+import com.allandroidprojects.ecomsample.utility.Catagories;
 import com.allandroidprojects.ecomsample.utility.ImageUrlUtils;
+import com.allandroidprojects.ecomsample.utility.NetworkCallBack;
+import com.allandroidprojects.ecomsample.utility.NetworkResponse;
+import com.allandroidprojects.ecomsample.utility.Product;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.velectico.rbm.network.callbacks.NetworkError;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
 
 
 public class ImageListFragment extends Fragment {
@@ -43,6 +59,12 @@ public class ImageListFragment extends Fragment {
     public static final String STRING_IMAGE_URI = "ImageUri";
     public static final String STRING_IMAGE_POSITION = "ImagePosition";
     private static MainActivity mActivity;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        callApiList();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +78,31 @@ public class ImageListFragment extends Fragment {
         setupRecyclerView(rv);
         return rv;
     }
+    public void callApiList(){
+
+        ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<List<Product>> responseCall = apiInterface.getProductList();
+        responseCall.enqueue(callBack);
+
+    }
+
+    List<String> titles= new ArrayList<>();
+    List<Product> responseData = new ArrayList<>();
+
+    private NetworkCallBack callBack = new NetworkCallBack<List<Product>>() {
+        @Override
+        public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            Log.d("Mita",response.getData().toString());
+
+
+        }
+
+        @Override
+        public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
+
+        }
+    };
+
 
     private void setupRecyclerView(RecyclerView recyclerView) {
       /*  if (ImageListFragment.this.getArguments().getInt("type") == 1) {
@@ -173,4 +220,7 @@ public class ImageListFragment extends Fragment {
             return mValues.length;
         }
     }
+
+
+
 }

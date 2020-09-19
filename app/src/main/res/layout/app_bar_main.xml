@@ -18,9 +18,12 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            app:titleTextColor="#F6A806"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
+            app:tabTextColor="#F6A806"
+            app:tabIndicatorColor="#F6A806"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabMode="scrollable"/>

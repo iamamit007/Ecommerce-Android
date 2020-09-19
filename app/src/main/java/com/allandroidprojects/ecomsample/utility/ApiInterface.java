@@ -6,6 +6,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
+import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.product;
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.products_categories;
 
 public interface ApiInterface {
@@ -13,6 +14,9 @@ public interface ApiInterface {
 
     @GET(products_categories)
     Call<List<Catagories>> getCatagories();
+
+    @GET(product)
+    Call<List<Product>> getProductList();
 
 
 
