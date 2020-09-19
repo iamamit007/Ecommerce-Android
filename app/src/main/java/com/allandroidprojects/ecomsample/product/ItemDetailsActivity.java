@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.allandroidprojects.ecomsample.R;
 import com.allandroidprojects.ecomsample.fragments.ImageListFragment;
 import com.allandroidprojects.ecomsample.fragments.ViewPagerActivity;
+import com.allandroidprojects.ecomsample.login.LoginPopup;
 import com.allandroidprojects.ecomsample.notification.NotificationCountSetClass;
 import com.allandroidprojects.ecomsample.options.CartListActivity;
 import com.allandroidprojects.ecomsample.startup.MainActivity;
@@ -60,12 +61,13 @@ public class ItemDetailsActivity extends AppCompatActivity {
         textViewBuyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ImageUrlUtils imageUrlUtils = new ImageUrlUtils();
-                imageUrlUtils.addCartListImageUri(stringImageUri);
-                MainActivity.notificationCountCart++;
-                NotificationCountSetClass.setNotifyCount(MainActivity.notificationCountCart);
-                startActivity(new Intent(ItemDetailsActivity.this, CartListActivity.class));
-
+//                ImageUrlUtils imageUrlUtils = new ImageUrlUtils();
+//                imageUrlUtils.addCartListImageUri(stringImageUri);
+//                MainActivity.notificationCountCart++;
+//                NotificationCountSetClass.setNotifyCount(MainActivity.notificationCountCart);
+//                startActivity(new Intent(ItemDetailsActivity.this, CartListActivity.class));
+                LoginPopup popUpClass = new LoginPopup();
+                popUpClass.showPopupWindow(view);
             }
         });
 

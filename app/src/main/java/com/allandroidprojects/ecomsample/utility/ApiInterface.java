@@ -1,11 +1,17 @@
 package com.allandroidprojects.ecomsample.utility;
 
 
+import com.allandroidprojects.ecomsample.login.CustomerRegisterResponse;
+
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
+import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_login;
+import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_register;
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.products_categories;
 
 public interface ApiInterface {
@@ -14,8 +20,11 @@ public interface ApiInterface {
     @GET(products_categories)
     Call<List<Catagories>> getCatagories();
 
+    @GET(customer_register)
+    Call<CustomerRegisterResponse> getregisterDetails();
 
-
+    @GET(customer_login)
+    Call<CustomerRegisterResponse> getLoginDetails(@Query("email") String email,@Query("password") String password);
 
 //    @POST(ENDPOINT_GET_TASK_DETAILS_LIST_BY_BEAT_ID)
 //    Call<BeatWiseTakListResponse> getTaskDetailsByBeat(@Body GetBeatDeatilsRequestParams model);
