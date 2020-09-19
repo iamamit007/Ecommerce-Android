@@ -15,7 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private final static String BASE_URL = "https://velectico.top";
+    private final static String BASE_URL = "https://zingakart.com";
 
     public static ApiClient apiClient;
     private Retrofit retrofit = null;
