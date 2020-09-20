@@ -2,6 +2,7 @@ package com.allandroidprojects.ecomsample.options;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
@@ -37,6 +38,15 @@ public class MyAccountActivity extends AppCompatActivity {
         name = (TextView) findViewById(R.id.fullname);
         address = (TextView) findViewById(R.id.addressdetail);
         email = (TextView) findViewById(R.id.email);
+        SharedPreferences sh
+                = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+
+        String fname = sh.getString("firstName", "");
+        String lname = sh.getString("lastName", "");
+        String emailTxt = sh.getString("email", "");
+
+        name.setText(fname + "" + lname);
+        email.setText(emailTxt);
 
         callProfileApiList();
     }

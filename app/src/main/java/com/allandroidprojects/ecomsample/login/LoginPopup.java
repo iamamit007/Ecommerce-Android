@@ -2,6 +2,7 @@ package com.allandroidprojects.ecomsample.login;
 
 import android.app.Application;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -119,7 +120,20 @@ public class LoginPopup {
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
             Log.d("ZINGAKART Login",response.toString());
             Toast.makeText(popupView.getContext(),"Sign UP REs."+response.getData().toString(),Toast.LENGTH_SHORT).show();
+            CustomerLoginResponse userDetail = (CustomerLoginResponse) response.getData();
+            String id = userDetail.getId();
+            SharedPreferences sharedPreferences
+                    = popupView.getContext().getSharedPreferences("MySharedPref",
+                    popupView.getContext().MODE_PRIVATE);
 
+            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+
+            myEdit.putString("id", id);
+            myEdit.putString("firstName", userDetail.getFirst_name());
+            myEdit.putString("lastName", userDetail.getLast_name());
+            myEdit.putString("email", userDetail.getEmail());
+            myEdit.putString("image", userDetail.getAvatar_url());
+            myEdit.commit();
         }
 
         @Override
