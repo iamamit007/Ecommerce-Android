@@ -7,7 +7,7 @@
     android:paddingLeft="20dp"
     android:paddingTop="20dp"
     android:paddingRight="20dp"
-    tools:context=".registration.SignUpActivity">
+    tools:context=".registration.AddAddressActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,82 +22,74 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:textStyle="bold"
-            android:text="Registration" />
+            android:text="Add address" />
 
         <EditText
-            android:id="@+id/fname"
+            android:id="@+id/city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="First Name"
+            android:hint="City"
             android:inputType="text"
-            android:layout_below="@+id/usrname"
+            android:layout_below="@+id/address"
             android:layout_marginTop="10dp"
             android:selectAllOnFocus="true" />
         <EditText
-            android:id="@+id/email"
+            android:id="@+id/pin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
+            android:hint="PinCode"
             android:inputType="text"
             android:layout_below="@+id/title"
             android:layout_marginTop="10dp"
             android:selectAllOnFocus="true" />
         <EditText
-            android:id="@+id/usrname"
+            android:id="@+id/address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
+            android:hint="Address"
             android:inputType="text"
-            android:layout_below="@+id/email"
+            android:layout_below="@+id/pin"
             android:layout_marginTop="10dp"
             android:selectAllOnFocus="true" />
         <EditText
-            android:id="@+id/lname"
+            android:id="@+id/state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Last Name"
+            android:hint="State"
             android:inputType="text"
-            android:layout_below="@+id/fname"
+            android:layout_below="@+id/city"
             android:layout_marginTop="10dp"
             android:selectAllOnFocus="true" />
 
 
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/country"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/lname"
-            android:hint="Password"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/colorPrimary"
+            android:layout_below="@+id/state"
+            android:hint="Country"
             android:layout_marginTop="10dp"
             android:selectAllOnFocus="true" />
         <EditText
-            android:id="@+id/confirmpassword"
+            android:id="@+id/landmrk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/password"
-            android:hint="Confirm Password"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/colorPrimary"
+            android:layout_below="@+id/country"
+            android:hint="Landmark(optional)"
             android:layout_marginTop="10dp"
             android:selectAllOnFocus="true" />
 
         <Button
-            android:id="@+id/register"
+            android:id="@+id/saveadd"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:textColor="#FFFFFF"
             android:elevation="3dp"
             android:background="@drawable/button_bg"
-            android:layout_below="@+id/confirmpassword"
+            android:layout_below="@+id/landmrk"
             android:layout_marginTop="30dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Button"
-            android:text="Register" />
+            android:text="save" />
 
 
 

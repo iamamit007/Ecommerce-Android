@@ -102,3 +102,5 @@ const val products_categories = APP_API_NAME+"products/categories"
 
 const val customer_register = APP_API_NAME+"customers"
 const val customer_login = APP_API_NAME+"customers"
+const val customer_update_address = APP_API_NAME+"customers/14"
+const val customer_retrieve = APP_API_NAME+"customers/14"

@@ -23,6 +23,7 @@ import com.allandroidprojects.ecomsample.fragments.ImageListFragment;
 import com.allandroidprojects.ecomsample.miscellaneous.EmptyActivity;
 import com.allandroidprojects.ecomsample.notification.NotificationCountSetClass;
 import com.allandroidprojects.ecomsample.options.CartListActivity;
+import com.allandroidprojects.ecomsample.options.MyAccountActivity;
 import com.allandroidprojects.ecomsample.options.SearchResultActivity;
 import com.allandroidprojects.ecomsample.options.WishlistActivity;
 import com.allandroidprojects.ecomsample.utility.ApiClient;
@@ -228,9 +229,11 @@ public class MainActivity extends AppCompatActivity
             viewPager.setCurrentItem(5);
         }else if (id == R.id.my_wishlist) {
             startActivity(new Intent(MainActivity.this, WishlistActivity.class));
-        }else if (id == R.id.my_cart) {
-            startActivity(new Intent(MainActivity.this, CartListActivity.class));
-        }else {
+        }
+        else if (id == R.id.my_account) {
+            startActivity(new Intent(MainActivity.this, MyAccountActivity.class));
+        }
+        else {
             startActivity(new Intent(MainActivity.this, EmptyActivity.class));
         }
 

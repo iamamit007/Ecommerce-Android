@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -24,17 +25,22 @@ import com.velectico.rbm.network.callbacks.NetworkError;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 import retrofit2.Call;
 
 public class LoginPopup {
     //PopupWindow display method
-
+    Button buttonSignup;
+    EditText username;
+    EditText password;
+     View popupView;
     public void showPopupWindow(final View view) {
 
-        Button buttonSignup;
+
         //Create a View object yourself through inflater
         LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
-        final View popupView = inflater.inflate(R.layout.pop_up_layout, null);
+       popupView = inflater.inflate(R.layout.pop_up_layout, null);
 
         //Specify the length and width through constants
         int width = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -51,7 +57,8 @@ public class LoginPopup {
 
         //Initialize the elements of our window, install the handler
 
-
+         username = (EditText) popupView.findViewById(R.id.username);
+         password = (EditText) popupView.findViewById(R.id.password);
 
         buttonSignup = popupView.findViewById(R.id.signup);
         buttonSignup.setOnClickListener(new View.OnClickListener() {
@@ -68,8 +75,19 @@ public class LoginPopup {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(popupView.getContext(),"Login.",Toast.LENGTH_SHORT).show();
                 callLoginApi();
+                Toast.makeText(popupView.getContext(),"Login.",Toast.LENGTH_SHORT).show();
+//                if(username.getText().toString().trim().isEmpty() || username.getText().toString().trim().length() == 0 || username.getText().toString().trim().equals("") || username.getText().toString().trim() == null)
+//                {
+//                    Toast.makeText(popupView.getContext(),"Please enter username.",Toast.LENGTH_SHORT).show();
+//                }
+//                else if(password.getText().toString().trim().isEmpty() || password.getText().toString().trim().length() == 0 || password.getText().toString().trim().equals("") || password.getText().toString().trim() == null)
+//                {
+//                    Toast.makeText(popupView.getContext(),"Please enter password.",Toast.LENGTH_SHORT).show();
+//                }
+//                else {
+//                    callLoginApi();
+//                }
             }
         });
 
@@ -92,14 +110,15 @@ public class LoginPopup {
     public void callLoginApi(){
 
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<CustomerRegisterResponse> responseCall = apiInterface.getLoginDetails("sahaamit473@gmail.com","12345678");
+        Call<List<CustomerLoginResponse>> responseCall = apiInterface.getLoginDetails("sahaamit473@gmail.com","12345678");
         responseCall.enqueue(callBack);
 
     }
-    private NetworkCallBack callBack = new NetworkCallBack<CustomerRegisterResponse>() {
+    private NetworkCallBack callBack = new NetworkCallBack<List<CustomerLoginResponse>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
             Log.d("ZINGAKART Login",response.toString());
+            Toast.makeText(popupView.getContext(),"Sign UP REs."+response.getData().toString(),Toast.LENGTH_SHORT).show();
 
         }
 

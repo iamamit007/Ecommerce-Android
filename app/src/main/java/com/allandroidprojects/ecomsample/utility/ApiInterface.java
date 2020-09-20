@@ -1,6 +1,11 @@
 package com.allandroidprojects.ecomsample.utility;
 
 
+import com.allandroidprojects.ecomsample.login.CustomerAddressRequestParams;
+import com.allandroidprojects.ecomsample.login.CustomerAddressResponse;
+import com.allandroidprojects.ecomsample.login.CustomerDetailResponse;
+import com.allandroidprojects.ecomsample.login.CustomerLoginResponse;
+import com.allandroidprojects.ecomsample.login.CustomerRegisterRequestParams;
 import com.allandroidprojects.ecomsample.login.CustomerRegisterResponse;
 
 import java.util.List;
@@ -8,10 +13,14 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_login;
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_register;
+import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_retrieve;
+import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_update_address;
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.products_categories;
 
 public interface ApiInterface {
@@ -20,11 +29,18 @@ public interface ApiInterface {
     @GET(products_categories)
     Call<List<Catagories>> getCatagories();
 
-    @GET(customer_register)
-    Call<CustomerRegisterResponse> getregisterDetails();
+    @POST(customer_register)
+    Call<CustomerRegisterResponse> getregisterDetails(@Body CustomerRegisterRequestParams model);
 
     @GET(customer_login)
-    Call<CustomerRegisterResponse> getLoginDetails(@Query("email") String email,@Query("password") String password);
+    Call<List<CustomerLoginResponse>> getLoginDetails(@Query("email") String email, @Query("password") String password);
+
+    @PUT(customer_update_address)
+    Call<List<CustomerAddressResponse>> addAddressDetails(@Body CustomerAddressRequestParams model);
+
+    @GET(customer_retrieve)
+    Call<List<CustomerDetailResponse>> getCustomerProfile();
+
 
 //    @POST(ENDPOINT_GET_TASK_DETAILS_LIST_BY_BEAT_ID)
 //    Call<BeatWiseTakListResponse> getTaskDetailsByBeat(@Body GetBeatDeatilsRequestParams model);
