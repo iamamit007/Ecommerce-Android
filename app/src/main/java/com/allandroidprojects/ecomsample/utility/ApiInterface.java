@@ -5,6 +5,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.product;
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.products_categories;
@@ -16,7 +17,7 @@ public interface ApiInterface {
     Call<List<Catagories>> getCatagories();
 
     @GET(product)
-    Call<List<Product>> getProductList();
+    Call<List<Product>> getProductList(@Query("category")int category ,@Query("per_page")int per_page ,@Query("page")int page );
 
 
 

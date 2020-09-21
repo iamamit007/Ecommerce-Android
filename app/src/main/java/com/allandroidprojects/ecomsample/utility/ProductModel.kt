@@ -16,6 +16,11 @@ data class Catagories(
         val count: Int?
 ):Serializable
 
+data class Images(
+        val id: Int?,
+        val src: String?
+):Serializable
+
 data class Product(
         val id: Int,
         val name:String,
@@ -49,7 +54,8 @@ data class Product(
         val backordered: Boolean?,
         val stock_status: String?,
         val reviews_allowed: Boolean?,
-        val average_rating: String?
+        val average_rating: String?,
+        val images: List<Images>?
 
 //
 //"stock_quantity": null,
