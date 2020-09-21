@@ -121,20 +121,22 @@ public class LoginPopup {
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
             Log.d("ZINGAKART Login",response.toString());
             Toast.makeText(popupView.getContext(),"Sign UP REs."+response.getData().toString(),Toast.LENGTH_SHORT).show();
-            CustomerLoginResponse userDetail = (CustomerLoginResponse) response.getData();
+           List<CustomerLoginResponse> userDetailarr = (List<CustomerLoginResponse>) response.getData();
+           CustomerLoginResponse userDetail = userDetailarr.get(0);
             String id = userDetail.getId();
-//            SharedPreferences sharedPreferences
-//                    = popupView.getContext().getSharedPreferences("MySharedPref",
-//                    Context.MODE_PRIVATE);
-//
-//            SharedPreferences.Editor myEdit = sharedPreferences.edit();
-//
-//            myEdit.putString("id", id);
-//            myEdit.putString("firstName", userDetail.getFirst_name());
-//            myEdit.putString("lastName", userDetail.getLast_name());
-//            myEdit.putString("email", userDetail.getEmail());
-//            myEdit.putString("image", userDetail.getAvatar_url());
-//            myEdit.commit();
+
+            SharedPreferences sharedPreferences
+                    = popupView.getContext().getSharedPreferences("MySharedPref",
+                    Context.MODE_PRIVATE);
+
+            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+
+            myEdit.putString("id", id);
+            myEdit.putString("firstName", userDetail.getFirst_name());
+            myEdit.putString("lastName", userDetail.getLast_name());
+            myEdit.putString("email", userDetail.getEmail());
+            myEdit.putString("image", userDetail.getAvatar_url());
+            myEdit.commit();
         }
 
         @Override
