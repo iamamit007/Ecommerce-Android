@@ -12,7 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal">
-
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:src="@drawable/logo" />
 
         <TextView
             android:id="@+id/title"
@@ -22,6 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:textStyle="bold"
+            android:textColor="#df3c31"
             android:text="Registration" />
 
         <EditText
@@ -91,11 +96,11 @@
             android:id="@+id/register"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textColor="#FFFFFF"
             android:elevation="3dp"
             android:background="@drawable/button_bg"
             android:layout_below="@+id/confirmpassword"
             android:layout_marginTop="30dp"
+            android:textColor="#f3a833"
             android:textAppearance="@style/TextAppearance.AppCompat.Button"
             android:text="Register" />
 

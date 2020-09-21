@@ -37,6 +37,7 @@ public class LoginPopup {
     EditText username;
     EditText password;
      View popupView;
+    PopupWindow popupWindow;
     public void showPopupWindow(final View view) {
 
 
@@ -52,7 +53,7 @@ public class LoginPopup {
         boolean focusable = true;
 
         //Create a window with our parameters
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+         popupWindow = new PopupWindow(popupView, width, height, focusable);
 
         //Set the location of the window on the screen
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -61,6 +62,7 @@ public class LoginPopup {
 
          username = (EditText) popupView.findViewById(R.id.username);
          password = (EditText) popupView.findViewById(R.id.password);
+        Button close = (Button) popupView.findViewById(R.id.closeBtn);
 
         buttonSignup = popupView.findViewById(R.id.signup);
         buttonSignup.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +73,12 @@ public class LoginPopup {
                 //Toast.makeText(view.getContext(), "Wow, popup action button", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(popupView.getContext(), SignUpActivity.class);
                 popupView.getContext().startActivity(i);
+            }
+        });
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
             }
         });
         Button buttonLogin = popupView.findViewById(R.id.login);
@@ -99,15 +107,15 @@ public class LoginPopup {
 //
 //        //Handler for clicking on the inactive zone of the window
 //
-        popupView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                //Close the window when clicked
-                popupWindow.dismiss();
-                return true;
-            }
-        });
+//        popupView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                //Close the window when clicked
+//                popupWindow.dismiss();
+//                return true;
+//            }
+//        });
     }
     public void callLoginApi(){
 
@@ -137,6 +145,7 @@ public class LoginPopup {
             myEdit.putString("email", userDetail.getEmail());
             myEdit.putString("image", userDetail.getAvatar_url());
             myEdit.commit();
+            popupWindow.dismiss();
         }
 
         @Override

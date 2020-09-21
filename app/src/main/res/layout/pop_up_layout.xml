@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardview_dark_background"
     android:paddingLeft="30dp"
@@ -19,14 +22,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+                <Button
+
+                    android:id="@+id/closeBtn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/close"/>
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_below="@+id/closeBtn"
+                    android:src="@drawable/logo" />
+
                 <TextView
                     android:id="@+id/title"
                     android:layout_below="@+id/imageView"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="20dp"
                     android:textStyle="bold"
+                    android:textColor="#df3c31"
                     android:text="Login" />
 
                 <EditText
@@ -35,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Username/Email"
                     android:inputType="text"
+                    android:text="sahaamit473@gmail.com"
                     android:layout_below="@+id/title"
                     android:layout_marginTop="30dp"
                     android:selectAllOnFocus="true" />
@@ -45,6 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/username"
                     android:hint="Password"
+                    android:text="12345678"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:layout_marginTop="20dp"
@@ -54,7 +74,7 @@
                     android:id="@+id/login"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#f3a833"
                     android:elevation="3dp"
                     android:background="@drawable/button_bg"
                     android:layout_below="@+id/password"
@@ -95,6 +115,8 @@
                     android:textStyle="bold"
                     android:textAlignment="viewEnd"
                     android:text="Register" />
+
+
 
         </RelativeLayout>
 

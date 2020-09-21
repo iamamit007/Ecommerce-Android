@@ -70,11 +70,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
         textViewBuyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ImageUrlUtils imageUrlUtils = new ImageUrlUtils();
-//                imageUrlUtils.addCartListImageUri(stringImageUri);
-//                MainActivity.notificationCountCart++;
-//                NotificationCountSetClass.setNotifyCount(MainActivity.notificationCountCart);
-//                startActivity(new Intent(ItemDetailsActivity.this, CartListActivity.class));
                 LoginPopup popUpClass = new LoginPopup();
                 popUpClass.showPopupWindow(view);
             }

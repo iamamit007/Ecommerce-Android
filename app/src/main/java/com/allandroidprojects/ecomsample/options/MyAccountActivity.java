@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,15 +43,18 @@ public class MyAccountActivity extends AppCompatActivity {
         name = (TextView) findViewById(R.id.fullname);
         address = (TextView) findViewById(R.id.addressdetail);
         email = (TextView) findViewById(R.id.email);
+        ImageView iv = (ImageView)findViewById(R.id.imageView2);
         SharedPreferences sh
                 = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
 
         String fname = sh.getString("firstName", "");
         String lname = sh.getString("lastName", "");
         String emailTxt = sh.getString("email", "");
-
+        String image = sh.getString("image", "");
         name.setText(fname + "" + lname);
         email.setText(emailTxt);
+        Uri uri = Uri.parse(image);
+        iv.setImageURI(uri);
 
         callProfileApiList();
     }
@@ -70,9 +75,12 @@ public class MyAccountActivity extends AppCompatActivity {
             Log.d("ZINGAKART",response.toString());
             Toast.makeText(MyAccountActivity.this,"Profile UP."+response.getData().toString(),Toast.LENGTH_SHORT).show();
             CustomerDetailResponse userDetail = (CustomerDetailResponse) response.getData();
-//            List<Shipping> addr = userDetail.getShipping();
-//            String add = addr.get(0).getAddress_1();
-            address.setText(userDetail.toString());
+            Shipping addr = userDetail.getShipping();
+            String add = addr.getAddress_1();
+            String add1 = addr.getCity();
+            String add2 = addr.getState();
+            String add3 = addr.getPostcode();
+            address.setText(add+", "+ add1+", "+add2+" - "+add3);
         }
 
         @Override

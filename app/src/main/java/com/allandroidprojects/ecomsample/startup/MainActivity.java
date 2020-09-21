@@ -1,12 +1,19 @@
 package com.allandroidprojects.ecomsample.startup;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -22,6 +29,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.allandroidprojects.ecomsample.R;
 import com.allandroidprojects.ecomsample.fragments.ImageListFragment;
 import com.allandroidprojects.ecomsample.login.CustomerDetailResponse;
+import com.allandroidprojects.ecomsample.login.LoginPopup;
 import com.allandroidprojects.ecomsample.miscellaneous.EmptyActivity;
 import com.allandroidprojects.ecomsample.notification.NotificationCountSetClass;
 import com.allandroidprojects.ecomsample.options.CartListActivity;
@@ -51,12 +59,23 @@ public class MainActivity extends AppCompatActivity
     public static int notificationCountCart = 0;
     static ViewPager viewPager;
     static TabLayout tabLayout;
-
+    String usrId = "";
+    Button loginBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        SharedPreferences sh
+                = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+
+        String fname = sh.getString("firstName", "");
+        String lname = sh.getString("lastName", "");
+        String id = sh.getString("id", "");
+        usrId = id;
+        String image = sh.getString("image", "");
+        Toast.makeText(this,"id UP."+id,Toast.LENGTH_SHORT).show();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -68,9 +87,32 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        ImageView iv = (ImageView) headerView.findViewById(R.id.imageView);
+        TextView username = (TextView) headerView.findViewById(R.id.navtitle);
+         loginBtn = (Button) headerView.findViewById(R.id.newlog);
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginPopup popUpClass = new LoginPopup();
+                popUpClass.showPopupWindow(view);
+            }
+        });
          viewPager = (ViewPager) findViewById(R.id.viewpager);
          tabLayout = (TabLayout) findViewById(R.id.tabs);
+            if (id != null){
+                iv.setVisibility(View.VISIBLE);
+                username.setVisibility(View.VISIBLE);
+                loginBtn.setVisibility(View.GONE);
+                username.setText(fname +" "+ lname);
+                Uri uri = Uri.parse(image);
+                iv.setImageURI(uri);
+            }
+            else{
+                iv.setVisibility(View.GONE);
+                username.setVisibility(View.GONE);
+                loginBtn.setVisibility(View.VISIBLE);
+            }
 
 
 
@@ -90,7 +132,7 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         invalidateOptionsMenu();
         callApiList();
-        callProfileApiList();
+
     }
 
 
@@ -127,29 +169,7 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-    public void callProfileApiList(){
 
-        ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<CustomerDetailResponse> responseCall = apiInterface.getCustomerProfile();
-        responseCall.enqueue(callBack2);
-
-    }
-
-
-
-    private NetworkCallBack callBack2 = new NetworkCallBack<CustomerDetailResponse>() {
-        @Override
-        public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
-            Log.d("ZINGAKART",response.toString());
-            Toast.makeText(MainActivity.this,"Profile UP."+response.getData().toString(),Toast.LENGTH_SHORT).show();
-
-        }
-
-        @Override
-        public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-
-        }
-    };
 
     @Override
     public void onBackPressed() {
@@ -281,8 +301,13 @@ public class MainActivity extends AppCompatActivity
         }else if (id == R.id.my_wishlist) {
             startActivity(new Intent(MainActivity.this, WishlistActivity.class));
         }
-        else if (id == R.id.my_account) {
-            startActivity(new Intent(MainActivity.this, MyAccountActivity.class));
+        else if (id == R.id.my_account){
+            if (usrId != null) {
+                startActivity(new Intent(MainActivity.this, MyAccountActivity.class));
+            }
+            else{
+                loginBtn.setPressed(true);
+            }
         }
         else {
             startActivity(new Intent(MainActivity.this, EmptyActivity.class));

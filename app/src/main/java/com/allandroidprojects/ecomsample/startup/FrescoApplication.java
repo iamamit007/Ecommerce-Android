@@ -1,6 +1,9 @@
 package com.allandroidprojects.ecomsample.startup;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.allandroidprojects.ecomsample.cache.ImagePipelineConfigFactory;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
@@ -8,7 +11,6 @@ import com.facebook.drawee.backends.pipeline.Fresco;
  * Created by 06peng on 2015/6/24.
  */
 public class FrescoApplication extends Application {
-
     @Override
     public void onCreate() {
         super.onCreate();
