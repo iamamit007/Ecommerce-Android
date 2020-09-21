@@ -202,7 +202,7 @@ public class ImageListFragment extends Fragment {
                 layoutParams.height = 800;
             }*/
          //  String [] images =
-            Product product = mValues.get(position);
+            final Product product = mValues.get(position);
             List<Images> images = product.getImages();
 
             holder.product_name.setText(product.getName());
@@ -225,6 +225,7 @@ public class ImageListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mActivity, ItemDetailsActivity.class);
+                    ItemDetailsActivity.setProduct(product);
                     intent.putExtra(STRING_IMAGE_URI, "https://www.zingakart.com/wp-content/uploads/2020/09/b19-1.png");
                     intent.putExtra(STRING_IMAGE_POSITION, position);
                     mActivity.startActivity(intent);

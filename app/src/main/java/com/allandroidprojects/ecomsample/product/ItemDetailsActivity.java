@@ -17,14 +17,22 @@ import com.allandroidprojects.ecomsample.notification.NotificationCountSetClass;
 import com.allandroidprojects.ecomsample.options.CartListActivity;
 import com.allandroidprojects.ecomsample.startup.MainActivity;
 import com.allandroidprojects.ecomsample.utility.ImageUrlUtils;
+import com.allandroidprojects.ecomsample.utility.Product;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 public class ItemDetailsActivity extends AppCompatActivity {
     int imagePosition;
     String stringImageUri;
+   public static Product product;
+
+    public static void setProduct(Product product) {
+        ItemDetailsActivity.product = product;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_item_details);
         SimpleDraweeView mImageView = (SimpleDraweeView)findViewById(R.id.image1);
         TextView textViewAddToCart = (TextView)findViewById(R.id.text_action_bottom1);
@@ -35,6 +43,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
             stringImageUri = getIntent().getStringExtra(ImageListFragment.STRING_IMAGE_URI);
             imagePosition = getIntent().getIntExtra(ImageListFragment.STRING_IMAGE_URI,0);
         }
+        String x = product.getAverage_rating();
         Uri uri = Uri.parse(stringImageUri);
         mImageView.setImageURI(uri);
         mImageView.setOnClickListener(new View.OnClickListener() {
