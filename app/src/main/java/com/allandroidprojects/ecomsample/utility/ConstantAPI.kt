@@ -101,3 +101,7 @@ const val APP_API_NAME = "https://zingakart.com/wp-json/wc/v3/"
 const val products_categories = APP_API_NAME+"products/categories"
 const val product = APP_API_NAME+"products"
 
+const val customer_register = APP_API_NAME+"customers"
+const val customer_login = APP_API_NAME+"customers"
+const val customer_update_address = APP_API_NAME+"customers/14"
+const val customer_retrieve = APP_API_NAME+"customers/14"

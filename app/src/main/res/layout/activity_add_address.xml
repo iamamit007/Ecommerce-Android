@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingTop="20dp"
+    android:paddingRight="20dp"
+    tools:context=".registration.AddAddressActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_below="@+id/imageView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:text="Add address" />
+
+        <EditText
+            android:id="@+id/city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="City"
+            android:inputType="text"
+            android:layout_below="@+id/address"
+            android:layout_marginTop="10dp"
+            android:selectAllOnFocus="true" />
+        <EditText
+            android:id="@+id/pin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="PinCode"
+            android:inputType="text"
+            android:layout_below="@+id/title"
+            android:layout_marginTop="10dp"
+            android:selectAllOnFocus="true" />
+        <EditText
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Address"
+            android:inputType="text"
+            android:layout_below="@+id/pin"
+            android:layout_marginTop="10dp"
+            android:selectAllOnFocus="true" />
+        <EditText
+            android:id="@+id/state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="State"
+            android:inputType="text"
+            android:layout_below="@+id/city"
+            android:layout_marginTop="10dp"
+            android:selectAllOnFocus="true" />
+
+
+        <EditText
+            android:id="@+id/country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/state"
+            android:hint="Country"
+            android:layout_marginTop="10dp"
+            android:selectAllOnFocus="true" />
+        <EditText
+            android:id="@+id/landmrk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/country"
+            android:hint="Landmark(optional)"
+            android:layout_marginTop="10dp"
+            android:selectAllOnFocus="true" />
+
+        <Button
+            android:id="@+id/saveadd"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textColor="#FFFFFF"
+            android:elevation="3dp"
+            android:background="@drawable/button_bg"
+            android:layout_below="@+id/landmrk"
+            android:layout_marginTop="30dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:text="save" />
+
+
+
+
+
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

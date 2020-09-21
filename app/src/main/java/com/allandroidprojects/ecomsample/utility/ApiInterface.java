@@ -1,13 +1,28 @@
 package com.allandroidprojects.ecomsample.utility;
 
 
+import com.allandroidprojects.ecomsample.login.CustomerAddressRequestParams;
+import com.allandroidprojects.ecomsample.login.CustomerAddressResponse;
+import com.allandroidprojects.ecomsample.login.CustomerDetailResponse;
+import com.allandroidprojects.ecomsample.login.CustomerLoginResponse;
+import com.allandroidprojects.ecomsample.login.CustomerRegisterRequestParams;
+import com.allandroidprojects.ecomsample.login.CustomerRegisterResponse;
+
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.product;
+import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_login;
+import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_register;
+import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_retrieve;
+import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_update_address;
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.products_categories;
 
 public interface ApiInterface {
@@ -19,7 +34,17 @@ public interface ApiInterface {
     @GET(product)
     Call<List<Product>> getProductList(@Query("category")int category ,@Query("per_page")int per_page ,@Query("page")int page );
 
+    @POST(customer_register)
+    Call<CustomerRegisterResponse> getregisterDetails(@Body CustomerRegisterRequestParams model);
 
+    @GET(customer_login)
+    Call<List<CustomerLoginResponse>> getLoginDetails(@Query("email") String email, @Query("password") String password);
+
+    @PUT(customer_update_address)
+    Call<CustomerAddressResponse> addAddressDetails(@Body CustomerAddressRequestParams model);
+
+    @GET(customer_retrieve)
+    Call<CustomerDetailResponse> getCustomerProfile();
 
 
 //    @POST(ENDPOINT_GET_TASK_DETAILS_LIST_BY_BEAT_ID)
