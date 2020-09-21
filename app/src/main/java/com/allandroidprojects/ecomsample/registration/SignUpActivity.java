@@ -2,6 +2,7 @@ package com.allandroidprojects.ecomsample.registration;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -88,7 +89,7 @@ public class SignUpActivity extends AppCompatActivity {
             String id = userDetail.getId();
             SharedPreferences sharedPreferences
                     = getSharedPreferences("MySharedPref",
-                    MODE_PRIVATE);
+                    Context.MODE_PRIVATE);
 
 // Creating an Editor object
 // to edit(write to the file)

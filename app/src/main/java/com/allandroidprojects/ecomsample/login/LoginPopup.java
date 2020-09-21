@@ -1,6 +1,7 @@
 package com.allandroidprojects.ecomsample.login;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -111,7 +112,7 @@ public class LoginPopup {
     public void callLoginApi(){
 
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<List<CustomerLoginResponse>> responseCall = apiInterface.getLoginDetails("sahaamit473@gmail.com","12345678");
+        Call<List<CustomerLoginResponse>> responseCall = apiInterface.getLoginDetails(username.getText().toString(),password.getText().toString());
         responseCall.enqueue(callBack);
 
     }
@@ -122,18 +123,18 @@ public class LoginPopup {
             Toast.makeText(popupView.getContext(),"Sign UP REs."+response.getData().toString(),Toast.LENGTH_SHORT).show();
             CustomerLoginResponse userDetail = (CustomerLoginResponse) response.getData();
             String id = userDetail.getId();
-            SharedPreferences sharedPreferences
-                    = popupView.getContext().getSharedPreferences("MySharedPref",
-                    popupView.getContext().MODE_PRIVATE);
-
-            SharedPreferences.Editor myEdit = sharedPreferences.edit();
-
-            myEdit.putString("id", id);
-            myEdit.putString("firstName", userDetail.getFirst_name());
-            myEdit.putString("lastName", userDetail.getLast_name());
-            myEdit.putString("email", userDetail.getEmail());
-            myEdit.putString("image", userDetail.getAvatar_url());
-            myEdit.commit();
+//            SharedPreferences sharedPreferences
+//                    = popupView.getContext().getSharedPreferences("MySharedPref",
+//                    Context.MODE_PRIVATE);
+//
+//            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+//
+//            myEdit.putString("id", id);
+//            myEdit.putString("firstName", userDetail.getFirst_name());
+//            myEdit.putString("lastName", userDetail.getLast_name());
+//            myEdit.putString("email", userDetail.getEmail());
+//            myEdit.putString("image", userDetail.getAvatar_url());
+//            myEdit.commit();
         }
 
         @Override

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.allandroidprojects.ecomsample.R;
 import com.allandroidprojects.ecomsample.fragments.ImageListFragment;
+import com.allandroidprojects.ecomsample.login.CustomerDetailResponse;
 import com.allandroidprojects.ecomsample.miscellaneous.EmptyActivity;
 import com.allandroidprojects.ecomsample.notification.NotificationCountSetClass;
 import com.allandroidprojects.ecomsample.options.CartListActivity;
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -90,6 +93,7 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         invalidateOptionsMenu();
         callApiList();
+        callProfileApiList();
     }
 
 
@@ -109,6 +113,30 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
             Log.d("ZINGAKART",response.toString());
+
+        }
+
+        @Override
+        public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
+
+        }
+    };
+
+    public void callProfileApiList(){
+
+        ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<CustomerDetailResponse> responseCall = apiInterface.getCustomerProfile();
+        responseCall.enqueue(callBack2);
+
+    }
+
+
+
+    private NetworkCallBack callBack2 = new NetworkCallBack<CustomerDetailResponse>() {
+        @Override
+        public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            Log.d("ZINGAKART",response.toString());
+            Toast.makeText(MainActivity.this,"Profile UP."+response.getData().toString(),Toast.LENGTH_SHORT).show();
 
         }
 
@@ -270,4 +298,6 @@ public class MainActivity extends AppCompatActivity
             return mFragmentTitles.get(position);
         }
     }
+
+
 }

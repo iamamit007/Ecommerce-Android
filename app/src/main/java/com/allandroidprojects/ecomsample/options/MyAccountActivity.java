@@ -2,6 +2,7 @@ package com.allandroidprojects.ecomsample.options;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 
 import com.allandroidprojects.ecomsample.R;
 import com.allandroidprojects.ecomsample.login.CustomerDetailResponse;
+import com.allandroidprojects.ecomsample.login.CustomerRegisterResponse;
+import com.allandroidprojects.ecomsample.login.Shipping;
 import com.allandroidprojects.ecomsample.registration.AddAddressActivity;
 import com.allandroidprojects.ecomsample.utility.ApiClient;
 import com.allandroidprojects.ecomsample.utility.ApiInterface;
@@ -39,7 +42,7 @@ public class MyAccountActivity extends AppCompatActivity {
         address = (TextView) findViewById(R.id.addressdetail);
         email = (TextView) findViewById(R.id.email);
         SharedPreferences sh
-                = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
 
         String fname = sh.getString("firstName", "");
         String lname = sh.getString("lastName", "");
@@ -54,19 +57,22 @@ public class MyAccountActivity extends AppCompatActivity {
     public void callProfileApiList(){
 
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<List<CustomerDetailResponse>> responseCall = apiInterface.getCustomerProfile();
+        Call<CustomerDetailResponse> responseCall = apiInterface.getCustomerProfile();
         responseCall.enqueue(callBack);
 
     }
 
 
 
-    private NetworkCallBack callBack = new NetworkCallBack<List<CustomerDetailResponse>>() {
+    private NetworkCallBack callBack = new NetworkCallBack<CustomerDetailResponse>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
             Log.d("ZINGAKART",response.toString());
             Toast.makeText(MyAccountActivity.this,"Profile UP."+response.getData().toString(),Toast.LENGTH_SHORT).show();
-
+            CustomerDetailResponse userDetail = (CustomerDetailResponse) response.getData();
+//            List<Shipping> addr = userDetail.getShipping();
+//            String add = addr.get(0).getAddress_1();
+            address.setText(userDetail.toString());
         }
 
         @Override

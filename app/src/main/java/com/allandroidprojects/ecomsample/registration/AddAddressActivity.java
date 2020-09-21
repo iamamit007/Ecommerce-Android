@@ -65,11 +65,11 @@ public class AddAddressActivity extends AppCompatActivity {
                 state.getText().toString());
         CustomerAddressRequestParams param = new CustomerAddressRequestParams(Collections.singletonList(sdata));
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<List<CustomerAddressResponse>> responseCall = apiInterface.addAddressDetails(param);
+        Call<CustomerAddressResponse> responseCall = apiInterface.addAddressDetails(param);
         responseCall.enqueue(callBack);
 
     }
-    private NetworkCallBack callBack = new NetworkCallBack<List<CustomerAddressResponse>>() {
+    private NetworkCallBack callBack = new NetworkCallBack<CustomerAddressResponse>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
             Log.d("ZINGAKART Login",response.toString());

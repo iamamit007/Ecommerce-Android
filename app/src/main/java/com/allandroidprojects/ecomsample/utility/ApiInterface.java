@@ -36,10 +36,10 @@ public interface ApiInterface {
     Call<List<CustomerLoginResponse>> getLoginDetails(@Query("email") String email, @Query("password") String password);
 
     @PUT(customer_update_address)
-    Call<List<CustomerAddressResponse>> addAddressDetails(@Body CustomerAddressRequestParams model);
+    Call<CustomerAddressResponse> addAddressDetails(@Body CustomerAddressRequestParams model);
 
     @GET(customer_retrieve)
-    Call<List<CustomerDetailResponse>> getCustomerProfile();
+    Call<CustomerDetailResponse> getCustomerProfile();
 
 
 //    @POST(ENDPOINT_GET_TASK_DETAILS_LIST_BY_BEAT_ID)

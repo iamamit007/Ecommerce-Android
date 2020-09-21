@@ -48,41 +48,41 @@ data class  CustomerAddressRequestParams(
 
 ): BaseModel()
 data class Shipping(
-        var first_name: String? = null,
-var last_name: String? = null,
-var company: String? = null,
-var address_1: String? = null,
-var address_2: String? = null,
-var city: String? = null,
-var postcode: String? = null,
-var country:String? = null,
-var state: String? = null
+        var first_name: String?,
+var last_name: String?,
+var company: String?,
+var address_1: String? ,
+var address_2: String?,
+var city: String?,
+var postcode: String?,
+var country:String?,
+var state: String?
 
 ):Serializable
 
 data class Billing(
-        var first_name: String? = null,
-        var last_name: String? = null,
-        var company: String? = null,
-        var address_1: String? = null,
-        var address_2: String? = null,
-        var city: String? = null,
-        var postcode: String? = null,
-        var country:String? = null,
-        var state: String? = null,
-        var phone: String? = null
+        var first_name: String?,
+        var last_name: String? ,
+        var company: String?,
+        var address_1: String? ,
+        var address_2: String?,
+        var city: String? ,
+        var postcode: String?,
+        var country:String? ,
+        var state: String? ,
+        var phone: String?
 
 ):Serializable
 
 data class CustomerDetailResponse(
-        val id : String?,
+        val id : Int?,
         val email: String?,
         val first_name:String?,
         val last_name:String?,
         val username:String?,
         val avatar_url:String?,
-        val shipping: List<Shipping>,
-        val billing: List<Billing>
+        val shipping: Shipping?,
+        val billing: Billing?
 
 ): Serializable
 
