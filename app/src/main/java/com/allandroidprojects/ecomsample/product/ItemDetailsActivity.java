@@ -22,6 +22,7 @@ import com.allandroidprojects.ecomsample.fragments.ViewPagerActivity;
 import com.allandroidprojects.ecomsample.login.LoginPopup;
 import com.allandroidprojects.ecomsample.notification.NotificationCountSetClass;
 import com.allandroidprojects.ecomsample.options.CartListActivity;
+import com.allandroidprojects.ecomsample.registration.AddAddressActivity;
 import com.allandroidprojects.ecomsample.startup.MainActivity;
 import com.allandroidprojects.ecomsample.utility.ImageUrlUtils;
 import com.allandroidprojects.ecomsample.utility.Images;
@@ -78,6 +79,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ViewPagerActivity.setProduct1(product);
                     Intent intent = new Intent(ItemDetailsActivity.this, ViewPagerActivity.class);
                     intent.putExtra("position", imagePosition);
                     startActivity(intent);
@@ -104,6 +106,9 @@ public class ItemDetailsActivity extends AppCompatActivity {
                     popUpClass.showPopupWindow(view);
                 }
                 else{
+                    Intent intent = new Intent(ItemDetailsActivity.this, AddAddressActivity.class);
+                    intent.putExtra("fromScreen", "frompoductDetail");
+                    startActivity(intent);
                     Toast.makeText(getApplicationContext(),
                             "Buy now",
                             Toast.LENGTH_SHORT).show();
