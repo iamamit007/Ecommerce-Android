@@ -311,6 +311,10 @@ public class MainActivity extends AppCompatActivity
                 loginBtn.setPressed(true);
             }
         }
+        else if (id == R.id.my_orders) {
+            startActivity(new Intent(MainActivity.this, CartListActivity.class));
+        }
+
         else {
             startActivity(new Intent(MainActivity.this, EmptyActivity.class));
         }

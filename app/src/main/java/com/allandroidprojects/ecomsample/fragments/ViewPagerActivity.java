@@ -59,6 +59,8 @@ public class ViewPagerActivity extends Activity {
         ViewPagerActivity.product1 = product1;
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

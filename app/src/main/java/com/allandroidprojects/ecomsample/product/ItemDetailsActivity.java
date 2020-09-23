@@ -76,6 +76,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         String x = product.getAverage_rating();
         Uri uri = Uri.parse(prodImage);
         mImageView.setImageURI(uri);
+
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
