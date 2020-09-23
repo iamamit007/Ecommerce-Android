@@ -85,22 +85,7 @@ public class SignUpActivity extends AppCompatActivity {
             intent.putExtra("fname", firstName.getText().toString());
             intent.putExtra("lname", lastName.getText().toString());
             startActivity(intent);
-            CustomerRegisterResponse userDetail = (CustomerRegisterResponse) response.getData();
-            String id = userDetail.getId();
-            SharedPreferences sharedPreferences
-                    = getSharedPreferences("MySharedPref",
-                    Context.MODE_PRIVATE);
 
-// Creating an Editor object
-// to edit(write to the file)
-            SharedPreferences.Editor myEdit = sharedPreferences.edit();
-
-            myEdit.putString("id", id);
-            myEdit.putString("firstName", userDetail.getFirst_name());
-            myEdit.putString("lastName", userDetail.getLast_name());
-            myEdit.putString("email", userDetail.getEmail());
-            myEdit.putString("image", userDetail.getAvatar_url());
-            myEdit.commit();
         }
 
         @Override

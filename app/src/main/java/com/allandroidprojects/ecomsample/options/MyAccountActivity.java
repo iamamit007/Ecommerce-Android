@@ -3,10 +3,12 @@ package com.allandroidprojects.ecomsample.options;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import com.allandroidprojects.ecomsample.login.CustomerDetailResponse;
 import com.allandroidprojects.ecomsample.login.CustomerRegisterResponse;
 import com.allandroidprojects.ecomsample.login.Shipping;
 import com.allandroidprojects.ecomsample.registration.AddAddressActivity;
+import com.allandroidprojects.ecomsample.registration.SignUpActivity;
 import com.allandroidprojects.ecomsample.utility.ApiClient;
 import com.allandroidprojects.ecomsample.utility.ApiInterface;
 import com.allandroidprojects.ecomsample.utility.Catagories;
@@ -35,6 +38,12 @@ public class MyAccountActivity extends AppCompatActivity {
     TextView name;
     TextView email;
     TextView address;
+    Shipping addr;
+    String add;
+    String add1;
+    String add2;
+    String add3;
+    String cntry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +66,20 @@ public class MyAccountActivity extends AppCompatActivity {
         iv.setImageURI(uri);
 
         callProfileApiList();
+
+        ImageView edit = (ImageView)findViewById(R.id.imageedit);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyAccountActivity.this, AddAddressActivity.class);
+                intent.putExtra("add", add);
+                intent.putExtra("add1", add1);
+                intent.putExtra("add2", add2);
+                intent.putExtra("add3", add3);
+                intent.putExtra("cntry", cntry);
+                startActivity(intent);
+            }
+        });
     }
 
     public void callProfileApiList(){
@@ -75,11 +98,12 @@ public class MyAccountActivity extends AppCompatActivity {
             Log.d("ZINGAKART",response.toString());
             Toast.makeText(MyAccountActivity.this,"Profile UP."+response.getData().toString(),Toast.LENGTH_SHORT).show();
             CustomerDetailResponse userDetail = (CustomerDetailResponse) response.getData();
-            Shipping addr = userDetail.getShipping();
-            String add = addr.getAddress_1();
-            String add1 = addr.getCity();
-            String add2 = addr.getState();
-            String add3 = addr.getPostcode();
+            addr = userDetail.getShipping();
+             add = addr.getAddress_1();
+             add1 = addr.getCity();
+             add2 = addr.getState();
+             add3 = addr.getPostcode();
+             cntry = addr.getCountry();
             address.setText(add+", "+ add1+", "+add2+" - "+add3);
         }
 

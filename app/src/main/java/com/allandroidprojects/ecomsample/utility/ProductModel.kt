@@ -2,7 +2,7 @@ package com.allandroidprojects.ecomsample.utility
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
-
+import java.lang.reflect.Array
 
 
 data class Catagories(
@@ -56,6 +56,8 @@ data class Product(
         val reviews_allowed: Boolean?,
         val average_rating: String?,
         val images: List<Images>?
+        //val attributes: List<attributes>?
+
 
 //
 //"stock_quantity": null,
@@ -99,4 +101,13 @@ data class Product(
 //        "href": "https://www.zingakart.com/wp-json/wc/v3/products"
 //    }]
 //}
+):Serializable
+
+data class attributes(
+        val id: Int?,
+        val name: String?,
+        val position: String?,
+        val visible: Boolean?,
+        val variation: Boolean?,
+        val options :Array?
 ):Serializable

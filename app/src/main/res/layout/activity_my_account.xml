@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginTop="30dp"
-            app:srcCompat="@drawable/ic_movie" />
+            android:src="@drawable/ic_movie" />
 
 
 
@@ -66,10 +66,15 @@
             android:orientation="vertical"
             android:elevation="5dp"
             android:background="@drawable/cardview">
-
+            <ImageView
+                android:id="@+id/imageedit"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_mode_edit_black_18dp" />
             <TextView
                 android:id="@+id/addtitle"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
                 android:textColor="@color/cardview_dark_background"
@@ -84,6 +89,7 @@
                 android:textColor="@color/cardview_dark_background"
                 android:layout_marginTop="10dp"
                 android:textSize="12dp"
+                android:layout_marginBottom="10dp"
                 android:text="My Address detail" />
 
         </LinearLayout>

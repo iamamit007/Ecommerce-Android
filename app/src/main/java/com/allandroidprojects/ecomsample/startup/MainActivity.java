@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         SharedPreferences sh
                 = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
 
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
         ImageView iv = (ImageView) headerView.findViewById(R.id.imageView);
         TextView username = (TextView) headerView.findViewById(R.id.navtitle);
-         loginBtn = (Button) headerView.findViewById(R.id.newlog);
+        loginBtn = (Button) headerView.findViewById(R.id.newlog);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,7 +113,10 @@ public class MainActivity extends AppCompatActivity
                 loginBtn.setVisibility(View.VISIBLE);
             }
 
-
+        String data = getIntent().getStringExtra("fromAddress");
+        if (data != null){
+            loginBtn.setPressed(true);
+        }
 
 
       /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

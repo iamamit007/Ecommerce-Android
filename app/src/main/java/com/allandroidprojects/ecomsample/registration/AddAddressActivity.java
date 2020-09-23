@@ -13,9 +13,8 @@ import android.widget.Toast;
 import com.allandroidprojects.ecomsample.R;
 import com.allandroidprojects.ecomsample.login.CustomerAddressRequestParams;
 import com.allandroidprojects.ecomsample.login.CustomerAddressResponse;
-import com.allandroidprojects.ecomsample.login.CustomerRegisterRequestParams;
-import com.allandroidprojects.ecomsample.login.CustomerRegisterResponse;
 import com.allandroidprojects.ecomsample.login.Shipping;
+import com.allandroidprojects.ecomsample.startup.MainActivity;
 import com.allandroidprojects.ecomsample.utility.ApiClient;
 import com.allandroidprojects.ecomsample.utility.ApiInterface;
 import com.allandroidprojects.ecomsample.utility.NetworkCallBack;
@@ -26,16 +25,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
-import java.util.List;
 
 import retrofit2.Call;
 
 public class AddAddressActivity extends AppCompatActivity {
 
-    EditText pin;
+    EditText pintx;
     EditText address;
-    EditText city;
-    EditText state;
+    EditText citytx;
+    EditText statetx;
     EditText country;
     EditText confirmPassword;
 
@@ -43,10 +41,10 @@ public class AddAddressActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_address);
-        pin = (EditText) findViewById(R.id.pin);
+        pintx = (EditText) findViewById(R.id.pin);
         address = (EditText) findViewById(R.id.address);
-        city = (EditText) findViewById(R.id.city);
-        state = (EditText) findViewById(R.id.state);
+        citytx = (EditText) findViewById(R.id.city);
+        statetx = (EditText) findViewById(R.id.state);
         country = (EditText) findViewById(R.id.country);
         Button save = (Button) findViewById(R.id.saveadd);
         save.setOnClickListener(new View.OnClickListener() {
@@ -56,13 +54,33 @@ public class AddAddressActivity extends AppCompatActivity {
                 callAddAddressApi();
             }
         });
+        String add = getIntent().getStringExtra("add");
+        String pin = getIntent().getStringExtra("add3");
+        String city = getIntent().getStringExtra("add1");
+        String state = getIntent().getStringExtra("add2");
+        String cntry = getIntent().getStringExtra("cntry");
+        if (add != null){
+            address.setText(add);
+        }
+        if (pin != null){
+            pintx.setText(pin);
+        }
+        if (city != null){
+            citytx.setText(city);
+        }
+        if (cntry != null){
+            country.setText(cntry);
+        }
+        if (state != null){
+            statetx.setText(state);
+        }
     }
 
     public void callAddAddressApi(){
         Shipping sdata = new Shipping(getIntent().getStringExtra("fname"),getIntent().getStringExtra("lname"),"",
-                address.getText().toString(),"",city.getText().toString(),
-                pin.getText().toString(),country.getText().toString(),
-                state.getText().toString());
+                address.getText().toString(),"",citytx.getText().toString(),
+                pintx.getText().toString(),country.getText().toString(),
+                statetx.getText().toString());
         CustomerAddressRequestParams param = new CustomerAddressRequestParams(Collections.singletonList(sdata));
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<CustomerAddressResponse> responseCall = apiInterface.addAddressDetails(param);
@@ -74,10 +92,10 @@ public class AddAddressActivity extends AppCompatActivity {
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
             Log.d("ZINGAKART Login",response.toString());
             Toast.makeText(AddAddressActivity.this,"Sign UP."+response.getData().toString(),Toast.LENGTH_SHORT).show();
-            //Intent intent = new Intent(SignUpActivity.this, AddAddressActivity.class);
-            //intent.putExtra("fname", firstName.getText().toString());
+            Intent intent = new Intent(AddAddressActivity.this, MainActivity.class);
+            intent.putExtra("fromAddress", "true");
             //intent.putExtra("lname", lastName.getText().toString());
-            //startActivity(intent);
+            startActivity(intent);
         }
 
         @Override

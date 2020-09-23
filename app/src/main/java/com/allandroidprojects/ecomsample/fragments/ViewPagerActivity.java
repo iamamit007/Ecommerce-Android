@@ -31,7 +31,12 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.allandroidprojects.ecomsample.R;
 import com.allandroidprojects.ecomsample.photoview.view.PhotoView;
+import com.allandroidprojects.ecomsample.product.ItemDetailsActivity;
 import com.allandroidprojects.ecomsample.utility.ImageUrlUtils;
+import com.allandroidprojects.ecomsample.utility.Images;
+import com.allandroidprojects.ecomsample.utility.Product;
+
+import java.util.List;
 
 /**
  * Lock/Unlock button is added to the ActionBar.
@@ -46,7 +51,11 @@ public class ViewPagerActivity extends Activity {
     private static final String ISLOCKED_ARG = "isLocked";
     private ViewPager mViewPager;
     private int position;
-
+    public static Product product;
+    String userId = "";
+    public static void setProduct(Product product) {
+        ItemDetailsActivity.product = product;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +84,7 @@ public class ViewPagerActivity extends Activity {
     static class SamplePagerAdapter extends PagerAdapter {
        /* Here I'm adding the demo pics, but you can add your Item related pics , just get your pics based on itemID (use asynctask) and
         fill the urls in arraylist*/
+
         private static final String[] sDrawables = ImageUrlUtils.getImageUrls();
 
         @Override

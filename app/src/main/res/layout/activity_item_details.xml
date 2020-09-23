@@ -35,12 +35,14 @@
                           android:layout_height="wrap_content"
                           android:text="Denim Shirt"
                           android:textSize="16dp"
+                    android:id="@+id/prodName"
                           android:textColor="@color/gen_black"/>
                 <TextView android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
                           android:layout_marginTop="8dp"
                           android:text="Rs. 1,979"
                           android:textSize="20dp"
+                    android:id="@+id/prodPrice"
                           android:textColor="@color/gen_black"
                           />
                 <TextView android:layout_width="wrap_content"
@@ -178,29 +180,27 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:text="Details"
-                      android:textSize="16dp"
+                android:textStyle="bold"
+                      android:textSize="18dp"
                       android:textColor="@color/gen_black"/>
             <TextView
+                android:id="@+id/descTxt"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:layout_marginTop="8dp"
                       android:text="\u2022 Regular fit, full sleeve"
-                      android:textSize="12dp"
+                      android:textSize="14dp"
                       android:textColor="@color/gen_black"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="\u2022 Fabric: Cotton"
-                android:textSize="12dp"
-                android:textColor="@color/gen_black"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="\u2022 Pattern: printed"
-                android:textSize="12dp"
-                android:textColor="@color/gen_black"/>
+            <Spinner
+                android:id="@+id/sizeList"
+                android:layout_marginTop="10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:drawSelectorOnTop="true"
+                android:visibility="gone"
+                android:drawableRight="@drawable/ic_expand"
+
+                />
 
         </LinearLayout>
     </LinearLayout>
@@ -236,4 +236,5 @@
                   android:textStyle="bold"
                   android:gravity="center"/>
     </LinearLayout>
+
 </LinearLayout>
