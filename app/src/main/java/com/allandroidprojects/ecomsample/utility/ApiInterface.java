@@ -12,12 +12,15 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
+import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_order_retrieve;
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.product;
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_login;
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_register;
@@ -45,6 +48,15 @@ public interface ApiInterface {
 
     @GET(customer_retrieve)
     Call<CustomerDetailResponse> getCustomerProfile();
+
+    @GET(customer_order_retrieve)
+    Call<List<Order>> getMyOrder(@Query("customer") int customer );
+
+    @GET
+    Call<Product> getProductDetails(@Url String url);
+
+    @DELETE
+    Call<Order> cancelmyOrder(@Url String url);
 
 
 //    @POST(ENDPOINT_GET_TASK_DETAILS_LIST_BY_BEAT_ID)

@@ -16,7 +16,7 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         android:layout_weight="9.5"
         android:orientation="vertical"
-                  android:visibility="gone">
+                  android:visibility="visible">
     <androidx.recyclerview.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
                                             android:id="@+id/recyclerview"
@@ -57,7 +57,9 @@
                   android:textStyle="bold"
                   android:gravity="center"/>
     </LinearLayout>
-    <include android:id="@+id/layout_cart_empty"
+    <include
+        android:visibility="gone"
+        android:id="@+id/layout_cart_empty"
         layout="@layout/empty_message_layout_action"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

@@ -47,6 +47,8 @@ public class ViewPagerActivity extends Activity {
     private ViewPager mViewPager;
     private int position;
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -284,6 +284,10 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.my_account) {
             startActivity(new Intent(MainActivity.this, MyAccountActivity.class));
         }
+        else if (id == R.id.my_orders) {
+            startActivity(new Intent(MainActivity.this, CartListActivity.class));
+        }
+
         else {
             startActivity(new Intent(MainActivity.this, EmptyActivity.class));
         }

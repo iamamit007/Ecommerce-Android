@@ -34,6 +34,7 @@ public class WishlistActivity extends AppCompatActivity {
         setContentView(R.layout.layout_recylerview_list);
         mContext = WishlistActivity.this;
 
+
         ImageUrlUtils imageUrlUtils = new ImageUrlUtils();
         ArrayList<String> wishlistImageUri =imageUrlUtils.getWishlistImageUri();
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerview);

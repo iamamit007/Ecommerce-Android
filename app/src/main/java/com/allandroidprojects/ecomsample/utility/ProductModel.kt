@@ -100,3 +100,45 @@ data class Product(
 //    }]
 //}
 ):Serializable
+
+
+
+data class Order(
+        val id: Int?,
+        val parent_id: Int?,
+        val number: String?,
+        val created_via: String?,
+        val status: String?,
+        val currency: String?,
+        val date_created: String?,
+        val total: String?,
+        val shipping: shipping?,
+        val line_items: List<LineItem>?
+
+):Serializable
+
+data class LineItem(
+        val id: Int?,
+        val name: String?,
+        val product_id: Int?,
+        val variation_id: Int?,
+        val quantity: Int?,
+        val tax_class: String?,
+        val total: String?,
+        val subtotal: Int?,
+        val subtotal_tax: Int?
+):Serializable
+
+data class shipping(
+        val first_name: String?,
+        val last_name: String?,
+        val company: String?,
+        val address_1: String?,
+        val address_2: String?,
+        val city: String?,
+        val state: String?,
+        val postcode: String?,
+        val country: String?
+
+
+):Serializable
