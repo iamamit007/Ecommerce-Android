@@ -50,7 +50,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_item_details);
         SharedPreferences sh
                 = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
-        userId = sh.getString("id", "");
+        userId = sh.getString("id", "true");
         SimpleDraweeView mImageView = (SimpleDraweeView)findViewById(R.id.image1);
         TextView textViewAddToCart = (TextView)findViewById(R.id.text_action_bottom1);
         TextView textViewBuyNow = (TextView)findViewById(R.id.text_action_bottom2);
@@ -102,7 +102,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         textViewBuyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (userId == null) {
+                if (userId == "true") {
                     LoginPopup popUpClass = new LoginPopup();
                     popUpClass.showPopupWindow(view);
                 }

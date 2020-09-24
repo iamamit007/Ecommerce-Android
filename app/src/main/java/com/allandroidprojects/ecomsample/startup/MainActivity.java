@@ -34,6 +34,7 @@ import com.allandroidprojects.ecomsample.miscellaneous.EmptyActivity;
 import com.allandroidprojects.ecomsample.notification.NotificationCountSetClass;
 import com.allandroidprojects.ecomsample.options.CartListActivity;
 import com.allandroidprojects.ecomsample.options.MyAccountActivity;
+import com.allandroidprojects.ecomsample.options.MyWishListActivity;
 import com.allandroidprojects.ecomsample.options.SearchResultActivity;
 import com.allandroidprojects.ecomsample.options.WishlistActivity;
 import com.allandroidprojects.ecomsample.utility.ApiClient;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity
 
         String fname = sh.getString("firstName", "");
         String lname = sh.getString("lastName", "");
-        String id = sh.getString("id", "");
+        String id = sh.getString("id", "true");
         usrId = id;
         String image = sh.getString("image", "");
         Toast.makeText(this,"id UP."+id,Toast.LENGTH_SHORT).show();
@@ -99,18 +100,21 @@ public class MainActivity extends AppCompatActivity
         });
          viewPager = (ViewPager) findViewById(R.id.viewpager);
          tabLayout = (TabLayout) findViewById(R.id.tabs);
-            if (id != null){
-                iv.setVisibility(View.VISIBLE);
-                username.setVisibility(View.VISIBLE);
-                loginBtn.setVisibility(View.GONE);
-                username.setText(fname +" "+ lname);
-                Uri uri = Uri.parse(image);
-                iv.setImageURI(uri);
+        if (usrId == "true") {
+
+
+
+            iv.setVisibility(View.GONE);
+            username.setVisibility(View.GONE);
+            loginBtn.setVisibility(View.VISIBLE);
             }
             else{
-                iv.setVisibility(View.GONE);
-                username.setVisibility(View.GONE);
-                loginBtn.setVisibility(View.VISIBLE);
+            iv.setVisibility(View.VISIBLE);
+            username.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.GONE);
+            username.setText(fname +" "+ lname);
+            Uri uri = Uri.parse(image);
+            iv.setImageURI(uri);
             }
 
         String data = getIntent().getStringExtra("fromAddress");
@@ -301,14 +305,18 @@ public class MainActivity extends AppCompatActivity
         }else if (id == R.id.nav_item6) {
             viewPager.setCurrentItem(5);
         }else if (id == R.id.my_wishlist) {
-            startActivity(new Intent(MainActivity.this, WishlistActivity.class));
+            Intent intent = new Intent(MainActivity.this, WishlistActivity.class);
+             intent.putExtra("id",usrId);
+             startActivity(intent);
+            //startActivity(new Intent(MainActivity.this, WishlistActivity.class));
         }
         else if (id == R.id.my_account){
-            if (usrId != null) {
-                startActivity(new Intent(MainActivity.this, MyAccountActivity.class));
+            if (usrId == "true") {
+                //loginBtn.setPressed(true);
+
             }
             else{
-                loginBtn.setPressed(true);
+                startActivity(new Intent(MainActivity.this, MyAccountActivity.class));
             }
         }
         else if (id == R.id.my_orders) {

@@ -12,7 +12,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".options.MyAccountActivity"></activity>
+        <activity android:name=".options.MyWishListActivity"></activity>
+        <activity android:name=".options.MyAccountActivity" />
         <activity android:name=".registration.AddAddressActivity" />
         <activity android:name=".registration.SignUpActivity" />
         <activity android:name=".startup.TestActivity2" />
