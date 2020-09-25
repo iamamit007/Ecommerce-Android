@@ -13,12 +13,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.allandroidprojects.ecomsample.R;
+import com.allandroidprojects.ecomsample.fragments.ViewPagerActivity;
 import com.allandroidprojects.ecomsample.product.ItemDetailsActivity;
 import com.allandroidprojects.ecomsample.startup.MainActivity;
 import com.allandroidprojects.ecomsample.utility.ApiClient;
@@ -28,6 +30,7 @@ import com.allandroidprojects.ecomsample.utility.NetworkCallBack;
 import com.allandroidprojects.ecomsample.utility.NetworkResponse;
 import com.allandroidprojects.ecomsample.utility.Order;
 import com.allandroidprojects.ecomsample.utility.Product;
+import com.allandroidprojects.ecomsample.utility.WishList;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.velectico.rbm.network.callbacks.NetworkError;
 
@@ -41,6 +44,8 @@ import retrofit2.Call;
 
 import static com.allandroidprojects.ecomsample.fragments.ImageListFragment.STRING_IMAGE_POSITION;
 import static com.allandroidprojects.ecomsample.fragments.ImageListFragment.STRING_IMAGE_URI;
+import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_order_retrieve;
+import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_wishList_retrieveById;
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.product;
 
 public class CartListActivity extends AppCompatActivity {
@@ -94,7 +99,13 @@ public class CartListActivity extends AppCompatActivity {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
             Log.d("Mita",response.getData().toString());
+//            Toast.makeText(getApplicationContext(),
+//                    "Order now"+response.getData(),
+//                    Toast.LENGTH_SHORT).show();
            orderData.addAll ((List<Order>)response.getData());
+//            Toast.makeText(getApplicationContext(),
+//                    "Order now"+orderData.size(),
+//                    Toast.LENGTH_SHORT).show();
             setRecyclerView(orderData);
             for (Order o:orderData
                  ) {
@@ -138,6 +149,7 @@ public class CartListActivity extends AppCompatActivity {
 
         }
     };
+
 
     public static class SimpleStringRecyclerViewAdapter
             extends RecyclerView.Adapter<CartListActivity.SimpleStringRecyclerViewAdapter.ViewHolder> {
@@ -214,29 +226,38 @@ public class CartListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final CartListActivity.SimpleStringRecyclerViewAdapter.ViewHolder holder, final int position) {
-            final Uri uri = Uri.parse("https://static.pexels.com/photos/7093/coffee-desk-notes-workspace-medium.jpg");
-            holder.mImageView.setImageURI(uri);
-            Order order = orderList.get(position);
-            Product p = getProductById(order.getLine_items().get(0).getProduct_id());
-            try {
-                if (p !=null){
-                    holder.name.setText(p.getName());
-                    holder.price.setText(p.getName());
+            //final Uri uri = Uri.parse("https://static.pexels.com/photos/7093/coffee-desk-notes-workspace-medium.jpg");
+            //holder.mImageView.setImageURI(uri);
+            final Order order = orderList.get(position);
+            holder.name.setText(order.getLine_items().get(0).getName());
+            holder.price.setText("₹ "+order.getTotal());
+            holder.order_stat.setText(order.getStatus());
+            holder.quantity.setText(("Qty: "+order.getLine_items().get(0).getQuantity()));
+            holder.address.setText(order.getShipping().getFirst_name()+", "+order.getShipping().getLast_name()
+                    +", "+order.getShipping().getCompany()+", "+order.getShipping().getAddress_1()
+                    +", "+order.getShipping().getAddress_2()+", "+order.getShipping().getCity()
+                    +", "+order.getShipping().getState()+", "+order.getShipping().getPostcode()
+                    +", "+order.getShipping().getCountry());
 
-                }
-                holder.quantity.setText((order.getLine_items().get(0).getQuantity()));
-                holder.order_stat.setText(order.getStatus());
-                holder.order_stat.setText(order.getShipping().getAddress_1());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            Product p = getProductById(order.getLine_items().get(0).getProduct_id());
+//            try {
+//                if (p !=null){
+//                    holder.name.setText(p.getName());
+//                    holder.price.setText(p.getPrice());
+//
+//                }
+//                holder.quantity.setText((order.getLine_items().get(0).getQuantity()));
+//                holder.order_stat.setText(order.getStatus());
+//                holder.order_stat.setText(order.getShipping().getAddress_1());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
             holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Intent intent = new Intent(mContext, ItemDetailsActivity.class);
-//                    intent.putExtra(STRING_IMAGE_URI,mCartlistImageUri.get(position));
-//                    intent.putExtra(STRING_IMAGE_POSITION, position);
-//                    mContext.startActivity(intent);
+                    OrderDetailActivity.setOrder(order);
+                    Intent intent = new Intent(mContext, OrderDetailActivity.class);
+                    mContext.startActivity(intent);
                 }
             });
 
@@ -244,12 +265,10 @@ public class CartListActivity extends AppCompatActivity {
             holder.mLayoutRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ImageUrlUtils imageUrlUtils = new ImageUrlUtils();
-                    imageUrlUtils.removeCartListImageUri(position);
-                    notifyDataSetChanged();
-                    //Decrease notification count
-                    MainActivity.notificationCountCart--;
-
+//             Toast.makeText(mContext,
+//                            "Wishlist now"+order.getId(),
+//                            Toast.LENGTH_SHORT).show();
+                    callDeleteOrderList(order.getId());
                 }
             });
 
@@ -257,6 +276,9 @@ public class CartListActivity extends AppCompatActivity {
             holder.mLayoutEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    OrderDetailActivity.setOrder(order);
+                    Intent intent = new Intent(mContext, OrderDetailActivity.class);
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -265,6 +287,29 @@ public class CartListActivity extends AppCompatActivity {
         public int getItemCount() {
             return orderList.size();
         }
+
+        public void callDeleteOrderList(int orderId){
+
+            ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
+            Call<Order>responseCall = apiInterface.cancelmyOrder(customer_order_retrieve+"/"+orderId +"?force=true");
+            responseCall.enqueue(callBack3);
+
+        }
+
+        private NetworkCallBack callBack3 = new NetworkCallBack<Order>() {
+            @Override
+            public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+                Toast.makeText(mContext,
+                        "Wishlist now"+response.getData().toString(),
+                        Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
+
+            }
+        };
     }
 
     protected void setCartLayout(){
@@ -272,22 +317,7 @@ public class CartListActivity extends AppCompatActivity {
         LinearLayout layoutCartPayments = (LinearLayout) findViewById(R.id.layout_payment);
         LinearLayout layoutCartNoItems = (LinearLayout) findViewById(R.id.layout_cart_empty);
 
-//        if(MainActivity.notificationCountCart >0){
-//            layoutCartNoItems.setVisibility(View.GONE);
-//            layoutCartItems.setVisibility(View.VISIBLE);
-//            layoutCartPayments.setVisibility(View.VISIBLE);
-//        }else {
-//            layoutCartNoItems.setVisibility(View.VISIBLE);
-//            layoutCartItems.setVisibility(View.GONE);
-//            layoutCartPayments.setVisibility(View.GONE);
-//
-//            Button bStartShopping = (Button) findViewById(R.id.bAddNew);
-//            bStartShopping.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    finish();
-//                }
-//            });
-//        }
     }
+
+
 }

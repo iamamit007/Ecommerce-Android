@@ -201,10 +201,11 @@ public class MyWishListActivity extends AppCompatActivity {
             holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   // Intent intent = new Intent(mContext, MyWishListActivity.class);
-                    //intent.putExtra("shareKey",mWishlistImageUri.get(position).getShare_key());
-                    //intent.putExtra(STRING_IMAGE_POSITION, position);
-                   // mContext.startActivity(intent);
+                    Intent intent = new Intent(mContext, ItemDetailsActivity.class);
+                    ItemDetailsActivity.setProduct(product);
+                    intent.putExtra(STRING_IMAGE_URI, "https://www.zingakart.com/wp-content/uploads/2020/09/b19-1.png");
+                    intent.putExtra(STRING_IMAGE_POSITION, position);
+                    mContext.startActivity(intent);
 
                 }
             });

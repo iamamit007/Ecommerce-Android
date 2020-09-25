@@ -140,10 +140,10 @@ public class WishlistActivity extends AppCompatActivity {
         public void onBindViewHolder(final WishlistActivity.SimpleStringRecyclerViewAdapter.ViewHolder holder, final int position) {
 
             if (position == 0){
-                holder.wishTitle.setText("Shopping List");
+                holder.wishTitle.setText("Shopping List"+mWishlistImageUri.get(position).getShare_key());
             }
             else {
-                holder.wishTitle.setText("Shopping List" + position);
+                holder.wishTitle.setText("Shopping List " + position + mWishlistImageUri.get(position).getShare_key());
             }
             holder.wishKey.setText(mWishlistImageUri.get(position).getTitle());
             holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
