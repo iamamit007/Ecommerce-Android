@@ -153,3 +153,22 @@ data class shipping(
 
 
 ):Serializable
+data class WishList(
+        val id: Int?,
+        val user_id: Int?,
+        val date_added: String?,
+        val title: String?,
+        val share_key: String?
+
+
+):Serializable
+
+data class WishListProducts(
+        val item_id: Int?,
+        val product_id: Int?,
+        val variation_id: String?,
+        val date_added: String?,
+        val price: String?,
+        val in_stock: Boolean?
+
+):Serializable

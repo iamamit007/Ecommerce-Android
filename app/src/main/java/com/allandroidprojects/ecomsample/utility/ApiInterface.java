@@ -21,6 +21,7 @@ import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_order_retrieve;
+import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_wishList_retrieveById;
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.product;
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_login;
 import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_register;
@@ -57,6 +58,12 @@ public interface ApiInterface {
 
     @DELETE
     Call<Order> cancelmyOrder(@Url String url);
+
+    @GET
+    Call<List<WishList>> getMyWishlist(@Url String url);
+
+    @GET
+    Call<List<WishListProducts>> getMyWishlistProduct(@Url String url);
 
 
 //    @POST(ENDPOINT_GET_TASK_DETAILS_LIST_BY_BEAT_ID)
