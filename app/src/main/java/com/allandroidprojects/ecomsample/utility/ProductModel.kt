@@ -1,5 +1,6 @@
 package com.allandroidprojects.ecomsample.utility
 
+import com.allandroidprojects.ecomsample.login.Shipping
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.lang.reflect.Array
@@ -56,6 +57,7 @@ data class Product(
         val reviews_allowed: Boolean?,
         val average_rating: String?,
         val images: List<Images>?
+       // val variations: List<Images>?
         //val attributes: List<attributes>?
 
 
@@ -160,6 +162,35 @@ data class WishList(
         val title: String?,
         val share_key: String?
 
+
+
+data class CreateOrderRequest(
+    @SerializedName("customer_id") val customer_id:Int?,
+    @SerializedName("payment_method") val payment_method:String?,
+    @SerializedName("payment_method_title") val payment_method_title:String?,
+    @SerializedName("set_paid") val set_paid:Boolean?,
+    @SerializedName("shipping") val shipping:Shipping?,
+    @SerializedName("line_items") val line_items:List<OrderLines>?
+)
+
+
+data class OrderLines(
+        @SerializedName("product_id") val product_id:Int?,
+        @SerializedName("variation_id") val variation_id:Int?,
+        @SerializedName("quantity") val quantity:Int?
+):Serializable
+
+
+
+data class UpdatePaymentOrderRequest(
+        @SerializedName("customer_id") val customer_id:Int?,
+        @SerializedName("payment_method") val payment_method:String?,
+        @SerializedName("payment_method_title") val payment_method_title:String?,
+        @SerializedName("set_paid") val set_paid:Boolean?,
+        @SerializedName("transaction_id") val transaction_id:String?
+
+
+)
 
 ):Serializable
 

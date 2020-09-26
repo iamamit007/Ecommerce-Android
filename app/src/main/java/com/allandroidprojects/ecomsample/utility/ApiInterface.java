@@ -59,6 +59,13 @@ public interface ApiInterface {
     @DELETE
     Call<Order> cancelmyOrder(@Url String url);
 
+    @POST(customer_order_retrieve)
+    Call<Order> createMyOrder(@Body CreateOrderRequest createOrderRequest);
+
+    @PUT
+    Call<Order> updateOrder(@Url String url,@Body UpdatePaymentOrderRequest updatePaymentOrderRequest);
+
+
     @GET
     Call<List<WishList>> getMyWishlist(@Url String url);
 

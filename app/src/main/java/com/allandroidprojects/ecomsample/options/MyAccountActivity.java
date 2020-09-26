@@ -77,6 +77,7 @@ public class MyAccountActivity extends AppCompatActivity {
                 intent.putExtra("add2", add2);
                 intent.putExtra("add3", add3);
                 intent.putExtra("cntry", cntry);
+                intent.putExtra("action", "add_address");
                 startActivity(intent);
             }
         });

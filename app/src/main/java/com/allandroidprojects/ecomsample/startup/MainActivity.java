@@ -34,7 +34,6 @@ import com.allandroidprojects.ecomsample.miscellaneous.EmptyActivity;
 import com.allandroidprojects.ecomsample.notification.NotificationCountSetClass;
 import com.allandroidprojects.ecomsample.options.CartListActivity;
 import com.allandroidprojects.ecomsample.options.MyAccountActivity;
-import com.allandroidprojects.ecomsample.options.MyWishListActivity;
 import com.allandroidprojects.ecomsample.options.SearchResultActivity;
 import com.allandroidprojects.ecomsample.options.WishlistActivity;
 import com.allandroidprojects.ecomsample.utility.ApiClient;
