@@ -58,24 +58,30 @@ public class ItemDetailsActivity extends AppCompatActivity {
         TextView prodPrice = (TextView)findViewById(R.id.prodPrice);
         TextView descTxt = (TextView)findViewById(R.id.descTxt);
         Spinner sizeSpinner = (Spinner)findViewById(R.id.sizeList);
-        List<Images> imgArr = product.getImages();
-        String prodImage = imgArr.get(0).getSrc();
+        if (product!=null && product.getImages()!=null){
+            List<Images> imgArr = product.getImages();
+            final String prodImage = imgArr.get(0).getSrc();
+            prodName.setText(product.getName());
+            Uri uri = Uri.parse(prodImage);
+            mImageView.setImageURI(uri);
+            prodPrice.setText(Html.fromHtml(product.getPrice_html(), Html.FROM_HTML_MODE_COMPACT));
+            descTxt.setText(Html.fromHtml(product.getShort_description(), Html.FROM_HTML_MODE_COMPACT));
+
+            //Getting image uri from previous screen
+            if (getIntent() != null) {
+                stringImageUri = getIntent().getStringExtra(ImageListFragment.STRING_IMAGE_URI);
+                imagePosition = getIntent().getIntExtra(ImageListFragment.STRING_IMAGE_URI,0);
+            }
+            String x = product.getAverage_rating();
+        }
+
 //        Array op = attrArr.get(1).getOptions();
 //        Toast.makeText(ItemDetailsActivity.this,"Size"+op,Toast.LENGTH_SHORT).show();
 
 
-        prodName.setText(product.getName());
-        prodPrice.setText(Html.fromHtml(product.getPrice_html(), Html.FROM_HTML_MODE_COMPACT));
-        descTxt.setText(Html.fromHtml(product.getShort_description(), Html.FROM_HTML_MODE_COMPACT));
 
-        //Getting image uri from previous screen
-        if (getIntent() != null) {
-            stringImageUri = getIntent().getStringExtra(ImageListFragment.STRING_IMAGE_URI);
-            imagePosition = getIntent().getIntExtra(ImageListFragment.STRING_IMAGE_URI,0);
-        }
-        String x = product.getAverage_rating();
-        Uri uri = Uri.parse(prodImage);
-        mImageView.setImageURI(uri);
+
+
 
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +114,9 @@ public class ItemDetailsActivity extends AppCompatActivity {
                 }
                 else{
                     Intent intent = new Intent(ItemDetailsActivity.this, AddAddressActivity.class);
+                    AddAddressActivity.setProduct(product);
                     intent.putExtra("fromScreen", "frompoductDetail");
+                    intent.putExtra("action", "billing");
                     startActivity(intent);
                     Toast.makeText(getApplicationContext(),
                             "Buy now",

@@ -58,6 +58,13 @@ public interface ApiInterface {
     @DELETE
     Call<Order> cancelmyOrder(@Url String url);
 
+    @POST(customer_order_retrieve)
+    Call<Order> createMyOrder(@Body CreateOrderRequest createOrderRequest);
+
+    @PUT
+    Call<Order> updateOrder(@Url String url,@Body UpdatePaymentOrderRequest updatePaymentOrderRequest);
+
+
 
 //    @POST(ENDPOINT_GET_TASK_DETAILS_LIST_BY_BEAT_ID)
 //    Call<BeatWiseTakListResponse> getTaskDetailsByBeat(@Body GetBeatDeatilsRequestParams model);

@@ -13,6 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".options.MyWishListActivity"></activity>
+        <activity android:name=".utility.PaymentActivity">
+        </activity>
         <activity android:name=".options.MyAccountActivity" />
         <activity android:name=".registration.AddAddressActivity" />
         <activity android:name=".registration.SignUpActivity" />
@@ -57,6 +59,11 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".miscellaneous.EmptyActivity" />
+        <meta-data
+            android:name="com.razorpay.ApiKey"
+            android:value="rzp_test_H6yRSKUBt3E68S"
+            />
+
     </application>
 
 </manifest>
