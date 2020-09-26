@@ -139,12 +139,12 @@ public class WishlistActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final WishlistActivity.SimpleStringRecyclerViewAdapter.ViewHolder holder, final int position) {
 
-            if (position == 0){
-                holder.wishTitle.setText("Shopping List"+mWishlistImageUri.get(position).getShare_key());
-            }
-            else {
-                holder.wishTitle.setText("Shopping List " + position + mWishlistImageUri.get(position).getShare_key());
-            }
+           // if (position == 0){
+                holder.wishTitle.setText("Shopping List");
+            //}
+//            else {
+//                holder.wishTitle.setText("Shopping List " + position + mWishlistImageUri.get(position).getShare_key());
+//            }
             holder.wishKey.setText(mWishlistImageUri.get(position).getTitle());
             holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -169,7 +169,7 @@ public class WishlistActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return mWishlistImageUri.size() ;
+            return 1 ;
         }
     }
 }

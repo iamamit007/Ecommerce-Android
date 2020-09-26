@@ -72,6 +72,9 @@ public interface ApiInterface {
     @GET
     Call<List<WishListProducts>> getMyWishlistProduct(@Url String url);
 
+    @POST
+    Call<List<createWishlistResponse>> createWishList(@Url String url, @Body createWishlistRequestParams model);
+
 
 //    @POST(ENDPOINT_GET_TASK_DETAILS_LIST_BY_BEAT_ID)
 //    Call<BeatWiseTakListResponse> getTaskDetailsByBeat(@Body GetBeatDeatilsRequestParams model);

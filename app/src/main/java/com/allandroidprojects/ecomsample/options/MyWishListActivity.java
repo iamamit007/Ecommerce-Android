@@ -75,9 +75,9 @@ public class MyWishListActivity extends AppCompatActivity {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
             Log.d("ytuytuytu",response.getData().toString());
-            Toast.makeText(getApplicationContext(),
-                    "Wishlist now"+response.getData().toString(),
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(),
+//                    "Wishlist now"+response.getData().toString(),
+//                    Toast.LENGTH_SHORT).show();
             wishListData.addAll ((List<WishListProducts>)response.getData());
             if (wishListData.size() > 0){
                 for (WishListProducts w:wishListData
@@ -117,9 +117,9 @@ public class MyWishListActivity extends AppCompatActivity {
     private NetworkCallBack callBack2 = new NetworkCallBack<Product>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
-            Toast.makeText(getApplicationContext(),
-                    "Product now"+response.getData().toString(),
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(),
+//                    "Product now"+response.getData().toString(),
+//                    Toast.LENGTH_SHORT).show();
             productList.add((Product)response.getData());
             RecyclerView.LayoutManager recylerViewLayoutManager = new LinearLayoutManager(mContext);
             recyclerView.setLayoutManager(recylerViewLayoutManager);
@@ -195,7 +195,7 @@ public class MyWishListActivity extends AppCompatActivity {
             holder.mImageView.setVisibility(View.VISIBLE);
             holder.wishKey.setVisibility(View.GONE);
             holder.price.setVisibility(View.VISIBLE);
-            holder.mImageViewWishlist.setVisibility(View.VISIBLE);
+            //holder.mImageViewWishlist.setVisibility(View.VISIBLE);
             holder.wishTitle.setText(mWishlistImageUri.get(position).getName());
             holder.price.setText(Html.fromHtml(mWishlistImageUri.get(position).getPrice_html(), Html.FROM_HTML_MODE_COMPACT));
             holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
