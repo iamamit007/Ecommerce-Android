@@ -11,10 +11,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.allandroidprojects.ecomsample.R;
+import com.allandroidprojects.ecomsample.login.Shipping;
+import com.allandroidprojects.ecomsample.registration.AddAddressActivity;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
+import com.velectico.rbm.network.callbacks.NetworkError;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+
+import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_order_retrieve;
 
 public class PaymentActivity extends Activity implements PaymentResultListener {
     private static final String TAG = PaymentActivity.class.getSimpleName();
@@ -76,8 +88,7 @@ public class PaymentActivity extends Activity implements PaymentResultListener {
             //You can omit the image option to fetch the image from dashboard
             options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png");
             options.put("currency", "INR");
-            options.put("amount", "100");
-
+            options.put("amount", ""+order.getTotal());
             JSONObject preFill = new JSONObject();
             preFill.put("email", "test@razorpay.com");
             preFill.put("contact", "9876543210");
@@ -102,11 +113,43 @@ public class PaymentActivity extends Activity implements PaymentResultListener {
     public void onPaymentSuccess(String razorpayPaymentID) {
         try {
             Toast.makeText(this, "Payment Successful: " + razorpayPaymentID, Toast.LENGTH_SHORT).show();
+            callCreateOrder(razorpayPaymentID);
         } catch (Exception e) {
             Log.e(TAG, "Exception in onPaymentSuccess", e);
         }
     }
 
+
+
+    public void callCreateOrder(String transactionId){
+
+
+
+        UpdatePaymentOrderRequest request = new UpdatePaymentOrderRequest(14,"razorpay",true,transactionId);
+        try {
+            ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
+            Call<Order> responseCall = apiInterface.updateOrder(customer_order_retrieve+"/"+order.getId() ,request);
+            responseCall.enqueue(callBack2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private NetworkCallBack callBack2 = new NetworkCallBack<Order>() {
+        @Override
+        public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            Log.d("Order Places",response.getData().toString());
+            Toast.makeText(PaymentActivity.this, "Order Placed Successfully", Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
+
+        }
+    };
     /**
      * The name of the function has to be
      * onPaymentError
