@@ -89,7 +89,7 @@ public class ImageListFragment extends Fragment {
     public void callApiList(){
 
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<List<Product>> responseCall = apiInterface.getProductList(320,100,1);
+        Call<List<Product>> responseCall = apiInterface.getProductList(cataGoryId,100,1);
         responseCall.enqueue(callBack);
 
     }

@@ -29,6 +29,7 @@ import com.allandroidprojects.ecomsample.utility.Order;
 import com.allandroidprojects.ecomsample.utility.OrderLines;
 import com.allandroidprojects.ecomsample.utility.PaymentActivity;
 import com.allandroidprojects.ecomsample.utility.Product;
+import com.allandroidprojects.ecomsample.utility.UpdatePaymentOrderRequest;
 import com.velectico.rbm.network.callbacks.NetworkError;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +40,8 @@ import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
+
+import static com.allandroidprojects.ecomsample.utility.ConstantAPIKt.customer_order_retrieve;
 
 public class AddAddressActivity extends AppCompatActivity {
 
@@ -227,10 +230,10 @@ public class AddAddressActivity extends AppCompatActivity {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
             Log.d("ZINGAKART Login",response.toString());
+            Order order = (Order)response.getData();
             if (isCod){
-                Toast.makeText(AddAddressActivity.this,"Order has been placed scuccesfully",Toast.LENGTH_SHORT).show();
-                finish();
-            }else {Order order = (Order)response.getData();
+                updateOrder(order);
+            }else {
                 PaymentActivity.setOrder(order);
                 Intent intent = new Intent(AddAddressActivity.this, PaymentActivity.class);
                 intent.putExtra("action", "add_address");
@@ -273,6 +276,38 @@ public class AddAddressActivity extends AppCompatActivity {
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
+
+        }
+
+        @Override
+        public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
+
+        }
+    };
+
+
+    public void updateOrder(Order order){
+
+
+
+        UpdatePaymentOrderRequest request = new UpdatePaymentOrderRequest(14,"COD",false,"");
+        try {
+            ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
+            Call<Order> responseCall = apiInterface.updateOrder(customer_order_retrieve+"/"+order.getId() ,request);
+            responseCall.enqueue(updatecallBack2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private NetworkCallBack updatecallBack2 = new NetworkCallBack<Order>() {
+        @Override
+        public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            Log.d("Order Places",response.getData().toString());
+            Toast.makeText(AddAddressActivity.this, "Order Placed Successfully", Toast.LENGTH_SHORT).show();
+            finish();
 
         }
 
