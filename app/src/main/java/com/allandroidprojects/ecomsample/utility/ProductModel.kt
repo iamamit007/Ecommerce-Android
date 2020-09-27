@@ -1,5 +1,6 @@
 package com.allandroidprojects.ecomsample.utility
 
+import com.allandroidprojects.ecomsample.login.BaseModel
 import com.allandroidprojects.ecomsample.login.Shipping
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
@@ -57,7 +58,7 @@ data class Product(
         val reviews_allowed: Boolean?,
         val average_rating: String?,
         val images: List<Images>?
-       // val variations: List<Images>?
+        // val variations: List<Images>?
         //val attributes: List<attributes>?
 
 
@@ -152,8 +153,6 @@ data class shipping(
         val state: String?,
         val postcode: String?,
         val country: String?
-
-
 ):Serializable
 data class WishList(
         val id: Int?,
@@ -166,30 +165,23 @@ data class WishList(
 
 
 data class CreateOrderRequest(
-    @SerializedName("customer_id") val customer_id:Int?,
-    @SerializedName("payment_method") val payment_method:String?,
-    @SerializedName("payment_method_title") val payment_method_title:String?,
-    @SerializedName("set_paid") val set_paid:Boolean?,
-    @SerializedName("shipping") val shipping:Shipping?,
-    @SerializedName("line_items") val line_items:List<OrderLines>?
+        @SerializedName("customer_id") val customer_id:Int?,
+        @SerializedName("payment_method") val payment_method:String?,
+        @SerializedName("payment_method_title") val payment_method_title:String?,
+        @SerializedName("set_paid") val set_paid:Boolean?,
+        @SerializedName("shipping") val shipping:Shipping?,
+        @SerializedName("line_items") val line_items:List<OrderLines>?
 )
-
-
 data class OrderLines(
         @SerializedName("product_id") val product_id:Int?,
         @SerializedName("variation_id") val variation_id:Int?,
         @SerializedName("quantity") val quantity:Int?
 ):Serializable
-
-
-
 data class UpdatePaymentOrderRequest(
         @SerializedName("customer_id") val customer_id:Int?,
         @SerializedName("payment_method") val payment_method:String?,
         @SerializedName("set_paid") val set_paid:Boolean?,
         @SerializedName("transaction_id") val transaction_id:String?
-
-
 ):Serializable
 
 data class WishListProducts(
@@ -199,5 +191,18 @@ data class WishListProducts(
         val date_added: String?,
         val price: String?,
         val in_stock: Boolean?
-
 ):Serializable
+
+data class  createWishlistRequestParams(
+        val product_id: Int?,
+        val customer_id:String?
+
+): BaseModel()
+data class createWishlistResponse(
+        val item_id : Int?,
+        val product_id: Int?,
+        val variation_id:Int?,
+        val date_added:String?,
+        val price:String?,
+        val in_stock:String?
+): Serializable

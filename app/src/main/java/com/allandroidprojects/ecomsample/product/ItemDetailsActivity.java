@@ -176,7 +176,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     public void callCreateWishApiList(){
         createWishlistRequestParams param = new createWishlistRequestParams(product.getId(),userId);
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<List<createWishlistResponse>> responseCall = apiInterface.createWishList(getwishListProductByKey+"/"+wishsharekey+"/add_products",param);
+        Call<List<createWishlistResponse>> responseCall = apiInterface.createWishList(getwishListProductByKey+"/"+wishsharekey+"/add_product",param);
         responseCall.enqueue(callBack);
 
     }
