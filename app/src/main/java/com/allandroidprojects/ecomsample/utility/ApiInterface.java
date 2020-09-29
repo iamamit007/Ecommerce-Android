@@ -33,7 +33,7 @@ public interface ApiInterface {
 
 
     @GET(products_categories)
-    Call<List<Catagories>> getCatagories();
+    Call<List<Catagories>> getCatagories(@Query("per_page")int per_page,@Query("hide_empty")boolean  hide_empty ,@Query("parent")int  parent);
 
     @GET(product)
     Call<List<Product>> getProductList(@Query("category")int category ,@Query("per_page")int per_page ,@Query("page")int page );

@@ -3,26 +3,32 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:visible="false"
             android:id="@+id/nav_item1"
             android:icon="@drawable/ic_local_offer_black_24dp"
             android:title="@string/item_1" />
         <item
+            android:visible="false"
             android:id="@+id/nav_item2"
             android:icon="@drawable/ic_smartphone_black_24dp"
             android:title="@string/item_2" />
         <item
+            android:visible="false"
             android:id="@+id/nav_item3"
             android:icon="@drawable/ic_wc_black_24dp"
             android:title="@string/item_3" />
         <item
+            android:visible="false"
             android:id="@+id/nav_item4"
             android:icon="@drawable/ic_local_dining_black_24dp"
             android:title="@string/item_4" />
         <item
+            android:visible="false"
             android:id="@+id/nav_item5"
             android:icon="@drawable/ic_book_black_24dp"
             android:title="@string/item_5" />
         <item
+            android:visible="false"
             android:id="@+id/nav_item6"
             android:icon="@drawable/ic_more_black_24dp"
             android:title="@string/item_6" />
@@ -35,6 +41,7 @@
                 android:icon="@drawable/ic_shopping_basket_black_24dp"
                 android:title="@string/my_orders" />
             <item
+                android:visible="false"
                 android:id="@+id/my_cart"
                 android:icon="@drawable/ic_shopping_cart_black_24dp"
                 android:title="@string/my_cart" />
@@ -43,6 +50,7 @@
                 android:icon="@drawable/ic_favorite_black_24dp"
                 android:title="@string/my_wishlist" />
             <item
+                android:visible="false"
                 android:id="@+id/my_rewards"
                 android:icon="@drawable/ic_card_giftcard_black_24dp"
                 android:title="@string/my_rewards" />

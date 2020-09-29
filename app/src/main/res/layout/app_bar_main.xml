@@ -20,7 +20,9 @@
             android:background="?attr/colorPrimary"
             app:titleTextColor="#F6A806"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
+
         <com.google.android.material.tabs.TabLayout
+            android:visibility="gone"
             android:id="@+id/tabs"
             app:tabTextColor="#F6A806"
             app:tabIndicatorColor="#F6A806"

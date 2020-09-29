@@ -24,6 +24,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.allandroidprojects.ecomsample.R;
@@ -41,6 +42,7 @@ import com.allandroidprojects.ecomsample.utility.ApiInterface;
 import com.allandroidprojects.ecomsample.utility.Catagories;
 import com.allandroidprojects.ecomsample.utility.NetworkCallBack;
 import com.allandroidprojects.ecomsample.utility.NetworkResponse;
+import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.velectico.rbm.network.callbacks.NetworkError;
@@ -61,11 +63,13 @@ public class MainActivity extends AppCompatActivity
     static TabLayout tabLayout;
     String usrId = "";
     Button loginBtn;
+    NavigationView navigationView;
+    public  static  MainActivity activity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+         activity = this;
         SharedPreferences sh
                 = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
 
@@ -84,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
         ImageView iv = (ImageView) headerView.findViewById(R.id.imageView);
@@ -100,9 +104,6 @@ public class MainActivity extends AppCompatActivity
          viewPager = (ViewPager) findViewById(R.id.viewpager);
          tabLayout = (TabLayout) findViewById(R.id.tabs);
         if (usrId == "true") {
-
-
-
             iv.setVisibility(View.GONE);
             username.setVisibility(View.GONE);
             loginBtn.setVisibility(View.VISIBLE);
@@ -122,6 +123,9 @@ public class MainActivity extends AppCompatActivity
         }
 
 
+
+        cnageFragment(new BannerFragment());
+
       /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,6 +136,14 @@ public class MainActivity extends AppCompatActivity
         });*/
     }
 
+
+    public  void cnageFragment(Fragment fragment){
+        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        ft.add(R.id.container,fragment, "NewFragmentTag");
+        ft.addToBackStack(fragment.getClass().getName());
+        ft.commit();
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -140,19 +152,14 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
-
-
     public void callApiList(){
-
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<List<Catagories>> responseCall = apiInterface.getCatagories();
+        Call<List<Catagories>> responseCall = apiInterface.getCatagories(30,true,0);
         responseCall.enqueue(callBack);
-
     }
 
         List<String> titles= new ArrayList<>();
-    List<Catagories> responseData = new ArrayList<>();
+        List<Catagories> responseData = new ArrayList<>();
 
     private NetworkCallBack callBack = new NetworkCallBack<List<Catagories>>() {
         @Override
@@ -160,10 +167,13 @@ public class MainActivity extends AppCompatActivity
             responseData = (List<Catagories>) response.getData();
             for (Catagories i:responseData) {
                 titles.add(i.getName());
-                if (viewPager != null) {
-                    setupViewPager(viewPager);
-                    tabLayout.setupWithViewPager(viewPager);
-                }
+                Menu menu = navigationView.getMenu();
+                for (String s:titles
+                     ) {
+                    menu.addSubMenu(s);
+                  }
+                navigationView.invalidate();
+
             }
 
         }
@@ -197,12 +207,13 @@ public class MainActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         // Get the notifications MenuItem and
         // its LayerDrawable (layer-list)
-        MenuItem item = menu.findItem(R.id.action_cart);
-        NotificationCountSetClass.setAddToCart(MainActivity.this, item,notificationCountCart);
-        // force the ActionBar to relayout its MenuItems.
-        // onCreateOptionsMenu(Menu) will be called again.
-        invalidateOptionsMenu();
         return super.onPrepareOptionsMenu(menu);
+//        MenuItem item = menu.findItem(R.id.action_cart);
+//        NotificationCountSetClass.setAddToCart(MainActivity.this, item,notificationCountCart);
+//        // force the ActionBar to relayout its MenuItems.
+//        // onCreateOptionsMenu(Menu) will be called again.
+//        invalidateOptionsMenu();
+
     }
 
     @Override
@@ -236,11 +247,11 @@ public class MainActivity extends AppCompatActivity
         Adapter adapter = new Adapter(getSupportFragmentManager(),titles);
         for (Catagories i:responseData
              ) {
-            ImageListFragment fragment = new ImageListFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt("type", i.getId());
-            fragment.setArguments(bundle);
-            adapter.addFragment(fragment,i.getName());
+//            ImageListFragment fragment = new ImageListFragment();
+//            Bundle bundle = new Bundle();
+//            bundle.putInt("type", i.getId());
+//            fragment.setArguments(bundle);
+//            adapter.addFragment(fragment,i.getName());
         }
 
         viewPager.setAdapter(adapter);
@@ -359,6 +370,16 @@ public class MainActivity extends AppCompatActivity
         public CharSequence getPageTitle(int position) {
             return mFragmentTitles.get(position);
         }
+    }
+
+
+    public static  void gotoprodDetails(int catId){
+            if (activity!=null){
+                ImageListFragment.setCataGoryId(catId);
+                activity.cnageFragment(new ImageListFragment());
+
+            }
+
     }
 
 

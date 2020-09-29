@@ -64,7 +64,13 @@ public class ImageListFragment extends Fragment {
     public static final String STRING_IMAGE_POSITION = "ImagePosition";
     private static MainActivity mActivity;
     private static int cataGoryId = 0;
+
     RecyclerView rv;
+
+    public static void setCataGoryId(int cataGoryId) {
+        ImageListFragment.cataGoryId = cataGoryId;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -81,7 +87,7 @@ public class ImageListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        rv  = (RecyclerView) inflater.inflate(R.layout.layout_recylerview_list, container, false);
 
-    cataGoryId= ImageListFragment.this.getArguments().getInt("type");
+//    cataGoryId= ImageListFragment.this.getArguments().getInt("type");
 
 
         return rv;
@@ -253,6 +259,8 @@ public class ImageListFragment extends Fragment {
             return mValues.size();
         }
     }
+
+
 
 
 
