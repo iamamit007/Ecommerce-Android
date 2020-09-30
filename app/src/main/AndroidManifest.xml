@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.allandroidprojects.ecomsample">
+    package="com.zingakart.android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".startup.FrescoApplication"
+        android:name="com.zingakart.android.startup.FrescoApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".fragments.CategoryActivity"></activity>
+        <activity android:name="com.zingakart.android.fragments.CategoryActivity"></activity>
         <activity android:name=".fragments.CategoriesActivity" />
-        <activity android:name=".options.OrderDetailActivity" />
-        <activity android:name=".options.MyWishListActivity" />
-        <activity android:name=".utility.PaymentActivity" />
-        <activity android:name=".options.MyAccountActivity" />
-        <activity android:name=".registration.AddAddressActivity" />
-        <activity android:name=".registration.SignUpActivity" />
+        <activity android:name="com.zingakart.android.options.OrderDetailActivity" />
+        <activity android:name="com.zingakart.android.options.MyWishListActivity" />
+        <activity android:name="com.zingakart.android.utility.PaymentActivity" />
+        <activity android:name="com.zingakart.android.options.MyAccountActivity" />
+        <activity android:name="com.zingakart.android.registration.AddAddressActivity" />
+        <activity android:name="com.zingakart.android.registration.SignUpActivity" />
         <activity android:name=".startup.TestActivity2" />
-        <activity android:name=".startup.SplashActivity">
+        <activity android:name="com.zingakart.android.startup.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,21 +33,21 @@
                 android:value=".options.SearchResultsActivity" />
         </activity>
         <activity
-            android:name=".startup.WelcomeActivity"
+            android:name="com.zingakart.android.startup.WelcomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".startup.MainActivity"
+            android:name="com.zingakart.android.startup.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".fragments.ViewPagerActivity" />
-        <activity android:name=".product.ItemDetailsActivity" />
+        <activity android:name="com.zingakart.android.fragments.ViewPagerActivity" />
+        <activity android:name="com.zingakart.android.product.ItemDetailsActivity" />
         <activity
-            android:name=".options.WishlistActivity"
+            android:name="com.zingakart.android.options.WishlistActivity"
             android:label="@string/my_wishlist" />
         <activity
-            android:name=".options.CartListActivity"
+            android:name="com.zingakart.android.options.CartListActivity"
             android:label="@string/my_cart" />
-        <activity android:name=".options.SearchResultActivity">
+        <activity android:name="com.zingakart.android.options.SearchResultActivity">
 
             <!-- to identify this activity as "searchable.xml" -->
             <intent-filter>
@@ -60,7 +60,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".miscellaneous.EmptyActivity" />
+        <activity android:name="com.zingakart.android.miscellaneous.EmptyActivity" />
 
         <meta-data
             android:name="com.razorpay.ApiKey"

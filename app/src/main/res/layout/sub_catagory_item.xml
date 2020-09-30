@@ -21,14 +21,13 @@
             fresco:placeholderImage="@color/stay_color" />
 
         <RelativeLayout
-            android:layout_marginRight="6dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginTop="6dp"
+
             android:layout_marginBottom="6dp"
             android:id="@+id/view_all"
-            android:layout_alignParentRight="true"
-            android:background="@color/colorPrimaryDark"
-            android:layout_width="60dp"
+
+            android:layout_alignParentBottom="true"
+            android:background="#40000C48"
+            android:layout_width="match_parent"
             android:layout_height="30dp">
             <TextView
                 android:id="@+id/catagory_name"

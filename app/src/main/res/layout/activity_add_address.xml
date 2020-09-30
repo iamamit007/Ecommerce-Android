@@ -23,6 +23,7 @@
                 android:src="@drawable/logo" />
 
             <TextView
+                android:fontFamily="@font/open"
                 android:id="@+id/title"
                 android:layout_below="@+id/imageView"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -33,6 +34,7 @@
                 android:textColor="#df3c31"
                 android:text="Add address" />
             <EditText
+                android:fontFamily="@font/open"
                 android:id="@+id/first_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -43,6 +45,7 @@
                 android:layout_marginTop="10dp"
                 android:selectAllOnFocus="true" />
             <EditText
+                android:fontFamily="@font/open"
                 android:id="@+id/last_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,6 +57,7 @@
                 android:selectAllOnFocus="true" />
 
             <EditText
+                android:fontFamily="@font/open"
                 android:id="@+id/city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,6 +68,8 @@
                 android:layout_marginTop="10dp"
                 android:selectAllOnFocus="true" />
             <EditText
+
+                android:fontFamily="@font/open"
                 android:id="@+id/pin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,6 +80,7 @@
                 android:layout_marginTop="10dp"
                 android:selectAllOnFocus="true" />
             <EditText
+                android:fontFamily="@font/open"
                 android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,6 +91,7 @@
                 android:layout_marginTop="10dp"
                 android:selectAllOnFocus="true" />
             <EditText
+                android:fontFamily="@font/open"
                 android:id="@+id/state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
