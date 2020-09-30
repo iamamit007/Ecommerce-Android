@@ -12,10 +12,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".options.OrderDetailActivity"></activity>
+        <activity android:name=".fragments.CategoryActivity"></activity>
+        <activity android:name=".fragments.CategoriesActivity" />
+        <activity android:name=".options.OrderDetailActivity" />
         <activity android:name=".options.MyWishListActivity" />
-        <activity android:name=".utility.PaymentActivity">
-        </activity>
+        <activity android:name=".utility.PaymentActivity" />
         <activity android:name=".options.MyAccountActivity" />
         <activity android:name=".registration.AddAddressActivity" />
         <activity android:name=".registration.SignUpActivity" />
@@ -60,11 +61,10 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".miscellaneous.EmptyActivity" />
+
         <meta-data
             android:name="com.razorpay.ApiKey"
-            android:value="rzp_test_H6yRSKUBt3E68S"
-            />
-
+            android:value="rzp_test_H6yRSKUBt3E68S" />
     </application>
 
 </manifest>

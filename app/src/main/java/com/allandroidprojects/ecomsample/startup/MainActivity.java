@@ -3,11 +3,9 @@ package com.allandroidprojects.ecomsample.startup;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,10 +27,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.allandroidprojects.ecomsample.R;
 import com.allandroidprojects.ecomsample.fragments.ImageListFragment;
-import com.allandroidprojects.ecomsample.login.CustomerDetailResponse;
 import com.allandroidprojects.ecomsample.login.LoginPopup;
 import com.allandroidprojects.ecomsample.miscellaneous.EmptyActivity;
-import com.allandroidprojects.ecomsample.notification.NotificationCountSetClass;
 import com.allandroidprojects.ecomsample.options.CartListActivity;
 import com.allandroidprojects.ecomsample.options.MyAccountActivity;
 import com.allandroidprojects.ecomsample.options.SearchResultActivity;
@@ -42,7 +38,6 @@ import com.allandroidprojects.ecomsample.utility.ApiInterface;
 import com.allandroidprojects.ecomsample.utility.Catagories;
 import com.allandroidprojects.ecomsample.utility.NetworkCallBack;
 import com.allandroidprojects.ecomsample.utility.NetworkResponse;
-import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.velectico.rbm.network.callbacks.NetworkError;
@@ -62,6 +57,7 @@ public class MainActivity extends AppCompatActivity
     static ViewPager viewPager;
     static TabLayout tabLayout;
     String usrId = "";
+
     Button loginBtn;
     NavigationView navigationView;
     public  static  MainActivity activity;
@@ -159,22 +155,31 @@ public class MainActivity extends AppCompatActivity
     }
 
         List<String> titles= new ArrayList<>();
+    List<String> ids= new ArrayList<>();
         List<Catagories> responseData = new ArrayList<>();
+
 
     private NetworkCallBack callBack = new NetworkCallBack<List<Catagories>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
             responseData = (List<Catagories>) response.getData();
+            Menu menu = navigationView.getMenu();
             for (Catagories i:responseData) {
-                titles.add(i.getName());
-                Menu menu = navigationView.getMenu();
-                for (String s:titles
-                     ) {
-                    menu.addSubMenu(s);
-                  }
-                navigationView.invalidate();
-
+                titles.add(""+i.getName());
+                ids.add(""+i.getId());
             }
+            try {
+                for (String s:titles
+                ) {
+                    menu.add(s);
+                }
+                menu.notify();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+//            for (int i = 0; i < ids.size(); i++) {
+//                catgId = i;
+//            }
 
         }
 
@@ -334,7 +339,20 @@ public class MainActivity extends AppCompatActivity
         }
 
         else {
-            startActivity(new Intent(MainActivity.this, EmptyActivity.class));
+
+            int catgId = getcatIdbyName(item.getTitle().toString());
+
+            Toast.makeText(this,"catid."+catgId,Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
+//            intent.putExtra("catgId",catgId);
+//            startActivity(intent);
+            if (activity!=null){
+                CategoryFragment.setCataGoryId(catgId);
+                activity.cnageFragment(new CategoryFragment());
+
+            }
+
+            //startActivity(new Intent(MainActivity.this, CategoriesActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -381,6 +399,18 @@ public class MainActivity extends AppCompatActivity
             }
 
     }
+    public int getcatIdbyName(String name)
+    {
+        List<Catagories> dat = new ArrayList<>();
+        int catgId = 0;
+        for (int i = 0; i < responseData.size(); i++) {
 
+           if (name.equalsIgnoreCase(responseData.get(i).getName()) ){
+               catgId = responseData.get(i).getId();
+               break;
+           }
+        }
+        return catgId;
+    }
 
 }
