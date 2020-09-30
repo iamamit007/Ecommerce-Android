@@ -7,7 +7,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "24.0.1"
     defaultConfig {
-        applicationId "com.allandroidprojects.ecomsample"
+        applicationId "com.zingakart.android"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -45,7 +45,7 @@ dependencies {
     implementation 'junit:junit:4.12'
     implementation 'com.facebook.fresco:fresco:0.14.1'
     implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:retrofit:2rder list.6.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.6.0"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
