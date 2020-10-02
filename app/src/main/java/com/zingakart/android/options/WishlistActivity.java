@@ -17,7 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.zingakart.android.R;
+import com.zingakart.android.login.CustomerDetailResponse;
 import com.zingakart.android.utility.ApiClient;
 import com.zingakart.android.utility.ApiInterface;
 import com.zingakart.android.utility.ImageUrlUtils;
@@ -55,8 +57,25 @@ public class WishlistActivity extends AppCompatActivity {
 
     }
 
-    public void callApiList(){
 
+    KProgressHUD hud  = null;
+    void   showHud(){
+        hud =  KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
+    }
+
+    void hide(){
+        hud.dismiss();
+    }
+
+
+    public void callApiList(){
+        showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<List<WishList>>responseCall = apiInterface.getMyWishlist(customer_wishList_retrieveById+"/"+usrId);
         responseCall.enqueue(callBack);
@@ -66,6 +85,7 @@ public class WishlistActivity extends AppCompatActivity {
     private NetworkCallBack callBack = new NetworkCallBack<List<WishList>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            hide();
             Log.d("ytuytuytu",response.getData().toString());
             Toast.makeText(getApplicationContext(),
                     "Wishlist now"+response.getData().toString(),
@@ -79,7 +99,7 @@ public class WishlistActivity extends AppCompatActivity {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-
+            hide();
         }
     };
 

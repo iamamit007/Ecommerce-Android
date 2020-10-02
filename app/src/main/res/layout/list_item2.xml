@@ -17,7 +17,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardview"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="200dp"
     android:elevation="4dp"
     android:padding="4dp"
     android:background="#eaeaea"
@@ -31,16 +31,16 @@
         android:background="#FFFFFF"
         android:layout_margin="4dp"
         android:id="@+id/layout_item"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <com.facebook.drawee.view.SimpleDraweeView
-        xmlns:fresco="http://schemas.android.com/apk/res-auto"
-        android:layout_margin="4dp"
-                                               android:id="@+id/image1"
-                                               android:layout_width="match_parent"
-                                               android:layout_height="120dp"
-                                               fresco:placeholderImage="@color/stay_color" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.facebook.drawee.view.SimpleDraweeView
+            xmlns:fresco="http://schemas.android.com/apk/res-auto"
+            android:layout_margin="4dp"
+            android:id="@+id/image1"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            fresco:placeholderImage="@color/stay_color" />
 
         <LinearLayout
             android:id="@+id/layout_item_desc"
@@ -61,15 +61,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Item Name "
-                    android:textSize="10dp"
+                    android:textSize="12dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/product_des"
-                    android:maxLines="4"
-                    android:maxLength="30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:text="Item descriptions"
                     android:textSize="10dp" />
 
@@ -79,7 +78,8 @@
                     android:layout_height="wrap_content"
                     android:text="Rs. 8,999"
                     android:textColor="#4CAF50"
-                    android:textSize="12dp" />
+                    android:textStyle="bold"
+                    android:textSize="14dp" />
             </LinearLayout>
 
             <ImageView
@@ -91,7 +91,7 @@
                 android:src="@drawable/ic_favorite_border_black_18dp"
                 android:visibility="gone" />
         </LinearLayout>
-</LinearLayout>
+    </LinearLayout>
 
 
 </androidx.cardview.widget.CardView>

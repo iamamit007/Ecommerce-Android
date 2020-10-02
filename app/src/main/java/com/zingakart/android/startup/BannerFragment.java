@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zingakart.android.R;
 import com.zingakart.android.utility.ApiClient;
 import com.zingakart.android.utility.ApiInterface;
@@ -27,10 +29,14 @@ import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawControlle
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 import com.velectico.rbm.network.callbacks.NetworkError;
+import com.zingakart.android.utility.SessionManager;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.json.JSONArray;
+import org.json.JSONException;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -113,8 +119,8 @@ public class BannerFragment extends Fragment {
         sliderView.setAutoCycle(true);
         sliderView.startAutoCycle();
 
-        callApiList();
 
+        managefromLocaldb();
 
         sliderView.setOnIndicatorClickListener(new DrawController.ClickListener() {
             @Override
@@ -122,9 +128,49 @@ public class BannerFragment extends Fragment {
                 Log.i("GGG", "onIndicatorClicked: " + sliderView.getCurrentPagePosition());
             }
         });
+
+
         return mview;
     }
 
+
+
+    public  void managefromLocaldb(){
+      SessionManager manager = new SessionManager(getContext());
+       String x =  manager.getMainCat();
+        try {
+            JSONArray arr = new JSONArray(x);
+            if (arr.length() == 0){
+                callApiList();
+            }else {
+                Gson gson = new Gson();
+                for (int i = 0;i<arr.length();i++){
+                    responseData.add(gson.fromJson(arr.get(i).toString(), Catagories.class));
+                }
+
+                catagory_list.setAdapter(new CatagoryListAdapter(responseData));
+                catagory_list.getAdapter().notifyDataSetChanged();
+
+             //   /HashMap<Integer,List<Catagories>> map= (HashMap<Integer, List<Catagories>>) manager.getSUBCat();
+             //   CatagoryListAdapter adapter =(CatagoryListAdapter) bannerFragment.catagory_list.getAdapter();
+
+//                if (map.size()>0){
+//                    if (adapter!=null){
+//
+//                            adapter.;
+//                            adapter.notifyDataSetChanged();
+//
+//                    }
+//                }
+
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 
@@ -139,17 +185,24 @@ public class BannerFragment extends Fragment {
 public  static  class CatagoryListAdapter extends   RecyclerView.Adapter<CatagoryListAdapter.ViewHolder>{
 
    public List<Catagories> list =  new ArrayList<>();
+   public List<Catagories> childlist =  new ArrayList<>();
 
     public CatagoryListAdapter(List<Catagories> list) {
         this.list = list;
+
+
     }
 
+    public void setSublist(HashMap<Integer, List<Catagories>> sublist) {
+        this.sublist = sublist;
+    }
 
     HashMap<Integer ,List<Catagories>> sublist = new HashMap<>();
 
     public void addMember(int id,List<Catagories> val){
         sublist.put(id,val);
     }
+
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -264,7 +317,7 @@ public  static  class CatagoryListAdapter extends   RecyclerView.Adapter<Catagor
 
 
 
-
+  public static   List<Catagories>  child = new ArrayList();
     public static void callChildApiList(int parentId,int layoutPosition){
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<List<Catagories>> responseCall = apiInterface.getCatagories(30,true,parentId);
@@ -273,7 +326,7 @@ public  static  class CatagoryListAdapter extends   RecyclerView.Adapter<Catagor
     private static NetworkCallBack callBack2 = new NetworkCallBack<List<Catagories>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
-                List<Catagories>  child = (List<Catagories>) response.getData();
+                 child = (List<Catagories>) response.getData();
                 Log.d("vvvvvv",child.toString());
                 CatagoryListAdapter adapter =(CatagoryListAdapter) bannerFragment.catagory_list.getAdapter();
                 if (child != null && child.size()>0){
@@ -291,6 +344,9 @@ public  static  class CatagoryListAdapter extends   RecyclerView.Adapter<Catagor
 
         }
     };
+
+
+
 
 
 

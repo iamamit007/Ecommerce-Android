@@ -228,13 +228,14 @@ public class ImageListFragment extends Fragment {
             List<Images> images = product.getImages();
 
             holder.product_name.setText(product.getName());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                holder.product_des.setText(Html.fromHtml(product.getShort_description(), Html.FROM_HTML_MODE_COMPACT));
-                holder.product_price.setText(Html.fromHtml(product.getPrice_html(), Html.FROM_HTML_MODE_COMPACT));
-            } else {
-                holder.product_des.setText(Html.fromHtml(product.getShort_description()));
-                holder.product_price.setText(Html.fromHtml(product.getPrice_html()));
-            }
+            holder.product_price.setText(Html.fromHtml(product.getPrice_html()));
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                holder.product_des.setText(Html.fromHtml(product.getShort_description(), Html.FROM_HTML_MODE_COMPACT));
+//                holder.product_price.setText(Html.fromHtml(product.getPrice_html(), Html.FROM_HTML_MODE_COMPACT));
+//            } else {
+//                holder.product_des.setText(Html.fromHtml(product.getShort_description()));
+//                holder.product_price.setText(Html.fromHtml(product.getPrice_html()));
+//            }
     if (images!= null && images.size() >0){
      final Uri uri = Uri.parse(images.get(0).getSrc());
      holder.mImageView.setImageURI(uri);

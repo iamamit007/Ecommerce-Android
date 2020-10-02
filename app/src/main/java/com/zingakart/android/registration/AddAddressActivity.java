@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.zingakart.android.R;
 import com.zingakart.android.login.CustomerAddressRequestParams;
 import com.zingakart.android.login.CustomerAddressResponse;
@@ -166,7 +167,25 @@ public class AddAddressActivity extends AppCompatActivity {
         }
     }
 
+
+    KProgressHUD hud  = null;
+    void   showHud(){
+        hud =  KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
+    }
+
+    void hide(){
+        hud.dismiss();
+    }
+
+
     public void callAddAddressApi(){
+        showHud();
         Shipping sdata = new Shipping(getIntent().getStringExtra("fname"),getIntent().getStringExtra("lname"),"",
                 address.getText().toString(),"",citytx.getText().toString(),
                 pintx.getText().toString(),country.getText().toString(),
@@ -180,6 +199,7 @@ public class AddAddressActivity extends AppCompatActivity {
     private NetworkCallBack callBack = new NetworkCallBack<CustomerAddressResponse>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            hide();
             Log.d("ZINGAKART Login",response.toString());
             Toast.makeText(AddAddressActivity.this,"Sign UP."+response.getData().toString(),Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(AddAddressActivity.this, MainActivity.class);
@@ -190,7 +210,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-
+            hide();
         }
     };
 
@@ -214,6 +234,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
                 );
         try {
+            showHud();
             ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
             Call<Order> responseCall = apiInterface.createMyOrder(request);
             responseCall.enqueue(callBack2);
@@ -228,6 +249,7 @@ public class AddAddressActivity extends AppCompatActivity {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
             Log.d("ZINGAKART Login",response.toString());
+            hide();
             Order order = (Order)response.getData();
             if (isCod){
                 updateOrder(order);
@@ -242,7 +264,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-
+            hide();
         }
     };
 
@@ -250,7 +272,7 @@ public class AddAddressActivity extends AppCompatActivity {
     OrderLines lineItem = null;
 
     public void callProfileApiList(){
-
+        showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<CustomerDetailResponse> responseCall = apiInterface.getCustomerProfile();
         responseCall.enqueue(myprofile);
@@ -262,6 +284,7 @@ public class AddAddressActivity extends AppCompatActivity {
     private NetworkCallBack myprofile = new NetworkCallBack<CustomerDetailResponse>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            hide();
             Log.d("ZINGAKART",response.toString());
             CustomerDetailResponse customerDetailResponse = (CustomerDetailResponse)response.getData();
             try {
@@ -279,15 +302,14 @@ public class AddAddressActivity extends AppCompatActivity {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-
+            hide();
         }
     };
 
 
     public void updateOrder(Order order){
 
-
-
+        showHud();
         UpdatePaymentOrderRequest request = new UpdatePaymentOrderRequest(14,"COD",false,"");
         try {
             ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
@@ -303,6 +325,7 @@ public class AddAddressActivity extends AppCompatActivity {
     private NetworkCallBack updatecallBack2 = new NetworkCallBack<Order>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            hide();
             Log.d("Order Places",response.getData().toString());
             Toast.makeText(AddAddressActivity.this, "Order Placed Successfully", Toast.LENGTH_SHORT).show();
             finish();
@@ -311,7 +334,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-
+            hide();
         }
     };
 }

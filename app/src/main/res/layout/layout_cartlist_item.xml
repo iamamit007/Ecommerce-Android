@@ -31,10 +31,11 @@ android:layout_marginTop="5dp"
 
             <TextView
                 android:id="@+id/name"
+                android:textColor="@color/colorPrimaryDark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="5dp"
-                android:text="Denim Shirt activity_horizontal_margin activity_horizontal_marginactivity_horizontal_marginactivity_horizontal_margin"
+                android:text=""
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -55,9 +56,12 @@ android:layout_marginTop="5dp"
                 android:textSize="@dimen/text_size_xmedium" />
 
             <TextView
+                android:id="@+id/orderId"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Delivery charge: FREE"
+                android:text=""
                 android:textSize="@dimen/text_size_small" />
 
             <LinearLayout

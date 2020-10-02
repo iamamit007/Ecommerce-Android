@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.zingakart.android.R;
 import com.zingakart.android.login.CustomerDetailResponse;
 import com.zingakart.android.login.Shipping;
@@ -77,8 +78,23 @@ public class MyAccountActivity extends AppCompatActivity {
         });
     }
 
+    KProgressHUD hud  = null;
+    void   showHud(){
+        hud =  KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
+    }
+
+    void hide(){
+        hud.dismiss();
+    }
     public void callProfileApiList(){
 
+        showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<CustomerDetailResponse> responseCall = apiInterface.getCustomerProfile();
         responseCall.enqueue(callBack);
@@ -90,6 +106,7 @@ public class MyAccountActivity extends AppCompatActivity {
     private NetworkCallBack callBack = new NetworkCallBack<CustomerDetailResponse>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            hide();
             Log.d("ZINGAKART",response.toString());
             Toast.makeText(MyAccountActivity.this,"Profile UP."+response.getData().toString(),Toast.LENGTH_SHORT).show();
             CustomerDetailResponse userDetail = (CustomerDetailResponse) response.getData();
@@ -104,7 +121,7 @@ public class MyAccountActivity extends AppCompatActivity {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-
+            hide();
         }
     };
 }

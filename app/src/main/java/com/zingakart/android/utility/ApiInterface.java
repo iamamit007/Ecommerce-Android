@@ -10,6 +10,8 @@ import com.zingakart.android.login.CustomerRegisterResponse;
 
 import java.util.List;
 
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -32,6 +34,10 @@ public interface ApiInterface {
 
     @GET(products_categories)
     Call<List<Catagories>> getCatagories(@Query("per_page")int per_page,@Query("hide_empty")boolean  hide_empty ,@Query("parent")int  parent);
+
+
+    @GET(products_categories)
+    Call<Response> getCatagoriesRaw(@Query("per_page")int per_page, @Query("hide_empty")boolean  hide_empty , @Query("parent")int  parent);
 
     @GET(product)
     Call<List<Product>> getProductList(@Query("category")int category ,@Query("per_page")int per_page ,@Query("page")int page );

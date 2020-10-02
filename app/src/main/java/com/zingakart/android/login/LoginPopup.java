@@ -138,7 +138,7 @@ public class LoginPopup {
     }
 
     public void callLoginApi(){
-        showHud();
+        //showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<List<CustomerLoginResponse>> responseCall = apiInterface.getLoginDetails(username.getText().toString(),password.getText().toString());
         responseCall.enqueue(callBack);
@@ -147,9 +147,9 @@ public class LoginPopup {
     private NetworkCallBack callBack = new NetworkCallBack<List<CustomerLoginResponse>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
-            hide();
+           // hide();
             Log.d("ZINGAKART Login",response.toString());
-            Toast.makeText(popupView.getContext(),"Sign UP REs."+response.getData().toString(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(popupView.getContext(),"Loggedin Successfully",Toast.LENGTH_SHORT).show();
            List<CustomerLoginResponse> userDetailarr = (List<CustomerLoginResponse>) response.getData();
            CustomerLoginResponse userDetail = userDetailarr.get(0);
             String id = userDetail.getId();

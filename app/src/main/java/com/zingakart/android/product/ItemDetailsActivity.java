@@ -169,7 +169,13 @@ public class ItemDetailsActivity extends AppCompatActivity {
         });
 
     }
+
+
+
+
+
     public void callCreateWishApiList(){
+        showHud();
         createWishlistRequestParams param = new createWishlistRequestParams(product.getId(),userId);
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<List<createWishlistResponse>> responseCall = apiInterface.createWishList(getwishListProductByKey+"/"+wishsharekey+"/add_product",param);
@@ -180,6 +186,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     private NetworkCallBack callBack = new NetworkCallBack<List<createWishlistResponse>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            hide();
             Log.d("ytuytuytu",response.getData().toString());
             Toast.makeText(getApplicationContext(),
                     "Wishlist now"+response.getData().toString(),

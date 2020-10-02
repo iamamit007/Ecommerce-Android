@@ -16,7 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.zingakart.android.R;
+import com.zingakart.android.login.CustomerDetailResponse;
 import com.zingakart.android.utility.ApiClient;
 import com.zingakart.android.utility.ApiInterface;
 import com.zingakart.android.utility.ImageUrlUtils;
@@ -73,8 +75,24 @@ public class CartListActivity extends AppCompatActivity {
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 
-    public void callApiList(){
 
+    KProgressHUD hud  = null;
+    void   showHud(){
+        hud =  KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
+    }
+
+    void hide(){
+        hud.dismiss();
+    }
+
+    public void callApiList(){
+        showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<List<Order>> responseCall = apiInterface.getMyOrder(14);
         responseCall.enqueue(callBack);
@@ -88,6 +106,7 @@ public class CartListActivity extends AppCompatActivity {
     private NetworkCallBack callBack = new NetworkCallBack<List<Order>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            hide();
             Log.d("Mita",response.getData().toString());
 //            Toast.makeText(getApplicationContext(),
 //                    "Order now"+response.getData(),
@@ -99,7 +118,7 @@ public class CartListActivity extends AppCompatActivity {
             setRecyclerView(orderData);
             for (Order o:orderData
                  ) {
-                callOrderItems(o.getLine_items().get(0).getId());
+              //  callOrderItems(o.getLine_items().get(0).getId());
 
             }
 
@@ -107,13 +126,16 @@ public class CartListActivity extends AppCompatActivity {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-
+            hide();
         }
     };
 
 
-    public void callOrderItems(int producId){
 
+
+    public void callOrderItems(int producId){
+        hide();
+        showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<Product> responseCall = apiInterface.getProductDetails(product+"/"+producId);
         responseCall.enqueue(callBack2);
@@ -126,6 +148,7 @@ public class CartListActivity extends AppCompatActivity {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
             responseData.add((Product)response.getData());
+            hide();
             CartListActivity.SimpleStringRecyclerViewAdapter  adapter =  (CartListActivity.SimpleStringRecyclerViewAdapter) recyclerView.getAdapter() ;
             if (adapter !=null){
                 adapter.setProductList(responseData);
@@ -136,7 +159,7 @@ public class CartListActivity extends AppCompatActivity {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-
+            hide();
         }
     };
 
@@ -171,8 +194,8 @@ public class CartListActivity extends AppCompatActivity {
         public static class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final SimpleDraweeView mImageView;
-            public final LinearLayout mLayoutItem, mLayoutRemove , mLayoutEdit;
-            public final TextView order_stat, address;
+            public final LinearLayout mLayoutItem, mLayoutRemove , mLayoutEdit,layout_action1;
+            public final TextView order_stat, address,orderId;
             public final TextView   name,quantity,price;
 
 
@@ -181,12 +204,14 @@ public class CartListActivity extends AppCompatActivity {
                 super(view);
                 mView = view;
                 mImageView = (SimpleDraweeView) view.findViewById(R.id.image_cartlist);
+                layout_action1 = (LinearLayout) view.findViewById(R.id.layout_action1);
                 mLayoutItem = (LinearLayout) view.findViewById(R.id.layout_item_desc);
-                mLayoutRemove = (LinearLayout) view.findViewById(R.id.layout_action1);
+                mLayoutRemove = (LinearLayout) view.findViewById(R.id.action);
                 mLayoutEdit = (LinearLayout) view.findViewById(R.id.layout_action2);
                 order_stat = (TextView) view.findViewById(R.id.order_stat);
                 address = (TextView) view.findViewById(R.id.address);
                 name = (TextView) view.findViewById(R.id.name);
+                orderId = (TextView) view.findViewById(R.id.orderId);
                 quantity = (TextView) view.findViewById(R.id.quantity);
                 price = (TextView) view.findViewById(R.id.price);
             }
@@ -219,6 +244,13 @@ public class CartListActivity extends AppCompatActivity {
             //final Uri uri = Uri.parse("https://static.pexels.com/photos/7093/coffee-desk-notes-workspace-medium.jpg");
             //holder.mImageView.setImageURI(uri);
             final Order order = orderList.get(position);
+
+            if (screenName.equalsIgnoreCase("my_orders")){
+                holder.layout_action1.setVisibility(View.GONE);
+                holder.mLayoutRemove.setVisibility(View.GONE);
+                holder.mLayoutItem.setVisibility(View.VISIBLE);
+                holder.orderId.setText("Order Id - # "+order.getId());
+            }
             holder.name.setText(order.getLine_items().get(0).getName());
             holder.price.setText("₹ "+order.getTotal());
             holder.order_stat.setText(order.getStatus());
@@ -277,6 +309,9 @@ public class CartListActivity extends AppCompatActivity {
         public int getItemCount() {
             return orderList.size();
         }
+
+
+
 
         public void callDeleteOrderList(int orderId){
 

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +26,12 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.kaopiz.kprogresshud.KProgressHUD;
+import com.snappydb.DB;
+import com.snappydb.DBFactory;
+import com.snappydb.SnappydbException;
 import com.zingakart.android.R;
 import com.zingakart.android.fragments.ImageListFragment;
 import com.zingakart.android.login.LoginPopup;
@@ -42,13 +48,21 @@ import com.zingakart.android.utility.NetworkResponse;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.velectico.rbm.network.callbacks.NetworkError;
+import com.zingakart.android.utility.SessionManager;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity
@@ -62,11 +76,17 @@ public class MainActivity extends AppCompatActivity
     Button loginBtn;
     NavigationView navigationView;
     public  static  MainActivity activity;
+
+    DB snappydb =null;
+    SessionManager manager;
+
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-         activity = this;
+        activity = this;
+        manager = new SessionManager(this);
         SharedPreferences sh
                 = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
 
@@ -75,17 +95,17 @@ public class MainActivity extends AppCompatActivity
         String id = sh.getString("id", "true");
         usrId = id;
         String image = sh.getString("image", "");
-        Toast.makeText(this,"id UP."+id,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"id UP."+id,Toast.LENGTH_SHORT).show();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
         ImageView iv = (ImageView) headerView.findViewById(R.id.imageView);
@@ -94,25 +114,25 @@ public class MainActivity extends AppCompatActivity
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginPopup popUpClass = new LoginPopup();
+                LoginPopup popUpClass = new LoginPopup(getBaseContext());
                 popUpClass.showPopupWindow(view);
             }
         });
-         viewPager = (ViewPager) findViewById(R.id.viewpager);
-         tabLayout = (TabLayout) findViewById(R.id.tabs);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         if (usrId == "true") {
             iv.setVisibility(View.GONE);
             username.setVisibility(View.GONE);
             loginBtn.setVisibility(View.VISIBLE);
-            }
-            else{
+        }
+        else{
             iv.setVisibility(View.VISIBLE);
             username.setVisibility(View.VISIBLE);
             loginBtn.setVisibility(View.GONE);
             username.setText(fname +" "+ lname);
             Uri uri = Uri.parse(image);
             iv.setImageURI(uri);
-            }
+        }
 
         String data = getIntent().getStringExtra("fromAddress");
         if (data != null){
@@ -120,7 +140,12 @@ public class MainActivity extends AppCompatActivity
         }
 
 
+        try{
+            snappydb= DBFactory.open(MainActivity.this);
 
+        }
+        catch (SnappydbException e) {
+            e.printStackTrace();}
         cnageFragment(new BannerFragment());
 
       /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -156,9 +181,9 @@ public class MainActivity extends AppCompatActivity
         responseCall.enqueue(callBack);
     }
 
-        List<String> titles= new ArrayList<>();
+    List<String> titles= new ArrayList<>();
     List<String> ids= new ArrayList<>();
-        List<Catagories> responseData = new ArrayList<>();
+    List<Catagories> responseData = new ArrayList<>();
 
 
     private NetworkCallBack callBack = new NetworkCallBack<List<Catagories>>() {
@@ -167,23 +192,36 @@ public class MainActivity extends AppCompatActivity
             hide();
             responseData = (List<Catagories>) response.getData();
             Menu menu = navigationView.getMenu();
+
+            Gson gson = new Gson();
+
+            JSONArray arr = new JSONArray();
+////transform a java object to json
+
+////Transform a json to java object
+//            String json = string_json;
+//            List<Object> lstObject = gson.fromJson(json_ string, Object.class);
+
             for (Catagories i:responseData) {
+                arr.put(gson.toJson(i));
                 titles.add(""+i.getName());
                 ids.add(""+i.getId());
+              //  callChildApiList(i.getId());
+
             }
+
+
             try {
+                snappydb=DBFactory.open(MainActivity.this);
+                snappydb.put("main_cat",arr.toString());
+                snappydb.close();
                 for (String s:titles
                 ) {
-                    menu.add(s);
+                    menu.add(s.replace("&amp;", "&"));
                 }
-               // menu.notify();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//            for (int i = 0; i < ids.size(); i++) {
-//                catgId = i;
-//            }
-
         }
 
         @Override
@@ -192,6 +230,78 @@ public class MainActivity extends AppCompatActivity
 
         }
     };
+
+
+    public  void callChildApiList(int parentId){
+        ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<List<Catagories>> responseCall = apiInterface.getCatagories(30,true,parentId);
+        responseCall.enqueue(callBack2);
+    }
+    private  NetworkCallBack callBack2 = new NetworkCallBack<List<Catagories>>() {
+        @Override
+        public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            List<Catagories>   responseData1= (List<Catagories>) response.getData();
+
+
+            Gson gson = new Gson();
+
+////transform a java object to json
+
+////Transform a json to java object
+//            String json = string_json;
+//            List<Object> lstObject = gson.fromJson(json_ string, Object.class);
+
+
+
+            try {
+
+                HashMap<Integer,String> mapTodb = new HashMap<>();
+                HashMap<Integer,JSONArray> immap = new HashMap<>();
+                Map<Integer,List<Catagories>> subcat = manager.getSUBCat();
+
+
+                subcat.put(responseData1.get(0).getParent(),responseData1);
+//                if (subcat.size() == 0){
+//
+//                }else {
+                    Iterator it = subcat.entrySet().iterator();
+                    while (it.hasNext()) {
+                        Map.Entry pair = (Map.Entry)it.next();
+                        JSONArray arr = new JSONArray();
+                        int key = (int) pair.getKey();
+                        List<Catagories> v = (List<Catagories>) pair.getValue();
+                        for (int i = 0;i< v.size();i++){
+                            arr.put(gson.toJson(v.get(i)));
+                        }
+                        immap.put(key,arr);
+                        System.out.println(pair.getKey() + " = " + pair.getValue());
+                        it.remove(); // avoids a ConcurrentModificationException
+                    }
+                    Iterator it2 = immap.entrySet().iterator();
+                    while (it2.hasNext()) {
+                        Map.Entry pair = (Map.Entry)it2.next();
+                        int key = (int) pair.getKey();
+                        JSONArray v = (JSONArray) pair.getValue();
+                        mapTodb.put(key,v.toString());
+                        it2.remove(); // avoids a ConcurrentModificationException
+                    }
+           //     }
+
+                snappydb=DBFactory.open(MainActivity.this);
+                snappydb.put("sub_cat",mapTodb.toString());
+                snappydb.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
+
+        }
+    };
+
 
 
 
@@ -225,6 +335,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -236,7 +348,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_search) {
             Toast.makeText(MainActivity.this,"Coming Soon.",Toast.LENGTH_SHORT).show();
 
-          //  startActivity(new Intent(MainActivity.this, SearchResultActivity.class));
+            //  startActivity(new Intent(MainActivity.this, SearchResultActivity.class));
             return true;
         }else if (id == R.id.action_cart) {
 
@@ -261,7 +373,7 @@ public class MainActivity extends AppCompatActivity
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager(),titles);
         for (Catagories i:responseData
-             ) {
+        ) {
 //            ImageListFragment fragment = new ImageListFragment();
 //            Bundle bundle = new Bundle();
 //            bundle.putInt("type", i.getId());
@@ -330,23 +442,34 @@ public class MainActivity extends AppCompatActivity
         }else if (id == R.id.nav_item6) {
             viewPager.setCurrentItem(5);
         }else if (id == R.id.my_wishlist) {
-            Intent intent = new Intent(MainActivity.this, WishlistActivity.class);
-             intent.putExtra("id",usrId);
-             startActivity(intent);
+            if (checkLoggedin()==true){
+                Intent intent = new Intent(MainActivity.this, WishlistActivity.class);
+                intent.putExtra("id",usrId);
+                startActivity(intent);
+            }
+            else{
+                Toast.makeText(MainActivity.this,"Please login to continue",Toast.LENGTH_SHORT).show();
+            }
+
             //startActivity(new Intent(MainActivity.this, WishlistActivity.class));
         }
         else if (id == R.id.my_account){
-            if (usrId == "true") {
-                //loginBtn.setPressed(true);
-
+            if (checkLoggedin()==true){
+                startActivity(new Intent(MainActivity.this, MyAccountActivity.class));
             }
             else{
-                startActivity(new Intent(MainActivity.this, MyAccountActivity.class));
+                Toast.makeText(MainActivity.this,"Please login to continue",Toast.LENGTH_SHORT).show();
             }
         }
         else if (id == R.id.my_orders) {
-            CartListActivity.setScreenName("my_orders");
-            startActivity(new Intent(MainActivity.this, CartListActivity.class));
+            if (checkLoggedin()==true){
+                CartListActivity.setScreenName("my_orders");
+                startActivity(new Intent(MainActivity.this, CartListActivity.class));
+            }
+            else{
+                Toast.makeText(MainActivity.this,"Please login to continue",Toast.LENGTH_SHORT).show();
+            }
+
         }
         else if (id == R.id.contact_us) {
             Toast.makeText(MainActivity.this,"Coming Soon",Toast.LENGTH_SHORT).show();
@@ -360,7 +483,7 @@ public class MainActivity extends AppCompatActivity
 
         else {
             int catgId = getcatIdbyName(item.getTitle().toString());
-            Toast.makeText(this,"catid."+catgId,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"catid."+catgId,Toast.LENGTH_SHORT).show();
 //            Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
 //            intent.putExtra("catgId",catgId);
 //            startActivity(intent);
@@ -380,7 +503,7 @@ public class MainActivity extends AppCompatActivity
 
     static class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();
-         List<String> mFragmentTitles = new ArrayList<>();
+        List<String> mFragmentTitles = new ArrayList<>();
 
         public Adapter(FragmentManager fm ,List<String> mFragmentTitles) {
             super(fm);
@@ -410,11 +533,11 @@ public class MainActivity extends AppCompatActivity
 
 
     public static  void gotoprodDetails(int catId){
-            if (activity!=null){
-                ImageListFragment.setCataGoryId(catId);
-                activity.cnageFragment(new ImageListFragment());
+        if (activity!=null){
+            ImageListFragment.setCataGoryId(catId);
+            activity.cnageFragment(new ImageListFragment());
 
-            }
+        }
 
     }
     public int getcatIdbyName(String name)
@@ -423,10 +546,10 @@ public class MainActivity extends AppCompatActivity
         int catgId = 0;
         for (int i = 0; i < responseData.size(); i++) {
 
-           if (name.equalsIgnoreCase(responseData.get(i).getName()) ){
-               catgId = responseData.get(i).getId();
-               break;
-           }
+            if (name.equalsIgnoreCase(responseData.get(i).getName()) ){
+                catgId = responseData.get(i).getId();
+                break;
+            }
         }
         return catgId;
     }
@@ -444,6 +567,18 @@ public class MainActivity extends AppCompatActivity
 
     void hide(){
         hud.dismiss();
+    }
+    public boolean checkLoggedin(){
+        SharedPreferences sh
+                = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+        String uid = sh.getString("id", "true");
+        if (uid == "true") {
+            return false;
+        }
+        else {
+            return true;
+        }
+
     }
 
 }
