@@ -141,10 +141,11 @@ public class CategoryFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             final Catagories product = mWishlistImageUri.get(position);
-            holder.product_name.setText(product.getName());
+            holder.product_name.setText(product.getName().replace("&amp;", "&"));
             holder.product_des.setVisibility(View.GONE);
             holder.product_price.setVisibility(View.GONE);
             if (product.getImage()!= null) {
+
                 final Uri uri = Uri.parse(product.getImage().getSrc());
                 holder.mImageView.setImageURI(uri);
             }
@@ -155,6 +156,7 @@ public class CategoryFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (mActivity!=null){
+
                         ImageListFragment.setCataGoryId(product.getId());
                         mActivity.cnageFragment(new ImageListFragment());
 

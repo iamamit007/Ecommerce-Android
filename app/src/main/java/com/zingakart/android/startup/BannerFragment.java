@@ -35,6 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -147,12 +148,21 @@ public class BannerFragment extends Fragment {
                 for (int i = 0;i<arr.length();i++){
                     responseData.add(gson.fromJson(arr.get(i).toString(), Catagories.class));
                 }
-
                 catagory_list.setAdapter(new CatagoryListAdapter(responseData));
                 catagory_list.getAdapter().notifyDataSetChanged();
 
-             //   /HashMap<Integer,List<Catagories>> map= (HashMap<Integer, List<Catagories>>) manager.getSUBCat();
-             //   CatagoryListAdapter adapter =(CatagoryListAdapter) bannerFragment.catagory_list.getAdapter();
+                JSONArray j = manager.getSUBCatJ();
+                if (j.length()>0){
+                    for (int i = 0;i<j.length();i++){
+                        child.add(gson.fromJson(j.get(i).toString(),Catagories.class));
+                    }
+
+                    //   /HashMap<Integer,List<Catagories>> map= (HashMap<Integer, List<Catagories>>) manager.getSUBCat();
+                    CatagoryListAdapter adapter =(CatagoryListAdapter) bannerFragment.catagory_list.getAdapter();
+                    adapter.setChildlist(child);
+                    adapter.notifyDataSetChanged();
+                }
+
 
 //                if (map.size()>0){
 //                    if (adapter!=null){
@@ -191,6 +201,10 @@ public  static  class CatagoryListAdapter extends   RecyclerView.Adapter<Catagor
         this.list = list;
 
 
+    }
+
+    public void setChildlist(List<Catagories> childlist) {
+        this.childlist = childlist;
     }
 
     public void setSublist(HashMap<Integer, List<Catagories>> sublist) {
@@ -248,13 +262,23 @@ public  static  class CatagoryListAdapter extends   RecyclerView.Adapter<Catagor
 
         holder.sub_cat.setLayoutManager(new LinearLayoutManager(holder.sub_cat.getContext(), LinearLayoutManager.HORIZONTAL, true));
         if (sublist.get(catagories.getId())!=null){
-            ArrayList<Catagories> catagories1 = new ArrayList<>();
 
             holder.sub_cat.setAdapter(new SubCatagoryListAdapter(sublist.get(catagories.getId())));
-            //holder.sub_cat.setAdapter(new SubCatagoryListAdapter(catagories1));
             holder.sub_cat.getAdapter().notifyDataSetChanged();
         }else {
-            BannerFragment.callChildApiList(catagories.getId(),position);
+            if (childlist.size()>0){
+                List<Catagories> c = getItemById(catagories.getId());
+                if (c !=null && c.size()>0){
+                    holder.sub_cat.setAdapter(new SubCatagoryListAdapter(c));
+                    holder.sub_cat.getAdapter().notifyDataSetChanged();
+                }else {
+                    BannerFragment.callChildApiList(catagories.getId(),position);
+                }
+
+            }else {
+                BannerFragment.callChildApiList(catagories.getId(),position);
+
+            }
         }
 
 //        if (catagories.getImage()!=null){
@@ -271,7 +295,20 @@ public  static  class CatagoryListAdapter extends   RecyclerView.Adapter<Catagor
     public int getItemCount() {
         return list.size();
     }
+
+
+    public List<Catagories> getItemById(int x){
+        List<Catagories> catagories = new ArrayList<>();
+        for (Catagories c:childlist
+             ) {
+            if (c!=null && c.getParent()== x){
+               catagories.add(c);
+            }
+        }
+        return catagories;
+    }
 }
+
 
 
 

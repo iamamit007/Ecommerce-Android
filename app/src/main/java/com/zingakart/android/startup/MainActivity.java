@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.load.engine.Resource;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.kaopiz.kprogresshud.KProgressHUD;
@@ -167,6 +168,13 @@ public class MainActivity extends AppCompatActivity
         ft.addToBackStack(fragment.getClass().getName());
         ft.commit();
     }
+    public static void chnageFragment(Fragment fragment){
+        final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+
+        ft.add(R.id.container,fragment, "NewFragmentTag");
+        ft.addToBackStack(fragment.getClass().getName());
+        ft.commit();
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -194,8 +202,8 @@ public class MainActivity extends AppCompatActivity
             responseData = (List<Catagories>) response.getData();
             Menu menu = navigationView.getMenu();
 
-            Gson gson = new Gson();
 
+            Gson gson = new Gson();
             JSONArray arr = new JSONArray();
 ////transform a java object to json
 
@@ -207,7 +215,7 @@ public class MainActivity extends AppCompatActivity
                 arr.put(gson.toJson(i));
                 titles.add(""+i.getName());
                 ids.add(""+i.getId());
-              //  callChildApiList(i.getId());
+                callChildApiList(i.getId());
 
             }
 
@@ -218,8 +226,9 @@ public class MainActivity extends AppCompatActivity
                 snappydb.close();
                 for (String s:titles
                 ) {
-                    menu.add(s.replace("&amp;", "&"));
+                    navigationView.getMenu().findItem(R.id.cata).getSubMenu().add(s.replace("&amp;", "&")).setIcon(R.drawable.ic_local_offer_black_24dp);
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -258,38 +267,44 @@ public class MainActivity extends AppCompatActivity
 
                 HashMap<Integer,String> mapTodb = new HashMap<>();
                 HashMap<Integer,JSONArray> immap = new HashMap<>();
-                Map<Integer,List<Catagories>> subcat = manager.getSUBCat();
+               JSONArray jsonArray = manager.getSUBCatJ();
+
+                for (Catagories c:responseData1
+                     ) { jsonArray.put(gson.toJson(c));
+                }
 
 
-                subcat.put(responseData1.get(0).getParent(),responseData1);
-//                if (subcat.size() == 0){
+
 //
-//                }else {
-                    Iterator it = subcat.entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry pair = (Map.Entry)it.next();
-                        JSONArray arr = new JSONArray();
-                        int key = (int) pair.getKey();
-                        List<Catagories> v = (List<Catagories>) pair.getValue();
-                        for (int i = 0;i< v.size();i++){
-                            arr.put(gson.toJson(v.get(i)));
-                        }
-                        immap.put(key,arr);
-                        System.out.println(pair.getKey() + " = " + pair.getValue());
-                        it.remove(); // avoids a ConcurrentModificationException
-                    }
-                    Iterator it2 = immap.entrySet().iterator();
-                    while (it2.hasNext()) {
-                        Map.Entry pair = (Map.Entry)it2.next();
-                        int key = (int) pair.getKey();
-                        JSONArray v = (JSONArray) pair.getValue();
-                        mapTodb.put(key,v.toString());
-                        it2.remove(); // avoids a ConcurrentModificationException
-                    }
-           //     }
+//                jsonArray.put(responseData1);
+////                if (subcat.size() == 0){
+////
+////                }else {
+//                    Iterator it = subcat.entrySet().iterator();
+//                    while (it.hasNext()) {
+//                        Map.Entry pair = (Map.Entry)it.next();
+//                        JSONArray arr = new JSONArray();
+//                        int key = (int) pair.getKey();
+//                        List<Catagories> v = (List<Catagories>) pair.getValue();
+//                        for (int i = 0;i< v.size();i++){
+//                            arr.put(gson.toJson(v.get(i)));
+//                        }
+//                        immap.put(key,arr);
+//                        System.out.println(pair.getKey() + " = " + pair.getValue());
+//                        it.remove(); // avoids a ConcurrentModificationException
+//                    }
+//                    Iterator it2 = immap.entrySet().iterator();
+//                    while (it2.hasNext()) {
+//                        Map.Entry pair = (Map.Entry)it2.next();
+//                        int key = (int) pair.getKey();
+//                        JSONArray v = (JSONArray) pair.getValue();
+//                        mapTodb.put(key,v.toString());
+//                        it2.remove(); // avoids a ConcurrentModificationException
+//                    }
+//           //     }
 
                 snappydb=DBFactory.open(MainActivity.this);
-                snappydb.put("sub_cat",mapTodb.toString());
+                snappydb.put("sub_cat",jsonArray.toString());
                 snappydb.close();
             } catch (Exception e) {
                 e.printStackTrace();
