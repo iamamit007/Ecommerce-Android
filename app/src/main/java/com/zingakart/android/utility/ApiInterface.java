@@ -52,7 +52,7 @@ public interface ApiInterface {
     @PUT(customer_update_address+"/{id}")
     Call<CustomerAddressResponse> addAddressDetails(@Path ("id") int id,@Body CustomerAddressRequestParams model);
 
-    @GET(customer_retrieve+"{id}")
+    @GET(customer_retrieve+"/{id}")
     Call<CustomerDetailResponse> getCustomerProfile(@Path("id")int id);
 
     @GET(customer_order_retrieve)
