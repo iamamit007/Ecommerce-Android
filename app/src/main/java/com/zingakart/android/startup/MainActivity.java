@@ -95,16 +95,32 @@ public class MainActivity extends AppCompatActivity
         String id = sh.getString("id", "true");
         usrId = id;
         String image = sh.getString("image", "");
-        //Toast.makeText(this,"id UP."+id,Toast.LENGTH_SHORT).show();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setLogo(R.drawable.logo);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        View customView = getLayoutInflater().inflate(R.layout.custom_actionbar, null);
+        // Get the textview of the title
+        ImageView customTitle = (ImageView) customView.findViewById(R.id.actionbarTitle);
 
+
+        // Change the font family (optional)
+        //customTitle.setTypeface(Typeface.MONOSPACE);
+        // Set the on click listener for the title
+        customTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.w("MainActivity", "ActionBar's title clicked.");
+                cnageFragment(new BannerFragment());
+            }
+        });
+        // Apply the custom view
+        getSupportActionBar().setCustomView(customView);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
