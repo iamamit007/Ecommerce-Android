@@ -102,6 +102,24 @@ public class SessionManager {
         return res;
     }
 
+    public JSONArray getSUBCatJ() {
+      JSONArray res = new JSONArray();
+
+        try
+        {
+
+            DB snappyDB= DBFactory.open(context);
+            if (snappyDB.exists("sub_cat"))
+                res =  new JSONArray( snappyDB.get("sub_cat"));
+
+            snappyDB.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return res;
+    }
     public Map<Integer, List<Catagories>> stringCatagoriesHashMap(String value ) throws JSONException {
         value = value.substring(1, value.length()-1);           //remove curly brackets
         String[] keyValuePairs = value.split(",");              //split the string to creat key-value pairs

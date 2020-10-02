@@ -78,7 +78,9 @@ public    class SubCatagoryListAdapter extends   RecyclerView.Adapter<SubCatagor
         holder.con.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.gotoprodDetails(catagories.getId());
+                CategoryFragment.setCataGoryId(catagories.getId());
+                MainActivity.chnageFragment(new CategoryFragment());
+
             }
         });
         if (catagories.getImage()!=null){

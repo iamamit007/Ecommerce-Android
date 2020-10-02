@@ -2,7 +2,9 @@ package com.zingakart.android.registration;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -83,7 +85,7 @@ public class AddAddressActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AddAddressActivity.this,"Sign UP.",Toast.LENGTH_SHORT).show();
+
                 if (getIntent().hasExtra("action")){
                     if (getIntent().getStringExtra("action").equalsIgnoreCase("billing")){
                         callCreateOrder();
@@ -143,7 +145,6 @@ public class AddAddressActivity extends AppCompatActivity {
                 first_name.setVisibility(View.GONE);
                 lastg_name.setVisibility(View.GONE);
                 title.setText("Add address");
-                title.setText("save");
                 save.setVisibility(View.VISIBLE);
                 paybox.setVisibility(View.GONE);
             }
@@ -230,7 +231,9 @@ public class AddAddressActivity extends AppCompatActivity {
                 );
         List<OrderLines> items =  new ArrayList<>();
         items.add(lineItem);
-        CreateOrderRequest request = new CreateOrderRequest(14,"cash","bank",true,shipping,items
+        SharedPreferences sh
+                = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+        CreateOrderRequest request = new CreateOrderRequest( Integer.parseInt(sh.getString("id", "true")),"cash","bank",true,shipping,items
 
                 );
         try {
@@ -288,12 +291,15 @@ public class AddAddressActivity extends AppCompatActivity {
             Log.d("ZINGAKART",response.toString());
             CustomerDetailResponse customerDetailResponse = (CustomerDetailResponse)response.getData();
             try {
-                lineItem = new OrderLines(
+                if (product!=null){
+                    lineItem = new OrderLines(
 
-                       product.getId(),
-                        1,
-                        12
-                );
+                            product.getId(),
+                            1,
+                            12
+                    );
+                }
+
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
