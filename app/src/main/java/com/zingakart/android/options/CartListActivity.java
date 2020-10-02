@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -269,9 +270,12 @@ public class CartListActivity extends AppCompatActivity {
                     holder.price.setText(p.getPrice());
 
                 }
-                holder.quantity.setText((order.getLine_items().get(0).getQuantity()));
-                holder.order_stat.setText(order.getStatus());
-                holder.order_stat.setText(order.getShipping().getAddress_1());
+                if (order.getLine_items()!=null){
+                    holder.quantity.setText((order.getLine_items().get(0).getQuantity()));
+                    holder.order_stat.setText(order.getStatus());
+                    holder.order_stat.setText(order.getShipping().getAddress_1());
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -346,4 +350,14 @@ public class CartListActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

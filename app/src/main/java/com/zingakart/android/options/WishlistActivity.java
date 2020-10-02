@@ -88,7 +88,7 @@ public class WishlistActivity extends AppCompatActivity {
     private NetworkCallBack callBack = new NetworkCallBack<List<WishList>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
-           // hide();
+            hide();
             Log.d("ytuytuytu",response.getData().toString());
             wishListData.addAll ((List<WishList>)response.getData());
             RecyclerView.LayoutManager recylerViewLayoutManager = new LinearLayoutManager(mContext);
@@ -99,7 +99,7 @@ public class WishlistActivity extends AppCompatActivity {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-          //  hide();
+            hide();
         }
     };
 

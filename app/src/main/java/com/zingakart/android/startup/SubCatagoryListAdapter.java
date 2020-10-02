@@ -1,9 +1,11 @@
 package com.zingakart.android.startup;
 
+import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
 import com.zingakart.android.R;
 import com.zingakart.android.utility.Catagories;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -21,15 +24,16 @@ import java.util.List;
 
 public    class SubCatagoryListAdapter extends   RecyclerView.Adapter<SubCatagoryListAdapter.ChildViewHolder>{
     public List<Catagories> list =  new ArrayList<>();
-
-    public SubCatagoryListAdapter(List<Catagories> list) {
+    Context context;
+    public SubCatagoryListAdapter(List<Catagories> list, Context context) {
         this.list = list;
+        this.context = context;
 
     }
 
     public static class ChildViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final SimpleDraweeView mImageView;
+        public final ImageView mImageView;
 
 
 
@@ -43,7 +47,7 @@ public    class SubCatagoryListAdapter extends   RecyclerView.Adapter<SubCatagor
         public ChildViewHolder(View view) {
             super(view);
             mView = view;
-            mImageView = (SimpleDraweeView) view.findViewById(R.id.image1);
+            mImageView = (ImageView) view.findViewById(R.id.image1);
             product_name = (TextView) view.findViewById(R.id.catagory_name);
             view_all = (RelativeLayout) view.findViewById(R.id.view_all);
             con = (LinearLayout) view.findViewById(R.id.con);
@@ -84,12 +88,13 @@ public    class SubCatagoryListAdapter extends   RecyclerView.Adapter<SubCatagor
             }
         });
         if (catagories.getImage()!=null){
-            final Uri uri = Uri.parse(catagories.getImage().getSrc());
-            holder.mImageView.setImageURI(uri);
+                Picasso.with(context).load(catagories.getImage().getSrc()).into(holder.mImageView);
+            //final Uri uri = Uri.parse(catagories.getImage().getSrc());
+            //holder.mImageView.setImageURI(uri);
         }else {
 
-            final Uri uri = Uri.parse(urls[x]);
-            holder.mImageView.setImageURI(uri);
+            Picasso.with(context).load(urls[x]).into(holder.mImageView);
+
 
         }
     }

@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.zingakart.android.R;
 import com.zingakart.android.fragments.ImageListFragment;
 import com.zingakart.android.utility.ApiClient;
@@ -65,7 +67,22 @@ public class CategoryFragment extends Fragment {
         rv  = (RecyclerView) inflater.inflate(R.layout.layout_recylerview_list, container, false);
         return rv;
     }
+    KProgressHUD hud  = null;
+    void   showHud(){
+        hud =  KProgressHUD.create(getActivity())
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
+    }
+
+    void hide(){
+        hud.dismiss();
+    }
     public void callApiList(){
+        showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<List<Catagories>> responseCall = apiInterface.getCatagories(30,true,cataGoryId);
         responseCall.enqueue(callBack2);
@@ -75,18 +92,25 @@ public class CategoryFragment extends Fragment {
     private NetworkCallBack callBack2 = new NetworkCallBack<List<Catagories>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            hide();
             List<Catagories>  child = (List<Catagories>) response.getData();
-            Log.d("yyyyyyyyyyyyyyyyyyy",child.toString());
-            wishListData.addAll ((List<Catagories>)response.getData());
-            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-            rv.setLayoutManager(layoutManager);
-            rv.setAdapter(new SimpleStringRecyclerViewAdapter(rv, wishListData));
+            if (child.size()>0){
+                Log.d("yyyyyyyyyyyyyyyyyyy",child.toString());
+                wishListData.addAll ((List<Catagories>)response.getData());
+                StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                rv.setLayoutManager(layoutManager);
+                rv.setAdapter(new SimpleStringRecyclerViewAdapter(rv, wishListData));
+            }
+            else {
+                Toast.makeText(getActivity(),"Sorry No data Available on this catagory",Toast.LENGTH_SHORT).show();
+            }
+
 
         }
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-
+            hide();
         }
     };
 

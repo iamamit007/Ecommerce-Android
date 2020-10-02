@@ -1,5 +1,6 @@
 package com.zingakart.android.startup;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -148,7 +149,7 @@ public class BannerFragment extends Fragment {
                 for (int i = 0;i<arr.length();i++){
                     responseData.add(gson.fromJson(arr.get(i).toString(), Catagories.class));
                 }
-                catagory_list.setAdapter(new CatagoryListAdapter(responseData));
+                catagory_list.setAdapter(new CatagoryListAdapter(responseData,getContext()));
                 catagory_list.getAdapter().notifyDataSetChanged();
 
                 JSONArray j = manager.getSUBCatJ();
@@ -196,9 +197,11 @@ public  static  class CatagoryListAdapter extends   RecyclerView.Adapter<Catagor
 
    public List<Catagories> list =  new ArrayList<>();
    public List<Catagories> childlist =  new ArrayList<>();
+   Context context;
 
-    public CatagoryListAdapter(List<Catagories> list) {
+    public CatagoryListAdapter(List<Catagories> list,Context context) {
         this.list = list;
+        this.context = context;
 
 
     }
@@ -263,13 +266,13 @@ public  static  class CatagoryListAdapter extends   RecyclerView.Adapter<Catagor
         holder.sub_cat.setLayoutManager(new LinearLayoutManager(holder.sub_cat.getContext(), LinearLayoutManager.HORIZONTAL, true));
         if (sublist.get(catagories.getId())!=null){
 
-            holder.sub_cat.setAdapter(new SubCatagoryListAdapter(sublist.get(catagories.getId())));
+            holder.sub_cat.setAdapter(new SubCatagoryListAdapter(sublist.get(catagories.getId()),context));
             holder.sub_cat.getAdapter().notifyDataSetChanged();
         }else {
             if (childlist.size()>0){
                 List<Catagories> c = getItemById(catagories.getId());
                 if (c !=null && c.size()>0){
-                    holder.sub_cat.setAdapter(new SubCatagoryListAdapter(c));
+                    holder.sub_cat.setAdapter(new SubCatagoryListAdapter(c,context));
                     holder.sub_cat.getAdapter().notifyDataSetChanged();
                 }else {
                     BannerFragment.callChildApiList(catagories.getId(),position);
@@ -326,7 +329,7 @@ public  static  class CatagoryListAdapter extends   RecyclerView.Adapter<Catagor
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
             responseData = (List<Catagories>) response.getData();
 
-            catagory_list.setAdapter(new CatagoryListAdapter(responseData));
+            catagory_list.setAdapter(new CatagoryListAdapter(responseData,getContext()));
             catagory_list.getAdapter().notifyDataSetChanged();
 
 //            for (Catagories i:responseData) {

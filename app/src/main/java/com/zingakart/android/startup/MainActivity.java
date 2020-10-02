@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity
         ImageView iv = (ImageView) headerView.findViewById(R.id.imageView);
         TextView username = (TextView) headerView.findViewById(R.id.navtitle);
         loginBtn = (Button) headerView.findViewById(R.id.newlog);
+        callApiList();
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -195,7 +196,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         invalidateOptionsMenu();
-        callApiList();
+
 
     }
 

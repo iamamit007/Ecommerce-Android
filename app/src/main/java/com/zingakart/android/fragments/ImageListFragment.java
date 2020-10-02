@@ -16,7 +16,9 @@
 
 package com.zingakart.android.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +39,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.kaopiz.kprogresshud.KProgressHUD;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 import com.zingakart.android.R;
 import com.zingakart.android.product.ItemDetailsActivity;
 import com.zingakart.android.startup.MainActivity;
@@ -161,7 +165,7 @@ public class ImageListFragment extends Fragment {
       //  }
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(recyclerView, products));
+        recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(recyclerView, products,getContext()));
     }
 
     public static class SimpleStringRecyclerViewAdapter
@@ -169,15 +173,18 @@ public class ImageListFragment extends Fragment {
 
         private List<Product> mValues;
         private RecyclerView mRecyclerView;
+        Context context;
+
+
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final SimpleDraweeView mImageView;
             public final LinearLayout mLayoutItem;
-            public final ImageView mImageViewWishlist;
+            public final ImageView mImageViewWishlist,img;
             public  TextView product_name;
             public  TextView product_des;
-            public  TextView product_price;
+            public  TextView product_price,product_sell;
 
             public ViewHolder(View view) {
                 super(view);
@@ -185,15 +192,18 @@ public class ImageListFragment extends Fragment {
                 mImageView = (SimpleDraweeView) view.findViewById(R.id.image1);
                 mLayoutItem = (LinearLayout) view.findViewById(R.id.layout_item);
                 mImageViewWishlist = (ImageView) view.findViewById(R.id.ic_wishlist);
+                img = (ImageView) view.findViewById(R.id.img);
                 product_name = (TextView) view.findViewById(R.id.product_name);
-                product_des = (TextView) view.findViewById(R.id.product_name);
+                product_des = (TextView) view.findViewById(R.id.descTxt);
+                product_sell = (TextView) view.findViewById(R.id.product_sell);
                 product_price = (TextView) view.findViewById(R.id.product_price);
             }
         }
 
-        public SimpleStringRecyclerViewAdapter(RecyclerView recyclerView,List<Product> items) {
+        public SimpleStringRecyclerViewAdapter(RecyclerView recyclerView,List<Product> items,Context context) {
             mValues = items;
             mRecyclerView = recyclerView;
+            this.context = context;
         }
 
         @Override
@@ -228,7 +238,22 @@ public class ImageListFragment extends Fragment {
             List<Images> images = product.getImages();
 
             holder.product_name.setText(product.getName());
-            holder.product_price.setText(Html.fromHtml(product.getPrice_html()));
+
+           holder.product_price.setText("INR "+product.getRegular_price());
+            holder.product_sell.setText(" INR "+product.getSale_price());
+            holder.product_price.setPaintFlags( holder.product_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+            if (images!=null){
+                Picasso.with(context).load(images.get(0).getSrc()).into(holder.img);
+            }
+//            }else {
+//                Picasso.with(context).load(images.get(0).getSrc()).into(holder.img);
+//
+//            }
+
+
+
+            //  holder.product_price.setText(Html.fromHtml(product.getPrice_html()));
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 //                holder.product_des.setText(Html.fromHtml(product.getShort_description(), Html.FROM_HTML_MODE_COMPACT));
 //                holder.product_price.setText(Html.fromHtml(product.getPrice_html(), Html.FROM_HTML_MODE_COMPACT));

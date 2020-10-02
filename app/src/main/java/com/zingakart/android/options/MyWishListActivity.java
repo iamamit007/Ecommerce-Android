@@ -76,23 +76,23 @@ public class MyWishListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    KProgressHUD hud  = null;
-    void   showHud(){
-        hud =  KProgressHUD.create(this)
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setLabel("Please wait")
-                .setCancellable(true)
-                .setAnimationSpeed(2)
-                .setDimAmount(0.5f)
-                .show();
-    }
-
-    void hide(){
-        hud.dismiss();
-    }
+//    KProgressHUD hud  = null;
+//    void   showHud(){
+//        hud =  KProgressHUD.create(this)
+//                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+//                .setLabel("Please wait")
+//                .setCancellable(true)
+//                .setAnimationSpeed(2)
+//                .setDimAmount(0.5f)
+//                .show();
+//    }
+//
+//    void hide(){
+//        hud.dismiss();
+//    }
     public void callProfileApiList(){
 
-        showHud();
+       // showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<CustomerDetailResponse> responseCall = apiInterface.getCustomerProfile();
         responseCall.enqueue(callBack);
@@ -110,7 +110,7 @@ public class MyWishListActivity extends AppCompatActivity {
     private NetworkCallBack callBack = new NetworkCallBack<List<WishListProducts>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
-            hide();
+          //  hide();
             Log.d("ytuytuytu",response.getData().toString());
 //            Toast.makeText(getApplicationContext(),
 //                    "Wishlist now"+response.getData().toString(),
@@ -136,12 +136,12 @@ public class MyWishListActivity extends AppCompatActivity {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-            hide();
+           // hide();
         }
     };
 
     public void callOrderItems(int producId){
-        showHud();
+        //showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<Product> responseCall = apiInterface.getProductDetails(product+"/"+producId);
         responseCall.enqueue(callBack2);
@@ -154,7 +154,7 @@ public class MyWishListActivity extends AppCompatActivity {
     private NetworkCallBack callBack2 = new NetworkCallBack<Product>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
-                hide();
+             //   hide();
 //            Toast.makeText(getApplicationContext(),
 //                    "Product now"+response.getData().toString(),
 //                    Toast.LENGTH_SHORT).show();
@@ -166,7 +166,7 @@ public class MyWishListActivity extends AppCompatActivity {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-            hide();
+            //hide();
         }
     };
 

@@ -9,16 +9,15 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
+            android:id="@+id/image1"
+            android:scaleType="fitXY"
             android:layout_marginRight="6dp"
             android:layout_marginLeft="6dp"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="6dp"
-            xmlns:fresco="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/image1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            fresco:placeholderImage="@color/stay_color" />
+            android:layout_height="match_parent"/>
 
         <RelativeLayout
 
