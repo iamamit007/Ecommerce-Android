@@ -95,7 +95,6 @@ public class CategoryFragment extends Fragment {
             hide();
             List<Catagories>  child = (List<Catagories>) response.getData();
             if (child.size()>0){
-                Log.d("yyyyyyyyyyyyyyyyyyy",child.toString());
                 wishListData.addAll ((List<Catagories>)response.getData());
                 StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
                 rv.setLayoutManager(layoutManager);

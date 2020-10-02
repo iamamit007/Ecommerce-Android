@@ -109,7 +109,10 @@ public class MyAccountActivity extends AppCompatActivity {
 
         showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<CustomerDetailResponse> responseCall = apiInterface.getCustomerProfile();
+        SharedPreferences sh
+                = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+        int id = Integer.parseInt(sh.getString("id", "true"));
+        Call<CustomerDetailResponse> responseCall = apiInterface.getCustomerProfile(id);
         responseCall.enqueue(callBack);
 
     }

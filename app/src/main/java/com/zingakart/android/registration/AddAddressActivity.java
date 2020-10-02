@@ -193,7 +193,10 @@ public class AddAddressActivity extends AppCompatActivity {
                 statetx.getText().toString());
         CustomerAddressRequestParams param = new CustomerAddressRequestParams(Collections.singletonList(sdata));
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<CustomerAddressResponse> responseCall = apiInterface.addAddressDetails(param);
+        SharedPreferences sh
+                = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+        int id = Integer.parseInt(sh.getString("id", "true"));
+        Call<CustomerAddressResponse> responseCall = apiInterface.addAddressDetails(id,param);
         responseCall.enqueue(callBack);
 
     }
@@ -277,7 +280,10 @@ public class AddAddressActivity extends AppCompatActivity {
     public void callProfileApiList(){
         showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<CustomerDetailResponse> responseCall = apiInterface.getCustomerProfile();
+        SharedPreferences sh
+                = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+        int id = Integer.parseInt(sh.getString("id", "true"));
+        Call<CustomerDetailResponse> responseCall = apiInterface.getCustomerProfile(id);
         responseCall.enqueue(myprofile);
 
     }
@@ -316,7 +322,10 @@ public class AddAddressActivity extends AppCompatActivity {
     public void updateOrder(Order order){
 
         showHud();
-        UpdatePaymentOrderRequest request = new UpdatePaymentOrderRequest(14,"COD",false,"");
+        SharedPreferences sh
+                = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+        int id = Integer.parseInt(sh.getString("id", "true"));
+        UpdatePaymentOrderRequest request = new UpdatePaymentOrderRequest(id,"COD",false,"");
         try {
             ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
             Call<Order> responseCall = apiInterface.updateOrder(customer_order_retrieve+"/"+order.getId() ,request);

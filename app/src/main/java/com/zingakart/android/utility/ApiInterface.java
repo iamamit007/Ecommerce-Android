@@ -16,6 +16,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -48,11 +49,11 @@ public interface ApiInterface {
     @GET(customer_login)
     Call<List<CustomerLoginResponse>> getLoginDetails(@Query("email") String email, @Query("password") String password);
 
-    @PUT(customer_update_address)
-    Call<CustomerAddressResponse> addAddressDetails(@Body CustomerAddressRequestParams model);
+    @PUT(customer_update_address+"/{id}")
+    Call<CustomerAddressResponse> addAddressDetails(@Path ("id") int id,@Body CustomerAddressRequestParams model);
 
-    @GET(customer_retrieve)
-    Call<CustomerDetailResponse> getCustomerProfile();
+    @GET(customer_retrieve+"{id}")
+    Call<CustomerDetailResponse> getCustomerProfile(@Path("id")int id);
 
     @GET(customer_order_retrieve)
     Call<List<Order>> getMyOrder(@Query("customer") int customer );

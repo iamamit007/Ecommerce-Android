@@ -1,7 +1,9 @@
 package com.zingakart.android.startup;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.load.engine.Resource;
@@ -80,7 +83,8 @@ public class MainActivity extends AppCompatActivity
 
     DB snappydb =null;
     SessionManager manager;
-
+    ImageView iv;
+    TextView username;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,8 +129,8 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
-        ImageView iv = (ImageView) headerView.findViewById(R.id.imageView);
-        TextView username = (TextView) headerView.findViewById(R.id.navtitle);
+         iv = (ImageView) headerView.findViewById(R.id.imageView);
+         username = (TextView) headerView.findViewById(R.id.navtitle);
         loginBtn = (Button) headerView.findViewById(R.id.newlog);
         callApiList();
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -175,6 +179,9 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });*/
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("custom-event-name"));
     }
 
 
@@ -197,7 +204,41 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         invalidateOptionsMenu();
 
+        SharedPreferences sh
+                = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+        String fname = sh.getString("firstName", "");
+        String lname = sh.getString("lastName", "");
+        String id = sh.getString("id", "true");
+        usrId = id;
+        if (usrId == "true") {
+            iv.setVisibility(View.GONE);
+            username.setVisibility(View.GONE);
+            loginBtn.setVisibility(View.VISIBLE);
+        }
+        else{
+            iv.setVisibility(View.VISIBLE);
+            username.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.GONE);
+            username.setText(fname +" "+ lname);
+//            Uri uri = Uri.parse(image);
+//            iv.setImageURI(uri);
+        }
 
+
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+           onResume();
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mMessageReceiver);
     }
 
     public void callApiList(){

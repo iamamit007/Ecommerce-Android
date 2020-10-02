@@ -8,6 +8,8 @@ import android.os.Bundle;
 
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -20,8 +22,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.gson.Gson;
+import com.snappydb.DB;
+import com.snappydb.DBFactory;
+import com.velectico.rbm.network.callbacks.NetworkError;
 import com.zingakart.android.R;
+import com.zingakart.android.utility.ApiClient;
+import com.zingakart.android.utility.ApiInterface;
+import com.zingakart.android.utility.Catagories;
+import com.zingakart.android.utility.NetworkCallBack;
+import com.zingakart.android.utility.NetworkResponse;
 import com.zingakart.android.utility.PrefManager;
+import com.zingakart.android.utility.SessionManager;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import retrofit2.Call;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -96,6 +118,8 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
             }
         });
+
+        callApiList();
     }
 
     private void addBottomDots(int currentPage) {
@@ -204,4 +228,148 @@ public class WelcomeActivity extends AppCompatActivity {
             container.removeView(view);
         }
     }
+
+    DB snappydb =null;
+    SessionManager manager;
+
+    public void callApiList(){
+        ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<List<Catagories>> responseCall = apiInterface.getCatagories(30,true,0);
+        responseCall.enqueue(callBack);
+    }
+
+    List<String> titles= new ArrayList<>();
+    List<String> ids= new ArrayList<>();
+    List<Catagories> responseData = new ArrayList<>();
+
+
+    private NetworkCallBack callBack = new NetworkCallBack<List<Catagories>>() {
+        @Override
+        public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+
+            responseData = (List<Catagories>) response.getData();
+
+
+
+            Gson gson = new Gson();
+            JSONArray arr = new JSONArray();
+////transform a java object to json
+
+////Transform a json to java object
+//            String json = string_json;
+//            List<Object> lstObject = gson.fromJson(json_ string, Object.class);
+
+            for (Catagories i:responseData) {
+                arr.put(gson.toJson(i));
+                titles.add(""+i.getName());
+                ids.add(""+i.getId());
+                callChildApiList(i.getId());
+
+            }
+
+
+            try {
+                snappydb= DBFactory.open(WelcomeActivity.this);
+                snappydb.put("main_cat",arr.toString());
+                snappydb.close();
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
+
+        }
+    };
+
+
+    public  void callChildApiList(int parentId){
+        ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<List<Catagories>> responseCall = apiInterface.getCatagories(30,true,parentId);
+        responseCall.enqueue(callBack2);
+    }
+    private  NetworkCallBack callBack2 = new NetworkCallBack<List<Catagories>>() {
+        @Override
+        public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            List<Catagories>   responseData1= (List<Catagories>) response.getData();
+
+
+            Gson gson = new Gson();
+
+////transform a java object to json
+
+////Transform a json to java object
+//            String json = string_json;
+//            List<Object> lstObject = gson.fromJson(json_ string, Object.class);
+
+
+
+            try {
+
+                HashMap<Integer,String> mapTodb = new HashMap<>();
+                HashMap<Integer,JSONArray> immap = new HashMap<>();
+                JSONArray jsonArray = manager.getSUBCatJ();
+
+                for (Catagories c:responseData1
+                ) { jsonArray.put(gson.toJson(c));
+                }
+
+
+
+//
+//                jsonArray.put(responseData1);
+////                if (subcat.size() == 0){
+////
+////                }else {
+//                    Iterator it = subcat.entrySet().iterator();
+//                    while (it.hasNext()) {
+//                        Map.Entry pair = (Map.Entry)it.next();
+//                        JSONArray arr = new JSONArray();
+//                        int key = (int) pair.getKey();
+//                        List<Catagories> v = (List<Catagories>) pair.getValue();
+//                        for (int i = 0;i< v.size();i++){
+//                            arr.put(gson.toJson(v.get(i)));
+//                        }
+//                        immap.put(key,arr);
+//                        System.out.println(pair.getKey() + " = " + pair.getValue());
+//                        it.remove(); // avoids a ConcurrentModificationException
+//                    }
+//                    Iterator it2 = immap.entrySet().iterator();
+//                    while (it2.hasNext()) {
+//                        Map.Entry pair = (Map.Entry)it2.next();
+//                        int key = (int) pair.getKey();
+//                        JSONArray v = (JSONArray) pair.getValue();
+//                        mapTodb.put(key,v.toString());
+//                        it2.remove(); // avoids a ConcurrentModificationException
+//                    }
+//           //     }
+
+                snappydb=DBFactory.open(WelcomeActivity.this);
+                snappydb.put("sub_cat",jsonArray.toString());
+                snappydb.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
+
+        }
+    };
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

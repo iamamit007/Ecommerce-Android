@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.zingakart.android.R;
 import com.zingakart.android.registration.SignUpActivity;
@@ -151,21 +153,31 @@ public class LoginPopup {
             Log.d("ZINGAKART Login",response.toString());
             Toast.makeText(popupView.getContext(),"Loggedin Successfully",Toast.LENGTH_SHORT).show();
            List<CustomerLoginResponse> userDetailarr = (List<CustomerLoginResponse>) response.getData();
-           CustomerLoginResponse userDetail = userDetailarr.get(0);
-            String id = userDetail.getId();
+           if (userDetailarr.size() >0){
+               CustomerLoginResponse userDetail = userDetailarr.get(0);
+               String id = userDetail.getId();
 
-            SharedPreferences sharedPreferences
-                    = popupView.getContext().getSharedPreferences("MySharedPref",
-                    Context.MODE_PRIVATE);
+               SharedPreferences sharedPreferences
+                       = popupView.getContext().getSharedPreferences("MySharedPref",
+                       Context.MODE_PRIVATE);
 
-            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+               SharedPreferences.Editor myEdit = sharedPreferences.edit();
 
-            myEdit.putString("id", id);
-            myEdit.putString("firstName", userDetail.getFirst_name());
-            myEdit.putString("lastName", userDetail.getLast_name());
-            myEdit.putString("email", userDetail.getEmail());
-            myEdit.putString("image", userDetail.getAvatar_url());
-            myEdit.commit();
+               myEdit.putString("id", id);
+               myEdit.putString("firstName", userDetail.getFirst_name());
+               myEdit.putString("lastName", userDetail.getLast_name());
+               myEdit.putString("email", userDetail.getEmail());
+               myEdit.putString("image", userDetail.getAvatar_url());
+               myEdit.commit();
+               Log.d("sender", "Broadcasting message");
+               Intent intent = new Intent("custom-event-name");
+               // You can also include some extra data.
+               intent.putExtra("message", "login");
+               LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+           }else {
+               Toast.makeText(context,"Invalid login id/password",Toast.LENGTH_SHORT).show();
+           }
+
             popupWindow.dismiss();
         }
 
@@ -174,4 +186,5 @@ public class LoginPopup {
             hide();
         }
     };
+
 }

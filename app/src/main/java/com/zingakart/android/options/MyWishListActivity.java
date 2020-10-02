@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -94,7 +95,10 @@ public class MyWishListActivity extends AppCompatActivity {
 
        // showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<CustomerDetailResponse> responseCall = apiInterface.getCustomerProfile();
+        SharedPreferences sh
+                = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+        int id = Integer.parseInt(sh.getString("id", "true"));
+        Call<CustomerDetailResponse> responseCall = apiInterface.getCustomerProfile(id);
         responseCall.enqueue(callBack);
 
     }
@@ -161,7 +165,7 @@ public class MyWishListActivity extends AppCompatActivity {
             productList.add((Product)response.getData());
             RecyclerView.LayoutManager recylerViewLayoutManager = new LinearLayoutManager(mContext);
             recyclerView.setLayoutManager(recylerViewLayoutManager);
-            recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(recyclerView, productList));
+            recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(recyclerView, productList,MyWishListActivity.this));
         }
 
         @Override
@@ -198,10 +202,12 @@ public class MyWishListActivity extends AppCompatActivity {
 
             }
         }
+        Context context;
 
-        public SimpleStringRecyclerViewAdapter(RecyclerView recyclerView, List<Product> wishlistImageUri) {
+        public SimpleStringRecyclerViewAdapter(RecyclerView recyclerView, List<Product> wishlistImageUri,Context context) {
             mWishlistImageUri = wishlistImageUri;
             mRecyclerView = recyclerView;
+            this.context = context;
         }
 
         @Override
@@ -239,11 +245,11 @@ public class MyWishListActivity extends AppCompatActivity {
             holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, ItemDetailsActivity.class);
+                    Intent intent = new Intent(context, ItemDetailsActivity.class);
                     ItemDetailsActivity.setProduct(product);
                     intent.putExtra(STRING_IMAGE_URI, "https://www.zingakart.com/wp-content/uploads/2020/09/b19-1.png");
                     intent.putExtra(STRING_IMAGE_POSITION, position);
-                    mContext.startActivity(intent);
+                    context.startActivity(intent);
 
                 }
             });

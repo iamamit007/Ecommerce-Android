@@ -3,6 +3,7 @@ package com.zingakart.android.options;
 import android.content.Context;
 import android.content.Intent;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.zingakart.android.R;
 import com.zingakart.android.login.CustomerDetailResponse;
 import com.zingakart.android.utility.ApiClient;
 import com.zingakart.android.utility.ApiInterface;
+import com.zingakart.android.utility.CreateOrderRequest;
 import com.zingakart.android.utility.ImageUrlUtils;
 import com.zingakart.android.utility.NetworkCallBack;
 import com.zingakart.android.utility.NetworkResponse;
@@ -95,8 +97,11 @@ public class CartListActivity extends AppCompatActivity {
 
     public void callApiList(){
         showHud();
-        ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<List<Order>> responseCall = apiInterface.getMyOrder(14);
+        SharedPreferences sh
+                = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+        int id = Integer.parseInt(sh.getString("id", "true"));
+                ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<List<Order>> responseCall = apiInterface.getMyOrder(Integer.parseInt(sh.getString("id", "true")));
         responseCall.enqueue(callBack);
 
     }
