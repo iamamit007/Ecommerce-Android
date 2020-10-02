@@ -3,6 +3,7 @@ package com.zingakart.android.product;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -75,14 +76,18 @@ public class ItemDetailsActivity extends AppCompatActivity {
         TextView prodName = (TextView)findViewById(R.id.prodName);
         TextView prodPrice = (TextView)findViewById(R.id.prodPrice);
         TextView descTxt = (TextView)findViewById(R.id.descTxt);
+        TextView prodSalePrice = (TextView)findViewById(R.id.prodSalePrice);
         Spinner sizeSpinner = (Spinner)findViewById(R.id.sizeList);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (product!=null && product.getImages()!=null){
             List<Images> imgArr = product.getImages();
             final String prodImage = imgArr.get(0).getSrc();
             prodName.setText(product.getName());
             Uri uri = Uri.parse(prodImage);
             mImageView.setImageURI(uri);
-            prodPrice.setText(Html.fromHtml(product.getPrice_html(), Html.FROM_HTML_MODE_COMPACT));
+            prodPrice.setText(product.getRegular_price());
+            prodSalePrice.setText(product.getSale_price());
+            prodPrice.setPaintFlags(prodPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             descTxt.setText(Html.fromHtml(product.getShort_description(), Html.FROM_HTML_MODE_COMPACT));
 
             //Getting image uri from previous screen

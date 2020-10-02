@@ -37,14 +37,43 @@
                           android:textSize="16dp"
                     android:id="@+id/prodName"
                           android:textColor="@color/gen_black"/>
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_marginTop="8dp"
-                          android:text="Rs. 1,979"
-                          android:textSize="20dp"
-                    android:id="@+id/prodPrice"
-                          android:textColor="@color/gen_black"
-                          />
+                <LinearLayout
+                    android:weightSum="10"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Rs. "
+                        android:textSize="20dp"
+                        android:textColor="@color/gen_black"
+                        />
+                    <TextView
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Rs. 1,979"
+                        android:textSize="16dp"
+                        android:textColor="@color/green_light"
+                        android:id="@+id/prodPrice"
+                        />
+                    <TextView
+                        android:layout_weight="6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Rs. 1,979"
+                        android:textSize="20dp"
+                        android:id="@+id/prodSalePrice"
+                        android:textStyle="bold"
+                        android:textColor="@color/green_light"
+                        />
+                </LinearLayout>
+
                 <TextView android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
                           android:text="FREE Delivery"

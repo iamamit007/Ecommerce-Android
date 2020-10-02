@@ -115,7 +115,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 LoginPopup popUpClass = new LoginPopup(getBaseContext());
-                popUpClass.showPopupWindow(view);
+                popUpClass.showPopupWindow(getWindow().getDecorView().findViewById(android.R.id.content)
+                );
             }
         });
         viewPager = (ViewPager) findViewById(R.id.viewpager);

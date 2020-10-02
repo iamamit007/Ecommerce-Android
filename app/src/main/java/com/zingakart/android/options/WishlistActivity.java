@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -48,6 +49,8 @@ public class WishlistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_recylerview_list);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mContext = WishlistActivity.this;
         usrId = getIntent().getStringExtra("id");
 
@@ -85,11 +88,8 @@ public class WishlistActivity extends AppCompatActivity {
     private NetworkCallBack callBack = new NetworkCallBack<List<WishList>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
-            hide();
+           // hide();
             Log.d("ytuytuytu",response.getData().toString());
-            Toast.makeText(getApplicationContext(),
-                    "Wishlist now"+response.getData().toString(),
-                    Toast.LENGTH_SHORT).show();
             wishListData.addAll ((List<WishList>)response.getData());
             RecyclerView.LayoutManager recylerViewLayoutManager = new LinearLayoutManager(mContext);
             recyclerView.setLayoutManager(recylerViewLayoutManager);
@@ -99,7 +99,7 @@ public class WishlistActivity extends AppCompatActivity {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-            hide();
+          //  hide();
         }
     };
 
@@ -186,5 +186,15 @@ public class WishlistActivity extends AppCompatActivity {
         public int getItemCount() {
             return 1 ;
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -3,6 +3,7 @@ package com.zingakart.android.options;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.zingakart.android.R;
@@ -17,6 +18,8 @@ public class OrderDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         TextView orderId = (TextView)findViewById(R.id.orderId);
         TextView orderName = (TextView)findViewById(R.id.name);
         TextView orderPrice = (TextView)findViewById(R.id.price);
@@ -47,5 +50,16 @@ public class OrderDetailActivity extends AppCompatActivity {
         orderadd4.setText(order.getShipping().getCountry());
         shipPrice.setText("+ ₹"+ship2+"0");
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -58,8 +59,21 @@ public class MyWishListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_wish_list);
         String key = getIntent().getStringExtra("shareKey");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         recyclerView = (RecyclerView)findViewById(R.id.recyclerview);
         callApiList(key);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     KProgressHUD hud  = null;
@@ -86,7 +100,7 @@ public class MyWishListActivity extends AppCompatActivity {
     }
 
     public void callApiList(String key){
-        showHud();
+      //  showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<List<WishListProducts>> responseCall = apiInterface.getMyWishlistProduct(getwishListProductByKey+"/"+key+"/get_products");
         responseCall.enqueue(callBack);

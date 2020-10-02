@@ -54,6 +54,7 @@ public class CartListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart_list);
         mContext = CartListActivity.this;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ImageUrlUtils imageUrlUtils = new ImageUrlUtils();
         ArrayList<String> cartlistImageUri =imageUrlUtils.getCartListImageUri();

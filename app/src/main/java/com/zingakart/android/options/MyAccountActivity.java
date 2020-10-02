@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,6 +42,16 @@ public class MyAccountActivity extends AppCompatActivity {
     String cntry;
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
@@ -48,6 +59,8 @@ public class MyAccountActivity extends AppCompatActivity {
         address = (TextView) findViewById(R.id.addressdetail);
         email = (TextView) findViewById(R.id.email);
         ImageView iv = (ImageView)findViewById(R.id.imageView2);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         SharedPreferences sh
                 = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
 
@@ -108,7 +121,6 @@ public class MyAccountActivity extends AppCompatActivity {
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
             hide();
             Log.d("ZINGAKART",response.toString());
-            Toast.makeText(MyAccountActivity.this,"Profile UP."+response.getData().toString(),Toast.LENGTH_SHORT).show();
             CustomerDetailResponse userDetail = (CustomerDetailResponse) response.getData();
             addr = userDetail.getShipping();
              add = addr.getAddress_1();
