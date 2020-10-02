@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
         //Toast.makeText(this,"id UP."+id,Toast.LENGTH_SHORT).show();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setLogo(R.drawable.logo);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -345,26 +345,28 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_search) {
+        if (item.getItemId() == android.R.id.home) {
+            Toast.makeText(MainActivity.this,"Home",Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else if (id == R.id.action_search) {
             Toast.makeText(MainActivity.this,"Coming Soon.",Toast.LENGTH_SHORT).show();
 
             //  startActivity(new Intent(MainActivity.this, SearchResultActivity.class));
             return true;
         }else if (id == R.id.action_cart) {
-
-           /* NotificationCountSetClass.setAddToCart(MainActivity.this, item, notificationCount);
-            invalidateOptionsMenu();*/
-            Toast.makeText(MainActivity.this,"Coming Soon.",Toast.LENGTH_SHORT).show();
-
-            CartListActivity.setScreenName("cart");
-            //startActivity(new Intent(MainActivity.this, WishlistActivity.class));
-
-           /* notificationCount=0;//clear notification count
-            invalidateOptionsMenu();*/
+            if (checkLoggedin()==true){
+                Intent intent = new Intent(MainActivity.this, WishlistActivity.class);
+                intent.putExtra("id",usrId);
+                startActivity(intent);
+            }
+            else{
+                Toast.makeText(MainActivity.this,"Please login to continue",Toast.LENGTH_SHORT).show();
+            }
             return true;
         }else {
-            Toast.makeText(MainActivity.this,"Coming Soonn.",Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(MainActivity.this, EmptyActivity.class));
+            Toast.makeText(MainActivity.this,"Coming Soon.",Toast.LENGTH_SHORT).show();
+           // startActivity(new Intent(MainActivity.this, EmptyActivity.class));
 
         }
         return super.onOptionsItemSelected(item);
