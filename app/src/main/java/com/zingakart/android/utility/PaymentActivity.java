@@ -27,7 +27,7 @@ public class PaymentActivity extends Activity implements PaymentResultListener {
     private static final String TAG = PaymentActivity.class.getSimpleName();
 
     public  static  Order order;
-
+TextView amount;
     public static void setOrder(Order order) {
         PaymentActivity.order = order;
     }
@@ -48,6 +48,10 @@ public class PaymentActivity extends Activity implements PaymentResultListener {
 
         // Payment button created by you in XML layout
         Button button = (Button) findViewById(R.id.btn_pay);
+        amount = (TextView) findViewById(R.id.amount);
+        if (order.getTotal()!=null){
+            amount.setText("INR "+order.getTotal());
+        }
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,12 +87,12 @@ public class PaymentActivity extends Activity implements PaymentResultListener {
             //You can omit the image option to fetch the image from dashboard
             options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png");
             options.put("currency", "INR");
-            options.put("amount", ""+order.getTotal());
+            options.put("amount", 100);
             JSONObject preFill = new JSONObject();
-            preFill.put("email", "test@razorpay.com");
-            preFill.put("contact", "9876543210");
+          //  preFill.put("email", "test@razorpay.com");
+          //  preFill.put("contact", "9876543210");
 
-            options.put("prefill", preFill);
+           // options.put("prefill", preFill);
 
             co.open(activity, options);
         } catch (Exception e) {

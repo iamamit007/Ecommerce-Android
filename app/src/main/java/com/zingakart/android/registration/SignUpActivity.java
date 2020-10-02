@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.zingakart.android.R;
 import com.zingakart.android.login.CustomerRegisterRequestParams;
 import com.zingakart.android.login.CustomerRegisterResponse;
@@ -54,8 +55,23 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
-    public void callRegisterApi(){
 
+    KProgressHUD hud  = null;
+    void   showHud(){
+        hud =  KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
+    }
+
+    void hide(){
+        hud.dismiss();
+    }
+    public void callRegisterApi(){
+        showHud();
         CustomerRegisterRequestParams param = new CustomerRegisterRequestParams(email.getText().toString(),
                 firstName.getText().toString(),
                 lastName.getText().toString(),
@@ -66,6 +82,8 @@ public class SignUpActivity extends AppCompatActivity {
         responseCall.enqueue(callBack);
 
     }
+
+
     private NetworkCallBack callBack = new NetworkCallBack<CustomerRegisterResponse>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
@@ -83,6 +101,8 @@ public class SignUpActivity extends AppCompatActivity {
 
         }
     };
+
+
 
 
 }

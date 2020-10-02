@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.zingakart.android.R;
 import com.zingakart.android.registration.SignUpActivity;
 import com.zingakart.android.utility.ApiClient;
@@ -29,12 +30,18 @@ import java.util.List;
 import retrofit2.Call;
 
 public class LoginPopup {
+
+    public LoginPopup(Context context) {
+        this.context = context;
+    }
+
     //PopupWindow display method
     Button buttonSignup;
     EditText username;
     EditText password;
      View popupView;
     PopupWindow popupWindow;
+    Context context;
     public void showPopupWindow(final View view) {
 
 
@@ -114,8 +121,24 @@ public class LoginPopup {
 //            }
 //        });
     }
-    public void callLoginApi(){
 
+    KProgressHUD hud  = null;
+    void   showHud(){
+        hud =  KProgressHUD.create(context)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
+    }
+
+    void hide(){
+        hud.dismiss();
+    }
+
+    public void callLoginApi(){
+        showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<List<CustomerLoginResponse>> responseCall = apiInterface.getLoginDetails(username.getText().toString(),password.getText().toString());
         responseCall.enqueue(callBack);
@@ -124,6 +147,7 @@ public class LoginPopup {
     private NetworkCallBack callBack = new NetworkCallBack<List<CustomerLoginResponse>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            hide();
             Log.d("ZINGAKART Login",response.toString());
             Toast.makeText(popupView.getContext(),"Sign UP REs."+response.getData().toString(),Toast.LENGTH_SHORT).show();
            List<CustomerLoginResponse> userDetailarr = (List<CustomerLoginResponse>) response.getData();
@@ -147,7 +171,7 @@ public class LoginPopup {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-
+            hide();
         }
     };
 }

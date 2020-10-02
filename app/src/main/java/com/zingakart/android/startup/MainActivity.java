@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.zingakart.android.R;
 import com.zingakart.android.fragments.ImageListFragment;
 import com.zingakart.android.login.LoginPopup;
@@ -149,6 +150,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void callApiList(){
+        showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<List<Catagories>> responseCall = apiInterface.getCatagories(30,true,0);
         responseCall.enqueue(callBack);
@@ -162,6 +164,7 @@ public class MainActivity extends AppCompatActivity
     private NetworkCallBack callBack = new NetworkCallBack<List<Catagories>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            hide();
             responseData = (List<Catagories>) response.getData();
             Menu menu = navigationView.getMenu();
             for (Catagories i:responseData) {
@@ -185,6 +188,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
+            hide();
 
         }
     };
@@ -230,19 +234,24 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
-            startActivity(new Intent(MainActivity.this, SearchResultActivity.class));
+            Toast.makeText(MainActivity.this,"Coming Soon.",Toast.LENGTH_SHORT).show();
+
+          //  startActivity(new Intent(MainActivity.this, SearchResultActivity.class));
             return true;
         }else if (id == R.id.action_cart) {
 
            /* NotificationCountSetClass.setAddToCart(MainActivity.this, item, notificationCount);
             invalidateOptionsMenu();*/
+            Toast.makeText(MainActivity.this,"Coming Soon.",Toast.LENGTH_SHORT).show();
+
             CartListActivity.setScreenName("cart");
-            startActivity(new Intent(MainActivity.this, CartListActivity.class));
+            //startActivity(new Intent(MainActivity.this, WishlistActivity.class));
 
            /* notificationCount=0;//clear notification count
             invalidateOptionsMenu();*/
             return true;
         }else {
+            Toast.makeText(MainActivity.this,"Coming Soonn.",Toast.LENGTH_SHORT).show();
             startActivity(new Intent(MainActivity.this, EmptyActivity.class));
 
         }
@@ -337,14 +346,20 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.my_orders) {
             CartListActivity.setScreenName("my_orders");
-
             startActivity(new Intent(MainActivity.this, CartListActivity.class));
+        }
+        else if (id == R.id.contact_us) {
+            Toast.makeText(MainActivity.this,"Coming Soon",Toast.LENGTH_SHORT).show();
+        }
+        else if (id == R.id.terms_conditions) {
+            Toast.makeText(MainActivity.this,"Coming Soon",Toast.LENGTH_SHORT).show();
+        }
+        else if (id == R.id.help_center) {
+            Toast.makeText(MainActivity.this,"Coming Soon",Toast.LENGTH_SHORT).show();
         }
 
         else {
-
             int catgId = getcatIdbyName(item.getTitle().toString());
-
             Toast.makeText(this,"catid."+catgId,Toast.LENGTH_SHORT).show();
 //            Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
 //            intent.putExtra("catgId",catgId);
@@ -414,6 +429,21 @@ public class MainActivity extends AppCompatActivity
            }
         }
         return catgId;
+    }
+
+    KProgressHUD hud  = null;
+    void   showHud(){
+        hud =  KProgressHUD.create(activity)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
+    }
+
+    void hide(){
+        hud.dismiss();
     }
 
 }

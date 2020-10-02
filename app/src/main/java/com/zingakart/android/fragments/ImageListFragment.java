@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.zingakart.android.R;
 import com.zingakart.android.product.ItemDetailsActivity;
 import com.zingakart.android.startup.MainActivity;
@@ -93,11 +94,25 @@ public class ImageListFragment extends Fragment {
         return rv;
     }
     public void callApiList(){
-
+        showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<List<Product>> responseCall = apiInterface.getProductList(cataGoryId,100,1);
         responseCall.enqueue(callBack);
 
+    }
+    KProgressHUD hud  = null;
+    void   showHud(){
+        hud =  KProgressHUD.create(getContext())
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
+    }
+
+    void hide(){
+        hud.dismiss();
     }
 
     List<String> titles= new ArrayList<>();
@@ -106,6 +121,7 @@ public class ImageListFragment extends Fragment {
     private NetworkCallBack callBack = new NetworkCallBack<List<Product>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            hide();
             Log.d("Mita",response.getData().toString());
             setupRecyclerView(rv,(List<Product>)response.getData());
 
@@ -113,7 +129,7 @@ public class ImageListFragment extends Fragment {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-
+            hide();
         }
     };
 

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.zingakart.android.R;
 import com.zingakart.android.fragments.ImageListFragment;
 import com.zingakart.android.fragments.ViewPagerActivity;
@@ -126,8 +127,11 @@ public class ItemDetailsActivity extends AppCompatActivity {
         textViewBuyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (userId == "true") {
-                    LoginPopup popUpClass = new LoginPopup();
+                SharedPreferences sh
+                        = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+                String uid = sh.getString("id", "true");
+                if (uid == "true") {
+                    LoginPopup popUpClass = new LoginPopup(getBaseContext());
                     popUpClass.showPopupWindow(view);
                 }
                 else{
@@ -185,12 +189,12 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-
+            hide();
         }
     };
 
     public void callApiList(){
-
+        showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<List<WishList>>responseCall = apiInterface.getMyWishlist(customer_wishList_retrieveById+"/"+userId);
         responseCall.enqueue(callBack2);
@@ -200,6 +204,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     private NetworkCallBack callBack2 = new NetworkCallBack<List<WishList>>() {
         @Override
         public void onSuccessNetwork(@Nullable Object data, @NotNull NetworkResponse response) {
+            hide();
             Log.d("ytuytuytu",response.getData().toString());
             wishListData.addAll ((List<WishList>)response.getData());
             wishsharekey = wishListData.get(0).getShare_key();
@@ -207,7 +212,21 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
         @Override
         public void onFailureNetwork(@Nullable Object data, @NotNull NetworkError error) {
-
+            hide();
         }
     };
+    KProgressHUD hud  = null;
+    void   showHud(){
+        hud =  KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
+    }
+
+    void hide(){
+        hud.dismiss();
+    }
 }
