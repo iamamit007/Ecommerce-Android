@@ -284,7 +284,9 @@ public class MainActivity extends AppCompatActivity
                 snappydb.close();
                 for (String s:titles
                 ) {
-                    navigationView.getMenu().findItem(R.id.cata).getSubMenu().add(s.replace("&amp;", "&")).setIcon(R.drawable.ic_local_offer_black_24dp);
+                    String f = s.replace("&amp;", "&");
+                    String f1 = f.replace("?", "");
+                    navigationView.getMenu().findItem(R.id.cata).getSubMenu().add(f1).setIcon(R.drawable.ic_local_offer_black_24dp);
                 }
 
             } catch (Exception e) {

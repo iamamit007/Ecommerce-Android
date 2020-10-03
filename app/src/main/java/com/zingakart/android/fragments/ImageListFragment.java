@@ -46,6 +46,7 @@ import com.zingakart.android.product.ItemDetailsActivity;
 import com.zingakart.android.startup.MainActivity;
 import com.zingakart.android.utility.ApiClient;
 import com.zingakart.android.utility.ApiInterface;
+import com.zingakart.android.utility.AutoResizeTextView;
 import com.zingakart.android.utility.ImageUrlUtils;
 import com.zingakart.android.utility.Images;
 import com.zingakart.android.utility.NetworkCallBack;
@@ -182,7 +183,7 @@ public class ImageListFragment extends Fragment {
             public final SimpleDraweeView mImageView;
             public final LinearLayout mLayoutItem;
             public final ImageView mImageViewWishlist,img;
-            public  TextView product_name;
+            public AutoResizeTextView product_name;
             public  TextView product_des;
             public  TextView product_price,product_sell;
 
@@ -193,7 +194,7 @@ public class ImageListFragment extends Fragment {
                 mLayoutItem = (LinearLayout) view.findViewById(R.id.layout_item);
                 mImageViewWishlist = (ImageView) view.findViewById(R.id.ic_wishlist);
                 img = (ImageView) view.findViewById(R.id.img);
-                product_name = (TextView) view.findViewById(R.id.product_name);
+                product_name = (AutoResizeTextView) view.findViewById(R.id.product_name);
                 product_des = (TextView) view.findViewById(R.id.descTxt);
                 product_sell = (TextView) view.findViewById(R.id.product_sell);
                 product_price = (TextView) view.findViewById(R.id.product_price);
@@ -243,7 +244,7 @@ public class ImageListFragment extends Fragment {
             holder.product_sell.setText(" INR "+product.getSale_price());
             holder.product_price.setPaintFlags( holder.product_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-            if (images!=null){
+            if (images!=null && images.size() >0){
                 Picasso.with(context).load(images.get(0).getSrc()).into(holder.img);
             }
 //            }else {

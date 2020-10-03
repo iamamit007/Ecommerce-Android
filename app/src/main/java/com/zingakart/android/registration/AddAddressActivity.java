@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,6 +70,12 @@ public class AddAddressActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_address);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        View customView = getLayoutInflater().inflate(R.layout.custom_actionbar, null);
+        // Get the textview of the title
+        ImageView customTitle = (ImageView) customView.findViewById(R.id.actionbarTitle);
+        getSupportActionBar().setCustomView(customView);
         pintx = (EditText) findViewById(R.id.pin);
         address = (EditText) findViewById(R.id.address);
         citytx = (EditText) findViewById(R.id.city);
@@ -81,6 +89,8 @@ public class AddAddressActivity extends AppCompatActivity {
         cod = (Button) findViewById(R.id.cod);
         checkout = (Button) findViewById(R.id.checkout);
         paybox = (LinearLayout) findViewById(R.id.paybox);
+        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         callProfileApiList();
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,6 +188,17 @@ public class AddAddressActivity extends AppCompatActivity {
                 .setAnimationSpeed(2)
                 .setDimAmount(0.5f)
                 .show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     void hide(){

@@ -9,7 +9,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,7 @@ import com.zingakart.android.fragments.ViewPagerActivity;
 import com.zingakart.android.login.LoginPopup;
 import com.zingakart.android.notification.NotificationCountSetClass;
 import com.zingakart.android.registration.AddAddressActivity;
+import com.zingakart.android.startup.BannerFragment;
 import com.zingakart.android.startup.MainActivity;
 import com.zingakart.android.utility.ApiClient;
 import com.zingakart.android.utility.ApiInterface;
@@ -66,6 +69,25 @@ public class ItemDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_item_details);
+
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        View customView = getLayoutInflater().inflate(R.layout.custom_actionbar, null);
+        // Get the textview of the title
+        ImageView customTitle = (ImageView) customView.findViewById(R.id.actionbarTitle);
+        getSupportActionBar().setCustomView(customView);
+        // Change the font family (optional)
+        //customTitle.setTypeface(Typeface.MONOSPACE);
+        // Set the on click listener for the title
+//        customTitle.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.w("MainActivity", "ActionBar's title clicked.");
+//               finish();
+//            }
+//        });
+
 
         SharedPreferences sh
                 = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
@@ -240,5 +262,18 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
     void hide(){
         hud.dismiss();
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

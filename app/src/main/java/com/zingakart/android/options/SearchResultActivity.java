@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -19,7 +21,12 @@ public class SearchResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        View customView = getLayoutInflater().inflate(R.layout.custom_actionbar, null);
+        // Get the textview of the title
+        ImageView customTitle = (ImageView) customView.findViewById(R.id.actionbarTitle);
+        getSupportActionBar().setCustomView(customView);
         handleIntent(getIntent());
     }
     @Override

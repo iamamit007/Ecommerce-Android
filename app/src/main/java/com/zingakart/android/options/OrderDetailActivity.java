@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zingakart.android.R;
@@ -19,7 +21,12 @@ public class OrderDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        View customView = getLayoutInflater().inflate(R.layout.custom_actionbar, null);
+        // Get the textview of the title
+        ImageView customTitle = (ImageView) customView.findViewById(R.id.actionbarTitle);
+        getSupportActionBar().setCustomView(customView);
         TextView orderId = (TextView)findViewById(R.id.orderId);
         TextView orderName = (TextView)findViewById(R.id.name);
         TextView orderPrice = (TextView)findViewById(R.id.price);

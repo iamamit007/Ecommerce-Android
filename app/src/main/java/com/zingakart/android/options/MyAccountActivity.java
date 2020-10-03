@@ -60,7 +60,12 @@ public class MyAccountActivity extends AppCompatActivity {
         email = (TextView) findViewById(R.id.email);
         ImageView iv = (ImageView)findViewById(R.id.imageView2);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        View customView = getLayoutInflater().inflate(R.layout.custom_actionbar, null);
+        // Get the textview of the title
+        ImageView customTitle = (ImageView) customView.findViewById(R.id.actionbarTitle);
+        getSupportActionBar().setCustomView(customView);
         SharedPreferences sh
                 = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
 

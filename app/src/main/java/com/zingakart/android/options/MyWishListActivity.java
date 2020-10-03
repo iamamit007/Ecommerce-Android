@@ -61,7 +61,12 @@ public class MyWishListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_wish_list);
         String key = getIntent().getStringExtra("shareKey");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        View customView = getLayoutInflater().inflate(R.layout.custom_actionbar, null);
+        // Get the textview of the title
+        ImageView customTitle = (ImageView) customView.findViewById(R.id.actionbarTitle);
+        getSupportActionBar().setCustomView(customView);
         recyclerView = (RecyclerView)findViewById(R.id.recyclerview);
         callApiList(key);
     }
