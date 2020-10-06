@@ -38,6 +38,11 @@ public interface ApiInterface {
 
 
     @GET(products_categories)
+    Call<List<Catagories>> getCatagoriesSelected(@Query("per_page")int per_page,@Query("hide_empty")boolean  hide_empty ,@Query("include") String params);
+
+
+
+    @GET(products_categories)
     Call<Response> getCatagoriesRaw(@Query("per_page")int per_page, @Query("hide_empty")boolean  hide_empty , @Query("parent")int  parent);
 
     @GET(product)
