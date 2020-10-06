@@ -66,10 +66,16 @@ import retrofit2.Call;
 
 public class ImageListFragment extends Fragment {
 
+
     public static final String STRING_IMAGE_URI = "ImageUri";
     public static final String STRING_IMAGE_POSITION = "ImagePosition";
     private static MainActivity mActivity;
     private static int cataGoryId = 0;
+    static boolean   isFeatured = false;
+
+    public static void setFeatured(boolean featured) {
+        ImageListFragment.isFeatured = featured;
+    }
 
     RecyclerView rv;
 
@@ -101,8 +107,14 @@ public class ImageListFragment extends Fragment {
     public void callApiList(){
         showHud();
         ApiInterface apiInterface = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<List<Product>> responseCall = apiInterface.getProductList(cataGoryId,100,1);
-        responseCall.enqueue(callBack);
+        if (isFeatured){
+            Call<List<Product>> responseCall = apiInterface.getProductList(20,1,isFeatured);
+            responseCall.enqueue(callBack);
+        }else {
+            Call<List<Product>> responseCall = apiInterface.getProductList(cataGoryId,100,1,isFeatured);
+            responseCall.enqueue(callBack);
+        }
+
 
     }
     KProgressHUD hud  = null;
@@ -175,8 +187,6 @@ public class ImageListFragment extends Fragment {
         private List<Product> mValues;
         private RecyclerView mRecyclerView;
         Context context;
-
-
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;

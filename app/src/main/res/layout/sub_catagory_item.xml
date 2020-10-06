@@ -10,8 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
+            android:src="@drawable/logo"
             android:id="@+id/image1"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             android:layout_marginRight="6dp"
             android:layout_marginLeft="6dp"
             android:layout_marginTop="6dp"

@@ -41,7 +41,10 @@ public interface ApiInterface {
     Call<Response> getCatagoriesRaw(@Query("per_page")int per_page, @Query("hide_empty")boolean  hide_empty , @Query("parent")int  parent);
 
     @GET(product)
-    Call<List<Product>> getProductList(@Query("category")int category ,@Query("per_page")int per_page ,@Query("page")int page );
+    Call<List<Product>> getProductList(@Query("category")int category ,@Query("per_page")int per_page ,@Query("page")int page ,@Query("featured")boolean featured );
+
+    @GET(product)
+    Call<List<Product>> getProductList(@Query("per_page")int per_page ,@Query("page")int page ,@Query("featured")boolean featured );
 
     @POST(customer_register)
     Call<CustomerRegisterResponse> getregisterDetails(@Body CustomerRegisterRequestParams model);

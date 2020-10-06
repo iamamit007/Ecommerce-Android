@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.kaopiz.kprogresshud.KProgressHUD;
+import com.squareup.picasso.Picasso;
 import com.zingakart.android.R;
 import com.zingakart.android.fragments.ImageListFragment;
 import com.zingakart.android.fragments.ViewPagerActivity;
@@ -92,7 +93,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         SharedPreferences sh
                 = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
         userId = sh.getString("id", "true");
-        SimpleDraweeView mImageView = (SimpleDraweeView)findViewById(R.id.image1);
+        ImageView mImageView = (ImageView) findViewById(R.id.image1);
         TextView textViewAddToCart = (TextView)findViewById(R.id.text_action_bottom1);
         TextView textViewBuyNow = (TextView)findViewById(R.id.text_action_bottom2);
         TextView prodName = (TextView)findViewById(R.id.prodName);
@@ -104,11 +105,12 @@ public class ItemDetailsActivity extends AppCompatActivity {
         if (product!=null && product.getImages()!=null){
             List<Images> imgArr = product.getImages();
             final String prodImage = imgArr.get(0).getSrc();
+            Picasso.with(this).load(prodImage).into(mImageView);
             prodName.setText(product.getName());
-            Uri uri = Uri.parse(prodImage);
-            mImageView.setImageURI(uri);
-            prodPrice.setText(product.getRegular_price());
-            prodSalePrice.setText(product.getSale_price());
+           // Uri uri = Uri.parse(prodImage);
+            //mImageView.setImageURI(uri);
+      //      prodPrice.setText(product.getRegular_price());
+            prodSalePrice.setText("Rs. "+product.getSale_price());
             prodPrice.setPaintFlags(prodPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             descTxt.setText(Html.fromHtml(product.getShort_description(), Html.FROM_HTML_MODE_COMPACT));
 

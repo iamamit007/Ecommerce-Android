@@ -169,7 +169,8 @@ public class MainActivity extends AppCompatActivity
         }
         catch (SnappydbException e) {
             e.printStackTrace();}
-        cnageFragment(new BannerFragment());
+     //   cnageFragment(new BannerFragment());
+        cnageFragment(new FeatureFragment());
 
       /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -624,7 +625,9 @@ public class MainActivity extends AppCompatActivity
         int catgId = 0;
         for (int i = 0; i < responseData.size(); i++) {
 
-            if (name.equalsIgnoreCase(responseData.get(i).getName()) ){
+            String f = responseData.get(i).getName().replace("&amp;", "&");
+            String f1 = f.replace("?", "");
+            if (name.equalsIgnoreCase(f1) ){
                 catgId = responseData.get(i).getId();
                 break;
             }

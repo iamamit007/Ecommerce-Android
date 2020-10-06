@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zingakart.android.R;
+import com.zingakart.android.fragments.ImageListFragment;
 import com.zingakart.android.utility.ApiClient;
 import com.zingakart.android.utility.ApiInterface;
 import com.zingakart.android.utility.Catagories;
@@ -45,6 +47,8 @@ import java.util.List;
 
 import retrofit2.Call;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link BannerFragment#newInstance} factory method to
@@ -57,6 +61,7 @@ public class BannerFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    boolean isAll = false;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -66,6 +71,7 @@ public class BannerFragment extends Fragment {
     public BannerFragment() {
         // Required empty public constructor
     }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -98,6 +104,7 @@ public class BannerFragment extends Fragment {
     RecyclerView catagory_list;
     SliderView sliderView;
     private SliderAdapterExample adapter;
+    RelativeLayout con;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,6 +113,7 @@ public class BannerFragment extends Fragment {
         bannerFragment = this;
         catagory_list = mview.findViewById(R.id.catagory_list);
         sliderView = mview.findViewById(R.id.imageSlider);
+        con = mview.findViewById(R.id.con);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         catagory_list.setLayoutManager(layoutManager);
 
@@ -123,6 +131,11 @@ public class BannerFragment extends Fragment {
 
 
         managefromLocaldb();
+        if (!isAll){
+            ImageListFragment.setCataGoryId(0);
+            ImageListFragment.setFeatured(true);
+            changeChildFragment(new ImageListFragment());
+        }
 
         sliderView.setOnIndicatorClickListener(new DrawController.ClickListener() {
             @Override
@@ -132,10 +145,24 @@ public class BannerFragment extends Fragment {
         });
 
 
+
         return mview;
     }
 
+public void changeChildFragment(Fragment fragment){
+    Fragment f = getChildFragmentManager().findFragmentById(R.id.con);
 
+    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+   // if (f == null) {
+        Log.d(TAG, "onCreateView: fragment doesn't exist");
+        transaction.add(R.id.con, fragment);
+//    } else {
+//        Log.d(TAG, "onCreateView: fragment already exists");
+//        transaction.replace(R.id.placeholder, f);
+//    }
+    transaction.commit();
+}
 
     public  void managefromLocaldb(){
       SessionManager manager = new SessionManager(getContext());
@@ -149,8 +176,11 @@ public class BannerFragment extends Fragment {
                 for (int i = 0;i<arr.length();i++){
                     responseData.add(gson.fromJson(arr.get(i).toString(), Catagories.class));
                 }
-                catagory_list.setAdapter(new CatagoryListAdapter(responseData,getContext()));
-                catagory_list.getAdapter().notifyDataSetChanged();
+                if (isAll){
+                    catagory_list.setAdapter(new CatagoryListAdapter(responseData,getContext()));
+                    catagory_list.getAdapter().notifyDataSetChanged();
+                }
+
 
                 JSONArray j = manager.getSUBCatJ();
                 if (j.length()>0){
@@ -158,10 +188,15 @@ public class BannerFragment extends Fragment {
                         child.add(gson.fromJson(j.get(i).toString(),Catagories.class));
                     }
 
+
+                    if (isAll){
+                        CatagoryListAdapter adapter =(CatagoryListAdapter) bannerFragment.catagory_list.getAdapter();
+
+                        adapter.setChildlist(child);
+                        adapter.notifyDataSetChanged();
+                    }
                     //   /HashMap<Integer,List<Catagories>> map= (HashMap<Integer, List<Catagories>>) manager.getSUBCat();
-                    CatagoryListAdapter adapter =(CatagoryListAdapter) bannerFragment.catagory_list.getAdapter();
-                    adapter.setChildlist(child);
-                    adapter.notifyDataSetChanged();
+
                 }
 
 

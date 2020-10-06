@@ -93,7 +93,7 @@ public    class SubCatagoryListAdapter extends   RecyclerView.Adapter<SubCatagor
             //holder.mImageView.setImageURI(uri);
         }else {
 
-            Picasso.with(context).load(urls[x]).into(holder.mImageView);
+            //Picasso.with(context).load(urls[x]).into(holder.mImageView);
 
 
         }

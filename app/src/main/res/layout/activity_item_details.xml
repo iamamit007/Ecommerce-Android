@@ -20,11 +20,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <com.facebook.drawee.view.SimpleDraweeView xmlns:fresco="http://schemas.android.com/apk/res-auto"
-                                                   android:id="@+id/image1"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="200.0dp"
-                                                   fresco:placeholderImage="@color/stay_color" />
+        <ImageView
+            android:scaleType="fitXY"
+            android:src="@drawable/logo"
+            android:id="@+id/image1"
+            android:layout_width="match_parent"
+            android:layout_height="200.0dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,20 +44,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <TextView
+
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Rs. "
                         android:textSize="20dp"
-                        android:textColor="@color/gen_black"
+                        android:textColor="@color/green_light"
                         />
                     <TextView
-                        android:layout_weight="2"
+                        android:layout_weight="3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Rs. 1,979"
+                        android:text=""
                         android:textSize="16dp"
                         android:textColor="@color/green_light"
                         android:id="@+id/prodPrice"
@@ -66,7 +68,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Rs. 1,979"
+                        android:text=""
                         android:textSize="20dp"
                         android:id="@+id/prodSalePrice"
                         android:textStyle="bold"
