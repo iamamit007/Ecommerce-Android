@@ -13,8 +13,12 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.recyclerview.widget.RecyclerView
+    android:background="#FFFFFF"
+    android:nestedScrollingEnabled="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/recyclerview"
     android:scrollbars="vertical"
+    android:clipToPadding="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
