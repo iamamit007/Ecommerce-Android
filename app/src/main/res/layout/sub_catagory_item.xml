@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
-            android:src="@drawable/logo"
+            android:src="@drawable/gg"
             android:id="@+id/image1"
             android:scaleType="fitCenter"
             android:layout_marginRight="6dp"

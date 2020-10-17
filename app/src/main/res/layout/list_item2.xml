@@ -65,7 +65,7 @@
                 android:layout_weight="1.8"
                 android:orientation="vertical">
 
-                <com.zingakart.android.utility.AutoResizeTextView
+                <com.ecomm.android.utility.AutoResizeTextView
                     android:id="@+id/product_name"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
